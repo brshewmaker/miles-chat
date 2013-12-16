@@ -15,3 +15,5 @@ Route::get('/', function()
 {
 	return View::make('login');
 });
+
+Route::get('register', 'AccountController@action_index');
