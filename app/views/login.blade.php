@@ -5,7 +5,6 @@
 @stop
 
 @section('content')
-<h3>Login page</h3>
 
 {{Form::open(array('url' => 'login', 'class' => 'form-horizontal'))}}
 		<div class="form-group">
