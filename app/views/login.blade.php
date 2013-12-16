@@ -34,5 +34,6 @@
 		</div>
 {{Form::close()}}
 
+{{HTML::link('register', 'Register')}}
 
 @stop
