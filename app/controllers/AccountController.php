@@ -11,8 +11,17 @@ class AccountController extends BaseController
 	 * 
 	 * @return View
 	 */
-	public function action_index() {
-		Return View::make('register');
+	public function action_register() {
+		return View::make('register');
+	}
+
+	/**
+	 * Handle GET request for /account
+	 * 
+	 * @return View
+	 */
+	public function action_account() {
+		return View::make('account');
 	}
 
 }

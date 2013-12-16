@@ -16,4 +16,6 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-Route::get('register', 'AccountController@action_index');
+Route::get('register', 'AccountController@action_register');
+Route::get('account', 'AccountController@action_account');
+Route::get('chat', 'ChatController@action_index');
