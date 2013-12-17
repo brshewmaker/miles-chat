@@ -25,13 +25,6 @@
 	<legend>Messages</legend>
 
 		<table class="table table-striped chat-messages">
-			<tr><td><strong>ben: </strong>This is a chat message</td></tr>
-			<tr><td>and this is another</td></tr>
-			<tr><td>followed by this one</td></tr>
-			<tr><td>and then this one</td></tr>
-			<tr><td>1</td></tr>
-			<tr><td>2</td></tr>
-			<tr><td>3</td></tr>
 		</table>
 
 
@@ -50,7 +43,6 @@
 				</div>
 
 			{{Form::close()}}
-			<p>Chat input div</p>
 		</div>
 
 	</div> <!-- end chat div -->
