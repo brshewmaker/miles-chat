@@ -30,9 +30,6 @@
 				<ul class="nav navbar-nav">
 					@if (Auth::check())
 						<li>{{HTML::link('chat', 'Chat')}}</li>
-						@if (AuthAdmin::is_admin())
-							<li>{{HTML::link('admin', 'Admin')}}</li>
-						@endif
 						<li>{{HTML::link('account', 'Account')}}</li>
 					@endif
 				</ul>
