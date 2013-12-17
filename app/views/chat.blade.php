@@ -14,15 +14,12 @@
 <div class="row">
 	<!-- Logged in Users Div -->
 	<div class="col col-sm-3">
-	<legend>Users</legend>
-		<p>Ben</p>
-		<p>Tacit</p>
-		<p>ben-mobile</p>
+		<legend>Users</legend>
 	</div> <!-- end users div -->
 
 	<!-- Chat Div -->
 	<div class="col col-sm-9 chat-div">
-	<legend>Messages</legend>
+		<legend>Messages</legend>
 
 		<table class="table table-striped chat-messages">
 		</table>
