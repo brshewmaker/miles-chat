@@ -6,6 +6,13 @@
 
 @section('content')
 
+@if (isset($failed))
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<strong>Damn!</strong> Something went wrong and you aren't logged in
+	</div>
+@endif
+
 {{Form::open(array('url' => 'login', 'class' => 'form-horizontal'))}}
 		<div class="form-group">
 			<div class="col-sm-7">

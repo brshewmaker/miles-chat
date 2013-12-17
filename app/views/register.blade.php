@@ -8,6 +8,13 @@
 <h3>Create an account</h3>
 <br />
 
+@if (isset($failed))
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<strong>Damn!</strong> Something went wrong and your account wasn't created.
+	</div>
+@endif
+
 	{{Form::open(array('url' => 'add-user', 'class' => 'form-horizontal', 'id' => 'create_user'))}}
 	    <div class="form-group">
 	        <label class="control-label col-sm-2" for="username">Username </label>
