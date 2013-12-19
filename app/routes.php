@@ -21,6 +21,15 @@ Route::get('register', 'AccountController@action_register');
 Route::get('account', 'AccountController@action_account');
 Route::get('chat', 'ChatController@action_index');
 
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+| 
+| Login/logout the user
+| 
+*/
+
 Route::get('logout', function() {
 	Auth::logout();
 	return Redirect::to('/');
