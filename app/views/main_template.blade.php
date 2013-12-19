@@ -32,6 +32,15 @@
 						<li>{{HTML::link('chat', 'Chat')}}</li>
 						<li>{{HTML::link('account', 'Account')}}</li>
 					@endif
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Change Theme</a>
+						<ul class="dropdown-menu">
+							<?php $stylesheets = Config::get('stylesheets.stylesheets'); ?>
+							@foreach($stylesheets as $stylesheet)
+								<li><a href="#" class="change-theme" data-stylesheet="{{$stylesheet}}.min.css">{{$stylesheet}}</a></li>
+							@endforeach
+						</ul>
+					</li>
 				</ul>
 
 				<!-- Right -->
@@ -51,6 +60,7 @@
 
 	{{HTML::script('js/jquery-2.0.3.min.js')}}
 	{{HTML::script('bootstrap/js/bootstrap.min.js')}}
+	{{HTML::script('js/main.js')}}
 	<script type="text/javascript">var BASE = "<?php echo URL::to('/'); ?>";</script>
 	@yield('scripts')
 </body>
