@@ -42,7 +42,6 @@
 						<input type="submit" class="btn btn-primary" value="Send">
 				    </div>
 				</div>
-
 			{{Form::close()}}
 		</div>
 
