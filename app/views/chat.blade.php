@@ -10,6 +10,7 @@
 
 @section('scripts')
 {{HTML::script('js/jquery.form.min.js')}}
+{{HTML::script('js/chat.js')}}
 @stop
 
 @section('content')
@@ -39,7 +40,7 @@
 
 				<div class="form-group">
 				    <div class="controls">
-						<input type="submit" class="btn btn-primary" value="Send">
+						<input id="send_button" type="submit" class="btn btn-primary" value="Send">
 				    </div>
 				</div>
 			{{Form::close()}}
