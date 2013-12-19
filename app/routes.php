@@ -2,12 +2,10 @@
 
 /*
 |--------------------------------------------------------------------------
-| Application Routes
+| Public Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
+| Available to all visitors
 |
 */
 
@@ -16,19 +14,32 @@ Route::get('/', function()
 	return View::make('login');
 });
 
-Route::post('add-user', 'AccountController@action_add_user');
-Route::get('register', 'AccountController@action_register');
-Route::get('account', 'AccountController@action_account');
-Route::get('chat', 'ChatController@action_index');
+/*
+|--------------------------------------------------------------------------
+| Application (authenticated) routes
+|--------------------------------------------------------------------------
+| 
+| For logged in users
+| 
+*/
+
+Route::group(array('before' => 'auth'), function() {
+	Route::get('account', 'AccountController@action_account');
+	Route::get('chat', 'ChatController@action_index');
+});
+
 
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
 |--------------------------------------------------------------------------
 | 
-| Login/logout the user
+| Login/logout/register the user
 | 
 */
+
+Route::post('add-user', 'AccountController@action_add_user');
+Route::get('register', 'AccountController@action_register');
 
 Route::get('logout', function() {
 	Auth::logout();
