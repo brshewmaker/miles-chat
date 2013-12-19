@@ -8,6 +8,10 @@
 {{HTML::style('css/chat.css')}}
 @stop
 
+@section('scripts')
+{{HTML::script('js/jquery.form.min.js')}}
+@stop
+
 @section('content')
 <h3>Chat page</h3>
 
