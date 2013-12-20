@@ -25,6 +25,33 @@ class AccountController extends BaseController
 	}
 
 	/**
+	 * Handle POST request to change the user password
+	 *
+	 * Checks the current users password, makes sure that matches,
+	 * then in the form validation rules pass, updates the user password
+	 * 
+	 * @return View
+	 */
+	public function action_edit_user() {
+		$user = Auth::user();
+		$current_password = Input::get('currentpassword');
+		$input = array(
+			'password' => Input::get('password'),
+			'password_confirmation' => Input::get('confirmpassword'),
+		);		
+		$validation_rules = array('password' => 'required|min:8|confirmed');
+		$validation = Validator::make($input, $validation_rules);
+		if ((Hash::check($current_password, $user->password)) && $validation->passes()) {
+			$user->password = Hash::make($input['password']);
+			$user->save();
+			return View::make('account')->with('passed', 'Changed password');
+		}
+		else {
+			return View::make('account')->with('failed', 'Did not work');
+		}
+	}
+
+	/**
 	 * Handle POST request to add-user
 	 *
 	 * Attempts to add a new user to the DB based on input from the form

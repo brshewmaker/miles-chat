@@ -41,6 +41,7 @@ Route::group(array('before' => 'auth'), function() {
 */
 
 Route::post('add-user', 'AccountController@action_add_user');
+Route::post('edit-user', 'AccountController@action_edit_user');
 Route::get('register', 'AccountController@action_register');
 
 Route::get('logout', function() {

@@ -8,7 +8,21 @@
 <h3>Change Password</h3>
 <br />
 
-  	{{Form::open(array('url' => 'account-edit-user', 'class' => 'form-horizontal'))}}
+@if (isset($failed))
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<strong>Damn!</strong> Something went wrong and your password wasn't updated
+	</div>
+@endif
+
+@if (isset($passed))
+	<div class="alert alert-success alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		<strong>Sweet!</strong> Your password has been updated
+	</div>
+@endif
+
+  	{{Form::open(array('url' => 'edit-user', 'class' => 'form-horizontal'))}}
 	    <div class="form-group">
 	        <label class="col-sm-2 control-label" for="currentpassword">Current Password </label>
 	        	<div class="col-sm-6">
