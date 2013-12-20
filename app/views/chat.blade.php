@@ -24,13 +24,7 @@
 	<div class="col col-sm-9 chat-div">
 		<legend>Messages</legend>
 
-		<table class="table table-striped chat-messages">
-			@if(isset($recent_messages))
-				@foreach($recent_messages as $message)
-					<tr><td><i>{{$message['date']}}</i> <strong>{{$message['username']}}</strong> {{$message['message']}}</td></tr>
-				@endforeach
-			@endif
-		</table>
+		<table class="table table-striped chat-messages"></table>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-horizontal', 'id' => 'chat_box'))}}
