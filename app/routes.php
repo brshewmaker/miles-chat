@@ -27,7 +27,7 @@ Route::group(array('before' => 'auth'), function() {
 	Route::get('account', 'AccountController@action_account');
 	Route::get('chat', 'ChatController@action_index');
 
-	Route::post('send_chat', 'ChatController@handle_chat_message');
+	Route::post('send_chat', 'ChatController@post_chat_message');
 });
 
 

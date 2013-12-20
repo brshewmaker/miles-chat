@@ -6,6 +6,15 @@
 class ChatController extends BaseController
 {
 	
+	/*
+	|--------------------------------------------------------------------------
+	| Handle HTTP requests
+	|--------------------------------------------------------------------------
+	| 
+	| GET/POST
+	| 
+	*/
+
 	/**
 	 * Handle GET request for /chat
 	 * 
@@ -20,12 +29,21 @@ class ChatController extends BaseController
 	 * 
 	 * @return Response 
 	 */
-	public function handle_chat_message() {
+	public function post_chat_message() {
 		$message = $this->sanitize_user_input(Input::get('chatmsg'));
 		$this->insert_chat_message($message);
 		$response = array('message' => $message);
 		return Response::json($response);
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helper functions
+	|--------------------------------------------------------------------------
+	| 
+	| These are used by the above functions
+	| 
+	*/
 
 	/**
 	 * Insert the given chat message for the logged in user
