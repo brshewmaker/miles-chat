@@ -17,11 +17,26 @@ class ChatController extends BaseController
 
 	/**
 	 * Handle GET request for /chat
+	 *
+	 * Gets all messages from the n most recent days, where n is a value
+	 * set in the miles_chat_options file
 	 * 
 	 * @return View
 	 */
 	public function action_index() {
-		return View::make('chat');
+		$num_days_history = Config::get('miles_chat_options.num_days_history');
+		$date_to_query = date('Y-m-d', strtotime('-' . $num_days_history . ' days', time()));
+		$messages = Message::where('created_at', '>', $date_to_query)->get();
+		$recent_messages = array();
+		foreach ($messages as $message) {
+			$user = User::find($message->user_id);
+			$recent_messages[] = array(
+				'date'     => $message->created_at->toDateTimeString(),
+				'username' => $user->username,
+				'message'  => $message->message,
+			);
+		}
+		return View::make('chat')->with('recent_messages', $recent_messages);
 	}
 
 	/**
