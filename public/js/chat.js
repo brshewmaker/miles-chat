@@ -14,7 +14,7 @@ $(document).ready(function() {
 	$('.chat-messages').load(BASE+'/get-chat-messages/initial');
 
 	// Update chat messages
-	setInterval(function() {
+	function update_chat_messages() {
 		var message_id = $('.chat-messages td:last').data('messageid');
 		console.log(message_id);
 		if (typeof message_id !== 'undefined') {
@@ -22,6 +22,11 @@ $(document).ready(function() {
 			$.get(BASE + '/get-chat-messages/newest/' + message_id, function(data) {
 				$('.chat-messages').append(data);
 			});
+			setTimeout(update_chat_messages, 3000);
 		}
-	}, 2000);
+		else { setTimeout(update_chat_messages, 2000); }
+	}
+
+	// Start the loop to check for chat messages
+	setTimeout(update_chat_messages, 2000);
 });
