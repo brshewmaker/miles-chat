@@ -51,7 +51,8 @@ class ChatController extends BaseController
 	 * @return Response 
 	 */
 	public function post_chat_message() {
-		$message = $this->sanitize_user_input(Input::get('chatmsg'));
+		$message = $this->find_urls_in_message(Input::get('chatmsg'));
+		$message = $this->sanitize_user_input($message);
 		$this->insert_chat_message($message);
 		$response = array('message' => $message);
 		return Response::json($response);
@@ -123,6 +124,24 @@ class ChatController extends BaseController
 		$db_message->user_id = $user->id;
 		$db_message->message = $message;
 		$db_message->save();
+	}
+
+	/**
+	 * Find any URLs in the message and if so, place them in an <a> tag
+	 * 
+	 * @param  string $message 
+	 * @return string          
+	 */
+	public function find_urls_in_message($message) {
+		$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
+
+		if (preg_match($reg_exUrl, $message, $url)) {
+			// make the urls hyper links
+			return preg_replace($reg_exUrl, '<a href="' . $url[0] . '">' . $url[0] . '</a> ', $message);
+		} 
+		else {
+			return $message;
+		}
 	}
 
 	/**
