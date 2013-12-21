@@ -16,12 +16,12 @@
 @section('content')
 <div class="row">
 	<!-- Logged in Users Div -->
-	<div class="col col-sm-3">
+	<div class="col col-sm-2">
 		<legend>Users</legend>
 	</div> <!-- end users div -->
 
 	<!-- Chat Div -->
-	<div class="col col-sm-9 chat-div">
+	<div class="col col-sm-10 chat-div">
 		<legend>Messages</legend>
 
 		<table class="table table-striped chat-messages"></table>
