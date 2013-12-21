@@ -24,7 +24,11 @@
 	<div class="col col-sm-10 chat-div">
 		<legend>Messages</legend>
 
-		<table class="table table-striped chat-messages"></table>
+		<table class="table table-striped chat-messages">
+			<tbody>
+
+			</tbody>
+		</table>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-horizontal', 'id' => 'chat_box'))}}
