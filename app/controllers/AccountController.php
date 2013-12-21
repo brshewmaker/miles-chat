@@ -79,7 +79,7 @@ class AccountController extends BaseController
 			$user->save();
 			// Login user
 			Auth::login($user, TRUE); //2nd argument is to remember this user
-			return View::make('chat');
+			return Redirect::to('/chat');
 		}
 		else {
 			return View::make('register')->with('failed', 'Failed to create user');
