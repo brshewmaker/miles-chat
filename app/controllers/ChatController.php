@@ -105,7 +105,7 @@ class ChatController extends BaseController
 			$recent_messages[] = array(
 				'date'     => $message->created_at->toDateTimeString(),
 				'username' => $user->username,
-				'message'  => $message->message,
+				'message'  => stripslashes($message->message),
 				'id'       => $message->id
 			);			
 		}	
