@@ -16,9 +16,7 @@ $(document).ready(function() {
 	// Update chat messages
 	function update_chat_messages() {
 		var message_id = $('.chat-messages td:last').data('messageid');
-		console.log(message_id);
 		if (typeof message_id !== 'undefined') {
-			console.log('attempting to load new chat messages');
 			$.get(BASE + '/get-chat-messages/newest/' + message_id, function(data) {
 				$('.chat-messages').append(data);
 			});
