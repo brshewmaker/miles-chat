@@ -103,7 +103,7 @@ class ChatController extends BaseController
 		foreach ($messages as $message) {
 			$user = User::find($message->user_id);
 			$recent_messages[] = array(
-				'date'     => $message->created_at->toDateTimeString(),
+				'date'     => $message->created_at->toTimeString(),
 				'username' => $user->username,
 				'message'  => stripslashes($message->message),
 				'id'       => $message->id
