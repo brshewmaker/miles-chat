@@ -107,6 +107,9 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		// Added for Miles-chat
+		 'Mews\Purifier\PurifierServiceProvider',
+
 	),
 
 	/*
@@ -172,6 +175,9 @@ return array(
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
+
+		// Added for miles-chat
+		'Purifier' => 'Mews\Purifier\Facades\Purifier',
 
 	),
 

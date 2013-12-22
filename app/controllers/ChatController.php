@@ -51,7 +51,7 @@ class ChatController extends BaseController
 	 * @return Response 
 	 */
 	public function post_chat_message() {
-		$message = $this->find_urls_in_message(Input::get('chatmsg'));
+		$message = $this->run_htmlpurifier(Input::get('chatmsg'));
 		$message = $this->sanitize_user_input($message);
 		$this->insert_chat_message($message);
 		$response = array('message' => $message);
@@ -127,22 +127,19 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Find any URLs in the message and if so, place them in an <a> tag
+	 * Run $message through the htmlpurifier library
+	 *
+	 * Settings for this are set in app/purifier.php.  This library
+	 * will get rid of <Script> tags (among other things) and automatically
+	 * add href tags to links.
 	 * 
-	 * @param  string $message 
-	 * @return string          
+	 * @param  string $message string to purify
+	 * @return string          purified string
 	 */
-	public function find_urls_in_message($message) {
-		$reg_exUrl = "/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?/";
-
-		if (preg_match($reg_exUrl, $message, $url)) {
-			// make the urls hyper links
-			return preg_replace($reg_exUrl, '<a href="' . $url[0] . '">' . $url[0] . '</a> ', $message);
-		} 
-		else {
-			return $message;
-		}
+	public function run_htmlpurifier($message) {
+		return Purifier::clean($message, 'titles');
 	}
+
 
 	/**
 	 * Sanitize the user input

@@ -5,7 +5,9 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-		"raveren/kint": "dev-master"
+		"raveren/kint": "dev-master",
+        "ezyang/htmlpurifier": "dev-master",
+        "mews/purifier": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
