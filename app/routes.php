@@ -59,7 +59,7 @@ Route::post('login', function() {
 	$remember_input = Input::get('remember');
 	$remember_me = $remember_input !== NULL ? TRUE : NULL;
 	if (Auth::attempt($userdata, $remember_me)) { //TRUE means to remember this user
-		return View::make('chat');
+		return Redirect::to('chat');
 	}
 	else {
 		return View::make('login')->with('failed', 'failed');
