@@ -18,6 +18,7 @@
 	<!-- Logged in Users Div -->
 	<div class="col col-sm-2">
 		<legend>Users</legend>
+		<div id="logged_in_users"></div>
 	</div> <!-- end users div -->
 
 	<!-- Chat Div -->

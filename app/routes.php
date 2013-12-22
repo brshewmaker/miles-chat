@@ -26,10 +26,15 @@ Route::get('/', function()
 Route::group(array('before' => 'auth'), function() {
 	Route::get('account', 'AccountController@action_account');
 
-	// Chat routes
 	Route::get('chat', 'ChatController@action_index');
+
+	// Chat messages
 	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');
 	Route::post('send_chat', 'ChatController@post_chat_message');
+
+	// Chat check online users
+	Route::get('check-in', 'ChatController@check_in_user');
+	Route::get('get-logged-in-users', 'ChatController@get_logged_in_users');
 });
 
 

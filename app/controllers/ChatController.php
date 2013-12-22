@@ -58,6 +58,22 @@ class ChatController extends BaseController
 		return Response::json($response);
 	}
 
+	/**
+	 * Handle GET request for /get-logged-in-users
+	 *
+	 * Queries the DB for all users with a last_seen time of 2 minutes or recent
+	 * 
+	 * @return View
+	 */
+	public function get_logged_in_users() {
+		$users = User::where('last_seen', '>', Carbon\Carbon::now()->subMinutes(2))->get();
+		$usernames = array();
+		foreach ($users as $user) {
+			$usernames[] = $user->username;
+		}
+		return View::make('logged_in_users')->with('users', $usernames);
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helper functions
@@ -66,6 +82,17 @@ class ChatController extends BaseController
 	| These are used by the above functions
 	| 
 	*/
+
+	/**
+	 * Updates the logged in user's last_seen column in the DB
+	 * 
+	 * @return null
+	 */
+	public function record_user_activity() {
+		$user = Auth::user();
+		$user->last_seen = Carbon\Carbon::now()->toDateTimeString();
+		$user->save();		
+	}
 
 	/**
 	 * Get all messages within n number of days
@@ -82,12 +109,13 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Get all messages later than the given message_id
+	 * Get all messages later than the given message_id and update user last_seen time
 	 * 
 	 * @param  int $id DB id of a message
 	 * @return array
 	 */
 	public function get_new_chat_messages($id) {
+		$this->record_user_activity();
 		$messages = Message::where('id', '>', $id)->get();
 		return $this->create_messages_array($messages);
 	}
@@ -113,12 +141,13 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Insert the given chat message for the logged in user
+	 * Insert the given chat message for the logged in user and update user last_seen time
 	 * 
 	 * @param  string $message 
 	 * @return null
 	 */
 	public function insert_chat_message($message) {
+		$this->record_user_activity();
 		$user = Auth::user();
 		$db_message = new Message();
 		$db_message->user_id = $user->id;
