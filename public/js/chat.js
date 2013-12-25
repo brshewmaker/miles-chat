@@ -5,7 +5,6 @@
  */
 function remove_old_chat_messages() {
 	var num_messages_to_remove = $('.chat-messages tr').length - 20;
-	console.log(num_messages_to_remove);
 	while (num_messages_to_remove > 0) {
 		$('.chat-messages').find('tr:first').remove();
 		num_messages_to_remove--;
