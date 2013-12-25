@@ -95,17 +95,17 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Get all messages within n number of days
+	 * Returns the 20 most recent chat messages for the initial loading of messages
 	 *
-	 * The number of days is set in the config file miles_chat_options
-	 * 
 	 * @return array
 	 */
 	public function get_initial_chat_messages() {
-		$num_days_history = Config::get('miles_chat_options.num_days_history');
-		$date_to_query = date('Y-m-d', strtotime('-' . $num_days_history . ' days', time()));
-		$messages = Message::where('created_at', '>', $date_to_query)->get();
-		return $this->create_messages_array($messages);
+		$this->record_user_activity();
+		$messages = DB::select(DB::raw('SELECT * FROM (
+				SELECT * FROM messages ORDER BY id DESC LIMIT 20
+			) sub 
+			ORDER BY id ASC'));
+		return $messages;
 	}
 
 	/**
@@ -116,28 +116,8 @@ class ChatController extends BaseController
 	 */
 	public function get_new_chat_messages($id) {
 		$this->record_user_activity();
-		$messages = Message::where('id', '>', $id)->get();
-		return $this->create_messages_array($messages);
-	}
-
-	/**
-	 * Given an array of Message objects, create an array of the data needed for the chat window
-	 * 
-	 * @param  array $messages 
-	 * @return array
-	 */
-	public function create_messages_array($messages) {
-		$recent_messages = array();
-		foreach ($messages as $message) {
-			$user = User::find($message->user_id);
-			$recent_messages[] = array(
-				'date'     => $message->created_at->toTimeString(),
-				'username' => $user->username,
-				'message'  => stripslashes($message->message),
-				'id'       => $message->id
-			);			
-		}	
-		return $recent_messages;			
+		$messages = DB::select(DB::raw('SELECT * FROM messages WHERE id > ' . $id));
+		return $messages;
 	}
 
 	/**
