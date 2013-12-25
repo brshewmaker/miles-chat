@@ -1,3 +1,17 @@
+/**
+ * Removes the first n table rows where n = total number of table rows - 20
+ * 
+ * @return {null} 
+ */
+function remove_old_chat_messages() {
+	var num_messages_to_remove = $('.chat-messages tr').length - 20;
+	console.log(num_messages_to_remove);
+	while (num_messages_to_remove > 0) {
+		$('.chat-messages').find('tr:first').remove();
+		num_messages_to_remove--;
+	}
+}
+
 $(document).ready(function() {
 	/*
 	|--------------------------------------------------------------------------
@@ -18,7 +32,6 @@ $(document).ready(function() {
 		}
 	});
 
-	$('.chat-messages').load(BASE+'/get-chat-messages/initial');
 
 	/*
 	|--------------------------------------------------------------------------
@@ -29,12 +42,14 @@ $(document).ready(function() {
 	| the latest chat messages
 	| 
 	*/
+	$('.chat-messages').load(BASE+'/get-chat-messages/initial');
 
 	function update_chat_messages() {
 		var message_id = $('.chat-messages td:last').data('messageid');
 		if (typeof message_id !== 'undefined') {
 			$.get(BASE + '/get-chat-messages/newest/' + message_id, function(data) {
 				$('.chat-messages').append(data);
+				remove_old_chat_messages();
 			});
 			setTimeout(update_chat_messages, 3000);
 		}
