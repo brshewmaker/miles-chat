@@ -24,6 +24,8 @@
 	<!-- Chat Div -->
 	<div class="chat-div">
 
+		<legend>Messages</legend>
+
 		<div class="chat-messages-div">
 			<table class="table table-striped chat-messages">
 				<tbody>
