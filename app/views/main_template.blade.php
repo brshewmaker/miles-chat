@@ -52,7 +52,7 @@
 			</div>
 		</nav> <!-- navbar -->
 
-	<div class="container">
+	<div class="container main-content">
 		@yield('content')
 	</div> <!-- main container -->
 

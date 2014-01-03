@@ -14,22 +14,22 @@
 @stop
 
 @section('content')
-<div class="row">
+
 	<!-- Logged in Users Div -->
-	<div class="col col-sm-2">
+	<div class="users_div">
 		<legend>Users</legend>
 		<div id="logged_in_users"></div>
 	</div> <!-- end users div -->
 
 	<!-- Chat Div -->
-	<div class="col col-sm-10 chat-div">
-		<legend>Messages</legend>
+	<div class="chat-div">
 
-		<table class="table table-striped chat-messages">
-			<tbody>
-
-			</tbody>
-		</table>
+		<div class="chat-messages-div">
+			<table class="table table-striped chat-messages">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-horizontal', 'id' => 'chat_box'))}}
@@ -46,9 +46,12 @@
 				</div>
 			{{Form::close()}}
 		</div>
+	<div> <!-- end chat div -->
 
-	</div> <!-- end chat div -->
 
-</div>
+	
+
+
+
 
 @stop

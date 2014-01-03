@@ -1,5 +1,39 @@
+html, body {
+	height: 100%;
+}
+
+.main-content {
+	position: relative;
+	height: 90%;
+}
+
+.users_div {
+	width: 200px;
+	position: absolute;
+	right: 0;
+}
+
 .chat-div {
-	/*border: 1px solid #F8F8F8;*/
+	position: relative;
+	margin-right: 187px;
+	/*overflow: hidden;*/
+	height: 100%;
+}
+
+.chat-messages-div {
+	position: absolute;
+	overflow-y: auto;
+	margin-right: 187px;
+	top: 0;
+	bottom: 150px;
+	width: 100%;
+}
+
+.chat-input {
+	position: absolute;
+	margin-right: 187px;
+	bottom: 0;
+	width: 100%;
 }
 
 
