@@ -23,7 +23,7 @@ $(document).ready(function() {
 	$('#chat_box').ajaxForm({
 		dataType: 'json',
 		beforeSubmit: function() {
-			$('#send_button').hide();
+			$('#chat_box').resetForm();
 		},
 		clearForm: true,
 		success: function() {
