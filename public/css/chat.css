@@ -16,23 +16,22 @@ html, body {
 .chat-div {
 	position: relative;
 	margin-right: 187px;
-	/*overflow: hidden;*/
 	height: 100%;
 }
 
 .chat-messages-div {
 	position: absolute;
 	overflow-y: auto;
-	margin-right: 187px;
 	top: 0;
-	bottom: 150px;
-	width: 100%;
+	bottom: 50px;
+	width: 98%;
 }
 
 .chat-input {
 	position: absolute;
 	margin-right: 187px;
 	bottom: 0;
+	padding-bottom: 20px;
 	width: 100%;
 }
 

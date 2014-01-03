@@ -32,12 +32,13 @@
 		</div>
 
 		<div class="chat-input">
-			{{Form::open(array('url' => 'send_chat', 'class' => 'form-horizontal', 'id' => 'chat_box'))}}
-				<div class="form-group">
+			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
+				<div class="form-group col-md-11 col-sm-10">
 					<div class="controls">
-						<textarea class="form-control" name="chatmsg" id="chatmsg" rows="2"></textarea>
+						<input type="text" class="form-control" name="chatmsg" id="chatmsg">
 					</div>
 				</div>
+				<!-- <button type="submit" class="btn btn-primary">Send</button> -->
 
 				<div class="form-group">
 				    <div class="controls">

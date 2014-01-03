@@ -20,15 +20,24 @@ $(document).ready(function() {
 	| Use jqueryForm to to submit the chat message form
 	| 
 	*/
+
+	// Make ENTER submit the form
+	// $("input").keypress(function(event) {
+	// 	if (event.which == 13) {
+	// 		event.preventDefault();
+	// 		$("chat_box").submit(function() {
+	// 			$(this).ajaxSubmit();
+	// 			return false; // return false to prevent normal browser submit and page navigation 
+	// 		});
+	// 	}
+	// });
+
 	$('#chat_box').ajaxForm({
 		dataType: 'json',
 		beforeSubmit: function() {
 			$('#chat_box').resetForm();
 		},
 		clearForm: true,
-		success: function() {
-			$('#send_button').show();
-		}
 	});
 
 
