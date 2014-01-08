@@ -30,6 +30,7 @@
 				<ul class="nav navbar-nav">
 					@if (Auth::check())
 						<li>{{HTML::link('chat', 'Chat')}}</li>
+						<li>{{HTML::link('files', 'Files')}}</li>
 						<li>{{HTML::link('account', 'Account')}}</li>
 					@endif
 					<li class="dropdown">

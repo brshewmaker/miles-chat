@@ -28,6 +28,9 @@ Route::group(array('before' => 'auth'), function() {
 
 	Route::get('chat', 'ChatController@action_index');
 
+	// Files
+	Route::get('files', 'FileController@action_index');
+
 	// Chat messages
 	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');
 	Route::post('send_chat', 'ChatController@post_chat_message');
