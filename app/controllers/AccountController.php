@@ -66,7 +66,7 @@ class AccountController extends BaseController
 			'password_confirmation' => Input::get('confirmpassword'),
 		);
 		$validation_rules = array(
-			'username' => 'required|unique:users',
+			'username' => 'required|alpha_num|unique:users',
 			'password'  => 'required|min:8|confirmed',
 		);
 
