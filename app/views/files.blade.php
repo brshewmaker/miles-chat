@@ -18,7 +18,6 @@
 	{{Form::open(array('url' => 'upload-file', 'class' => 'form-horizontal'))}}
 		<div class="form-group">
 			<input type="file" id="fileupload">
-			<p class="help-block">Choose file to upload</p>
 		</div>
 	{{Form::close()}}
 
