@@ -21,17 +21,6 @@ $(document).ready(function() {
 	| 
 	*/
 
-	// Make ENTER submit the form
-	// $("input").keypress(function(event) {
-	// 	if (event.which == 13) {
-	// 		event.preventDefault();
-	// 		$("chat_box").submit(function() {
-	// 			$(this).ajaxSubmit();
-	// 			return false; // return false to prevent normal browser submit and page navigation 
-	// 		});
-	// 	}
-	// });
-
 	$('#chat_box').ajaxForm({
 		dataType: 'json',
 		beforeSubmit: function() {
