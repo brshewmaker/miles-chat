@@ -19,13 +19,6 @@ class CreateMessagesTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->string('message');
 		});
-
-		// Create foreign key for the user this message belongs to
-		Schema::table('messages', function(Blueprint $table)
-		{
-			$table->foreign('user_id')->references('id')->on('users')
-				->onDelete('cascade');
-		});
 	}
 
 	/**
