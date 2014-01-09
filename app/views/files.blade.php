@@ -32,7 +32,6 @@
 		</thead>
 		<tbody>
 			@foreach($uploads as $upload)
-				<?php $user = Auth::user(); $username = $user->username; ?>
 				<tr>
 					<td>{{HTML::link('get-file/' . $upload->id, $upload->filename)}}</td>
 					<td>{{$upload->filetype}}</td>
