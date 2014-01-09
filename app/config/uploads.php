@@ -11,5 +11,5 @@
 */
 
 return array(
-	'path' => '',
+	'path' => '/vagrant/projects/miles-chat/uploads',
 );

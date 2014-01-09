@@ -31,14 +31,17 @@
 			<th>Delete</th>
 		</thead>
 		<tbody>
-			<tr>
-				<td>Example file.mp3</td>
-				<td>mp3</td>
-				<td>1-7-14</td>
-				<td>13.2 MB</td>
-				<td>ben</td>
-				<td><button class="btn btn-danger btn-sm">delete</button></td>
-			</tr>
+			@foreach($uploads as $upload)
+				<?php $user = Auth::user(); $username = $user->username; ?>
+				<tr>
+					<td>{{HTML::link('get-file/' . $upload->id, $upload->filename)}}</td>
+					<td>{{$upload->filetype}}</td>
+					<td>{{$upload->created_at}}</td>
+					<td>{{$upload->filesize}}</td>
+					<td>{{$upload->username}}</td>
+					<td>{{HTML::link('delete-file/' . $upload->id, 'Delete')}}</td>
+				</tr>
+			@endforeach
 		</tbody>
 	</table>
 
