@@ -5,7 +5,8 @@
 | Public Routes
 |--------------------------------------------------------------------------
 |
-| Available to all visitors
+| Available to all visitors.  Authentication and user create routes
+| are publicly available, but listed in a diff. part of this file
 |
 */
 
@@ -31,6 +32,7 @@ Route::group(array('before' => 'auth'), function() {
 	// Files
 	Route::get('files', 'FileController@action_index');
 	Route::get('get-file/{id}', 'FileController@download_file');
+	Route::get('delete-file/{id}', 'FileController@delete_file');
 
 	// Chat messages
 	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');

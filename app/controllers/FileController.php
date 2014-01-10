@@ -6,6 +6,15 @@
 class FileController extends BaseController
 {
 	
+	/*
+	|--------------------------------------------------------------------------
+	| GET/POST
+	|--------------------------------------------------------------------------
+	| 
+	| Handle GEt/POST request from routes
+	| 
+	*/
+
 	/**
 	 * Handle GET request for /files
 	 *
@@ -33,14 +42,54 @@ class FileController extends BaseController
 	 * @return Response     
 	 */
 	public function download_file($id) {
+		if ($full_file_path = $this->get_full_file_path($id)) {
+			return Response::download($full_file_path);
+		}
+	}
+
+	/**
+	 * If the given file ID matches a file that exists, delete that file and remove
+	 * it's DB entry
+	 * 
+	 * @param  int $id ID of file in the DB
+	 * @return Redirect     
+	 */
+	public function delete_file($id) {
+		$full_file_path = $this->get_full_file_path($id);
+		$upload_db_entry = Upload::find($id);
+		if ($full_file_path !== FALSE && $upload_db_entry !== NULL) {
+			unlink($full_file_path);
+			$upload_db_entry->delete();
+		}		
+		return Redirect::to('files');
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Helper functions
+	|--------------------------------------------------------------------------
+	| 
+	| Extra functionality
+	| 
+	*/
+
+	/**
+	 * Given an ID for a file in the DB, see if the file exists, and if so return the full
+	 * file path
+	 * 
+	 * @param  int $id ID of file in the DB
+	 * @return string     FALSE on failure
+	 */
+	public function get_full_file_path($id) {
 		$uploads_path = Config::get('uploads.path');
 		$upload_db = Upload::find($id);
 		if ($upload_db !== NULL) {
 			$full_filename = $uploads_path . $upload_db->filename;
 			if (file_exists($full_filename)) {
-				return Response::download($full_filename);
+				return $full_filename;
 			}
-		}
+		}	
+		return FALSE;
 	}
 
 }
