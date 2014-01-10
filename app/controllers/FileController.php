@@ -45,6 +45,7 @@ class FileController extends BaseController
 		if ($full_file_path = $this->get_full_file_path($id)) {
 			return Response::download($full_file_path);
 		}
+		return Response::make('Error!  File not found', 404);
 	}
 
 	/**
