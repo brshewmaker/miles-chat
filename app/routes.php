@@ -33,6 +33,7 @@ Route::group(array('before' => 'auth'), function() {
 	Route::get('files', 'FileController@action_index');
 	Route::get('get-file/{id}', 'FileController@download_file');
 	Route::get('delete-file/{id}', 'FileController@delete_file');
+	Route::post('upload-file', 'FileController@upload_file');
 
 	// Chat messages
 	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');

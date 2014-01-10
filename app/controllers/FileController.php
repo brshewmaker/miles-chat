@@ -64,6 +64,31 @@ class FileController extends BaseController
 		return Redirect::to('files');
 	}
 
+	/**
+	 * Handle POST request to upload a file
+	 *
+	 * Puts the uploaded file in the uploads directory with the same filename
+	 * as the upload, inserts a new DB entry, and sends a new chat message
+	 * with the link to the uploaded file
+	 * 
+	 * @return Redirect
+	 */
+	public function upload_file() {
+		$uploads_path = Config::get('uploads.path');
+		if (Input::hasFile('fileupload')) {
+			$filename = Input::file('fileupload')->getClientOriginalName();
+			$extension = Input::file('fileupload')->getClientOriginalExtension();
+			$size = Input::file('fileupload')->getSize();
+			Input::file('fileupload')->move($uploads_path, $filename);
+			$this->create_new_db_entry($filename, $extension, $size);
+		}
+		else {
+			Kint::dump('no file yo');
+		}
+
+		return Redirect::to('files');
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helper functions
@@ -72,6 +97,24 @@ class FileController extends BaseController
 	| Extra functionality
 	| 
 	*/
+
+	/**
+	 * Create a new DB upload file entry based on params
+	 * 
+	 * @param  string $filename 
+	 * @param  string $type     
+	 * @param  string $size     
+	 * @return NULL
+	 */
+	public function create_new_db_entry($filename, $type, $size) {
+		$user = Auth::user();
+		$upload = new Upload;
+		$upload->user_id = $user->id;
+		$upload->filename = $filename;
+		$upload->filetype = $type;
+		$upload->filesize = $size;
+		$upload->save();
+	}
 
 	/**
 	 * Given an ID for a file in the DB, see if the file exists, and if so return the full
