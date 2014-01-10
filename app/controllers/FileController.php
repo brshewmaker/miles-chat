@@ -76,11 +76,15 @@ class FileController extends BaseController
 	public function upload_file() {
 		$uploads_path = Config::get('uploads.path');
 		if (Input::hasFile('fileupload')) {
+			// Uploaded file info
 			$filename = Input::file('fileupload')->getClientOriginalName();
 			$extension = Input::file('fileupload')->getClientOriginalExtension();
 			$size = Input::file('fileupload')->getSize();
+
+			// Upload the file, create new db entry, and send a chat msg
 			Input::file('fileupload')->move($uploads_path, $filename);
-			$this->create_new_db_entry($filename, $extension, $size);
+			$upload_id = $this->create_new_db_entry($filename, $extension, $size);
+			ChatController::insert_chat_message('<a href="' . url('get-file/' . $upload_id) . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
 		}
 		return Redirect::to('files');
 	}
@@ -94,14 +98,13 @@ class FileController extends BaseController
 	| 
 	*/
 
-
 	/**
 	 * Create a new DB upload file entry based on params
 	 * 
 	 * @param  string $filename 
 	 * @param  string $type     
 	 * @param  string $size     
-	 * @return NULL
+	 * @return int DB ID of the new upload entry
 	 */
 	public function create_new_db_entry($filename, $type, $size) {
 		$user = Auth::user();
@@ -111,6 +114,7 @@ class FileController extends BaseController
 		$upload->filetype = $type;
 		$upload->filesize = $size;
 		$upload->save();
+		return $upload->id;
 	}
 
 	/**

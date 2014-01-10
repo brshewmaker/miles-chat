@@ -53,7 +53,7 @@ class ChatController extends BaseController
 	public function post_chat_message() {
 		$message = $this->run_htmlpurifier(Input::get('chatmsg'));
 		$message = $this->sanitize_user_input($message);
-		$this->insert_chat_message($message);
+		ChatController::insert_chat_message($message);
 		$response = array('message' => $message);
 		return Response::json($response);
 	}
@@ -88,7 +88,7 @@ class ChatController extends BaseController
 	 * 
 	 * @return null
 	 */
-	public function record_user_activity() {
+	public static function record_user_activity() {
 		$user = Auth::user();
 		$user->last_seen = Carbon\Carbon::now()->toDateTimeString();
 		$user->save();		
@@ -126,8 +126,8 @@ class ChatController extends BaseController
 	 * @param  string $message 
 	 * @return null
 	 */
-	public function insert_chat_message($message) {
-		$this->record_user_activity();
+	public static function insert_chat_message($message) {
+		ChatController::record_user_activity();
 		$user = Auth::user();
 		$db_message = new Message();
 		$db_message->user_id = $user->id;
