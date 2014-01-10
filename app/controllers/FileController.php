@@ -79,7 +79,7 @@ class FileController extends BaseController
 			// Uploaded file info
 			$filename = Input::file('fileupload')->getClientOriginalName();
 			$extension = Input::file('fileupload')->getClientOriginalExtension();
-			$size = Input::file('fileupload')->getSize();
+			$size = FileController::get_human_filesize(Input::file('fileupload')->getSize());
 
 			// Upload the file, create new db entry, and send a chat msg
 			Input::file('fileupload')->move($uploads_path, $filename);
@@ -134,6 +134,34 @@ class FileController extends BaseController
 			}
 		}	
 		return FALSE;
+	}
+
+	/**
+	 * Given a size in bytes, return a human readable size
+	 *
+	 * Stolen from http://stackoverflow.com/questions/15188033/human-readable-file-size
+	 * 
+	 * @param  int  $size      size in bytes
+	 * @param  integer $precision [description]
+	 * @param  string  $show      
+	 * @return string             
+	 */
+	public static function get_human_filesize($size, $precision = 1, $show = "")
+	{
+	    $b = $size;
+	    $kb = round($size / 1024, $precision);
+	    $mb = round($kb / 1024, $precision);
+	    $gb = round($mb / 1024, $precision);
+
+	    if($kb == 0 || $show == "B") {
+	        return $b . " bytes";
+	    } else if($mb == 0 || $show == "KB") {
+	        return $kb . "KB";
+	    } else if($gb == 0 || $show == "MB") {
+	        return $mb . "MB";
+	    } else {
+	        return $gb . "GB";
+	    }
 	}
 
 }
