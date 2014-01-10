@@ -15,10 +15,11 @@
 @section('content')
 	<h3>Files</h3>
 
-	{{Form::open(array('url' => 'upload-file', 'class' => 'form-horizontal'))}}
+	{{Form::open(array('url' => 'upload-file', 'class' => 'form-inline'))}}
 		<div class="form-group">
 			<input type="file" id="fileupload">
 		</div>
+		<button type="submit" class="btn btn-primary btn-sm">Upload</button>
 	{{Form::close()}}
 
 	<table class="table table-striped sortable">
