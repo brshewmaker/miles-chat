@@ -82,10 +82,6 @@ class FileController extends BaseController
 			Input::file('fileupload')->move($uploads_path, $filename);
 			$this->create_new_db_entry($filename, $extension, $size);
 		}
-		else {
-			Kint::dump('no file yo');
-		}
-
 		return Redirect::to('files');
 	}
 
@@ -97,6 +93,7 @@ class FileController extends BaseController
 	| Extra functionality
 	| 
 	*/
+
 
 	/**
 	 * Create a new DB upload file entry based on params
