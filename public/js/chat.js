@@ -39,7 +39,10 @@ $(document).ready(function() {
 	| the latest chat messages
 	| 
 	*/
-	$('.chat-messages').load(BASE+'/get-chat-messages/initial');
+	$('.chat-messages').load(BASE+'/get-chat-messages/initial', function() {
+		// Scroll to bottom of chat content when the content is loaded
+		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+	});
 
 	function update_chat_messages() {
 		var message_id = $('.chat-messages td:last').data('messageid');
