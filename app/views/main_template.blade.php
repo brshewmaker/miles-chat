@@ -4,7 +4,7 @@
 	@yield('title')
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
-	{{HTML::style('bootstrap/css/yeti.min.css')}}
+	{{HTML::style('bootstrap/css/yeti.min.css', array('id' => 'main_stylesheet'))}}
 	@yield('stylesheets')
 </head>
 
@@ -61,7 +61,6 @@
 	<script type="text/javascript">var BASE = "<?php echo URL::to('/'); ?>";</script>
 	{{HTML::script('js/jquery-2.0.3.min.js')}}
 	{{HTML::script('bootstrap/js/bootstrap.min.js')}}
-	{{HTML::script('js/jquery.cookie.js')}}
 	{{HTML::script('js/main.js')}}
 	@yield('scripts')
 </body>

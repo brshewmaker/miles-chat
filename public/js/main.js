@@ -1,3 +1,5 @@
+var CHAT = CHAT || {};
+
 $(document).ready(function() {
 
 	/*
@@ -10,26 +12,34 @@ $(document).ready(function() {
 	*/
 
 	/**
-	 * Append the given stylesheet to the head
+	 * Changes the given stylesheet
 	 * 
 	 * @param  {string} stylesheet_name 
 	 * @return {null}         
 	 */
-	function append_stylesheet(stylesheet_name) {
-		$('head').append('<link rel="stylesheet" href="' + BASE + '/bootstrap/css/' + stylesheet_name + '" type="text/css" id="hc_stylesheet"/>');
+	function change_stylesheet(stylesheet_name) {
+		$('#main_stylesheet').attr('href', BASE + '/bootstrap/css/' + stylesheet_name);
 	}
 
 
-	if (typeof $.cookie('miles_chat_stylesheet') !== 'undefined') {
-		append_stylesheet($.cookie('miles_chat_stylesheet'));
+	// Change the stylehseet on page load
+	// if (typeof $.cookie('miles_chat_stylesheet') !== 'undefined') {
+	if (CHAT.STORAGE.is_enabled()) {
+		var new_stylesheet = CHAT.STORAGE.get('stylesheet');
+		if (new_stylesheet) {
+			change_stylesheet(new_stylesheet);
+		}
 	}
+	// }
 
 	// Get the selected stylesheet name, set the cookie, then change the stylesheet
 	$('.change-theme').click(function(e) {
 		e.preventDefault();
 		var stylesheet_name = $(this).data('stylesheet');
-		$.cookie('miles_chat_stylesheet', stylesheet_name);
-		append_stylesheet(stylesheet_name);
+		if (CHAT.STORAGE.is_enabled()) {
+			CHAT.STORAGE.set('stylesheet', stylesheet_name);
+		}
+		change_stylesheet(stylesheet_name);
 	});
 });
 
@@ -95,12 +105,12 @@ CHAT.STORAGE = {
 	 * Does this browser support localStorage?
 	 * @see - http://diveintohtml5.info/detect.html#storage
 	 */
-	is_enabled: (function(){
+	is_enabled: function(){
 		try {
 			return 'localStorage' in window && window['localStorage'] !== null;
 		} catch(e){
 			return false;
 		}
-	})()
+	},
 
 };
