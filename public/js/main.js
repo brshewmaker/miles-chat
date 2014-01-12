@@ -32,3 +32,75 @@ $(document).ready(function() {
 		append_stylesheet(stylesheet_name);
 	});
 });
+
+
+/*
+|--------------------------------------------------------------------------
+| Localstorage
+|--------------------------------------------------------------------------
+| 
+| Getting and setting values for localstorage
+| 
+*/
+CHAT.STORAGE = {
+
+	key_prefix: 'miles-chat_',
+
+	/**
+	 * Gets a value from storage
+	 * @return object
+	 */
+	get: function( key ){
+
+		if( typeof key === 'undefined')
+			return false;
+
+		key = this.key_prefix + key;
+
+		try{
+			return JSON.parse( localStorage.getItem( key ) );
+		} catch(e){
+			return false;
+		}
+
+	},
+
+	/**
+	 * Sets a value in storage
+	 * @param string key
+	 * @param mixed val
+	 */
+	set: function( key, val ){
+
+		if( typeof key === 'undefined' || typeof val === 'undefined' )
+			return false;
+
+		key = this.key_prefix + key;
+
+		try{
+
+			localStorage.setItem( key, JSON.stringify( val ) );
+
+			jQuery('body').trigger( 'grist_storage_change' );
+
+			return true;
+
+		} catch(e){
+			return false;
+		}
+
+	},
+
+	/**
+	 * Does this browser support localStorage?
+	 * @see - http://diveintohtml5.info/detect.html#storage
+	 */
+	is_enabled: (function(){
+		try {
+			return 'localStorage' in window && window['localStorage'] !== null;
+		} catch(e){
+			return false;
+		}
+	})()
+
+};
