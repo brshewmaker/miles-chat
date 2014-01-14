@@ -5,12 +5,14 @@
 | Path to Uploads
 |--------------------------------------------------------------------------
 | 
-| Give the full path to where miles-chat should store uploaded files.  
-| This path should be read/writable by the web server and MUST end in 
-| a '/'
+| By default, it uses the uploads/ path within the root directory of the
+| project.  However, you can supply a full path here if you want the uploads
+| somewhere else.
 | 
 */
 
+$default_uploads_path = realpath(dirname(__FILE__) . '/../../uploads');
+
 return array(
-	'path' => '',
+	'path' => $default_uploads_path,
 );

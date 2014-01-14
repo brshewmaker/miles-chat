@@ -75,7 +75,7 @@ class FileController extends BaseController
 	 * @return Redirect
 	 */
 	public function upload_file() {
-		$uploads_path = Config::get('uploads.path');
+		$uploads_path = realpath(Config::get('uploads.path'));
 		if (Input::hasFile('fileupload')) {
 			// Uploaded file info
 			$filename = Input::file('fileupload')->getClientOriginalName();
@@ -126,10 +126,10 @@ class FileController extends BaseController
 	 * @return string     FALSE on failure
 	 */
 	public function get_full_file_path($id) {
-		$uploads_path = Config::get('uploads.path');
+		$uploads_path = realpath(Config::get('uploads.path'));
 		$upload_db = Upload::find($id);
 		if ($upload_db !== NULL) {
-			$full_filename = $uploads_path . $upload_db->filename;
+			$full_filename = $uploads_path . '/' . $upload_db->filename;
 			if (file_exists($full_filename)) {
 				return $full_filename;
 			}
