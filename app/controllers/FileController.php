@@ -59,7 +59,7 @@ class FileController extends BaseController
 	 * @return Redirect     
 	 */
 	public function delete_file($id) {
-		$full_info = $this->get_file_info($id);
+		$file_info = $this->get_file_info($id);
 		$upload_db_entry = Upload::find($id);
 		if ($file_info !== FALSE && $upload_db_entry !== NULL) {
 			unlink($file_info['full_filename']);
