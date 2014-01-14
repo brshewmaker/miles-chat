@@ -35,15 +35,16 @@ class FileController extends BaseController
 	 * Handle GET request for /get-file/id
 	 *
 	 * Tries to find the file using the uploads path listed in the
-	 * config file, and the filename in the DB.  Returns a laravel
-	 * response::download to try to serve up the file
+	 * config file, and the filename in the DB. 
 	 * 
 	 * @param  int $id ID of the upload in the DB
-	 * @return Response     
+	 * @return Response
 	 */
 	public function download_file($id) {
 		if ($full_file_path = $this->get_full_file_path($id)) {
-			return Response::download($full_file_path);
+			header('Content-Type: ' . mime_content_type($full_file_path));
+			header('Content-Length: ' . filesize($full_file_path));
+			readfile($full_file_path);
 		}
 		return Response::make('Error!  File not found', 404);
 	}
