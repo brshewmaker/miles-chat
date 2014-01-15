@@ -14,7 +14,7 @@
 		<?php $errors = $errors->all(); ?>
 		@if (!empty($errors))
 			@foreach ($errors as $error)
-				<strong>Error!</strong> {{$error}}
+				<strong>Error!</strong> {{$error}} <br / >
 			@endforeach
 		@else
 			<strong>Error!</strong> Something went wrong.  Try again
