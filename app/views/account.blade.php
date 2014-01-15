@@ -11,7 +11,6 @@
 @if (isset($failed))
 	<div class="alert alert-danger alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<?php Kint::dump($errors); ?>
 		<?php $errors = $errors->all(); ?>
 		@if (!empty($errors))
 			@foreach ($errors as $error)
