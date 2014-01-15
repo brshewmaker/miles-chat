@@ -129,8 +129,9 @@ class FileController extends BaseController
 	 * @return bool            
 	 */
 	public function serve_special_filetype($file_info) {
-		$valid_mime_types = array('image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'audio/mpeg');
-		if (in_array($file_info['filetype'], $valid_mime_types)) {
+		$valid_mime_types = array('image', 'application/pdf', 'audio', 'text');
+		$filetype_array = explode('/', $file_info['filetype']);
+		if (in_array($filetype_array[0], $valid_mime_types) || in_array($file_info['filetype'], $valid_mime_types)) {
 			header('Content-Type: ' . $file_info['filetype']);
 			header('Content-Length: ' . filesize($file_info['full_filename']));
 			readfile($file_info['full_filename']);	
