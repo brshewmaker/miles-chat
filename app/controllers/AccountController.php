@@ -47,7 +47,8 @@ class AccountController extends BaseController
 			return View::make('account')->with('passed', 'Changed password');
 		}
 		else {
-			return View::make('account')->with('failed', 'Did not work');
+			$messages = $validation->messages();
+			return View::make('account')->with('failed', 'Validator failed')->withErrors($validation);
 		}
 	}
 

@@ -11,7 +11,15 @@
 @if (isset($failed))
 	<div class="alert alert-danger alert-dismissable">
 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		<strong>Damn!</strong> Something went wrong and your password wasn't updated
+		<?php Kint::dump($errors); ?>
+		<?php $errors = $errors->all(); ?>
+		@if (!empty($errors))
+			@foreach ($errors as $error)
+				<strong>Error!</strong> {{$error}}
+			@endforeach
+		@else
+			<strong>Error!</strong> Something went wrong.  Try again
+		@endif
 	</div>
 @endif
 
