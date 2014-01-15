@@ -83,7 +83,7 @@ class AccountController extends BaseController
 			return Redirect::to('/chat');
 		}
 		else {
-			return View::make('register')->with('failed', 'Failed to create user');
+			return View::make('register')->with('failed', 'Failed to create user')->withErrors($validation);
 		}
 	}
 
