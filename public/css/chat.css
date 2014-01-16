@@ -35,6 +35,19 @@ table p {
 	width: 98%;
 }
 
+.chat-message {
+	padding-top: 10px;
+	border-top: 1px solid #E5E5E5;
+}
+
+.chat-message-info strong {
+	/*color: #666666;*/
+}
+
+.chat-message-body {
+	padding-top: 5px;
+}
+
 .chat-input {
 	position: absolute;
 	margin-right: 187px;
@@ -43,6 +56,14 @@ table p {
 	width: 100%;
 }
 
+/*
+|--------------------------------------------------------------------------
+| Responsive code
+|--------------------------------------------------------------------------
+| 
+| Media queries to make this work with mobile
+| 
+*/
 @media (max-width: 768px) {
 	#send_button {
 		display: none;

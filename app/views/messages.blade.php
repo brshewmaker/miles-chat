@@ -2,9 +2,9 @@
 	<?php $user = User::find($message->user_id); ?>
 	<div class="chat-message">
 		<div class="chat-message-info">
-			<strong>{{$user->username}}</strong> | {{substr($message->created_at, 11)}}
+			<strong>{{$user->username}}</strong> | {{$message->created_at}}
 		</div>
-		<div class="chat-message" data-messageid="{{$message->id}}">
+		<div class="chat-message-body" data-messageid="{{$message->id}}">
 			<p>{{stripslashes($message->message)}}</p>
 		</div>
 	</div>
