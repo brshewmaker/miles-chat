@@ -36,10 +36,6 @@ html, body {
 	border-top: 1px solid #E5E5E5;
 }
 
-.chat-message-info strong {
-	/*color: #666666;*/
-}
-
 .chat-message-body {
 	padding-top: 5px;
 }
