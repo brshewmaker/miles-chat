@@ -26,12 +26,7 @@
 
 		<legend>Messages</legend>
 
-		<div class="chat-messages-div">
-			<table class="table table-striped chat-messages">
-				<tbody>
-				</tbody>
-			</table>
-		</div>
+		<div class="chat-messages-div"></div>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
@@ -50,11 +45,5 @@
 			{{Form::close()}}
 		</div>
 	<div> <!-- end chat div -->
-
-
-	
-
-
-
 
 @stop

@@ -1,4 +1,11 @@
 @foreach($messages as $message)
 	<?php $user = User::find($message->user_id); ?>
-	<tr><td data-messageid="{{$message->id}}"><p><i>{{substr($message->created_at, 11)}}</i> | <strong>{{$user->username}}</strong> {{stripslashes($message->message)}}</p></td></tr>
+	<div class="chat-message">
+		<div class="chat-message-info">
+			<strong>{{$user->username}}</strong> | {{substr($message->created_at, 11)}}
+		</div>
+		<div class="chat-message" data-messageid="{{$message->id}}">
+			<p>{{stripslashes($message->message)}}</p>
+		</div>
+	</div>
 @endforeach

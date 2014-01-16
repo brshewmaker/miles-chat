@@ -39,7 +39,7 @@ $(document).ready(function() {
 	| the latest chat messages
 	| 
 	*/
-	$('.chat-messages').load(BASE+'/get-chat-messages/initial', function() {
+	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
 		// Scroll to bottom of chat content when the content is loaded
 		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
 	});
