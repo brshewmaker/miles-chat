@@ -2,10 +2,6 @@ html, body {
 	height: 100%;
 }
 
-table p {
-	font-size: 14px;
-}
-
 .main-content {
 	position: relative;
 	height: 90%;
