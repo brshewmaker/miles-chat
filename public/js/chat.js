@@ -4,9 +4,9 @@
  * @return {null} 
  */
 function remove_old_chat_messages() {
-	var num_messages_to_remove = $('.chat-messages tr').length - 20;
+	var num_messages_to_remove = $('.chat-message').length - 20;
 	while (num_messages_to_remove > 0) {
-		$('.chat-messages').find('tr:first').remove();
+		$('.chat-messages-div').find('div:first').remove();
 		num_messages_to_remove--;
 	}
 }
@@ -45,10 +45,10 @@ $(document).ready(function() {
 	});
 
 	function update_chat_messages() {
-		var message_id = $('.chat-messages td:last').data('messageid');
+		var message_id = $('.chat-message-body:last').data('messageid');
 		if (typeof message_id !== 'undefined') {
 			$.get(BASE + '/get-chat-messages/newest/' + message_id, function(data) {
-				$('.chat-messages').append(data);
+				$('.chat-messages-div').append(data);
 				remove_old_chat_messages();
 			});
 			setTimeout(update_chat_messages, 3000);
