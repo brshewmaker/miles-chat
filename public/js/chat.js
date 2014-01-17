@@ -11,6 +11,16 @@ function remove_old_chat_messages() {
 	}
 }
 
+/**
+ * Scroll the chat messages div to the bottom
+ * 
+ * @return {void} 
+ */
+function scroll_chat_messages_div() {
+	$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+}
+
+
 $(document).ready(function() {
 	/*
 	|--------------------------------------------------------------------------
@@ -27,6 +37,9 @@ $(document).ready(function() {
 			$('#chat_box').resetForm();
 		},
 		clearForm: true,
+		success: function() {
+			scroll_chat_messages_div();
+		}
 	});
 
 
@@ -40,8 +53,7 @@ $(document).ready(function() {
 	| 
 	*/
 	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
-		// Scroll to bottom of chat content when the content is loaded
-		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+		scroll_chat_messages_div();
 	});
 
 	function update_chat_messages() {
