@@ -12,12 +12,14 @@ function remove_old_chat_messages() {
 }
 
 /**
- * Scroll the chat messages div to the bottom
+ * Scroll the chat messages div to the bottom and/or scroll the entire window to the bottom
+ * for the mobile users
  * 
  * @return {void} 
  */
 function scroll_chat_messages_div() {
 	$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+	$('html, body').scrollTop($(document).height());
 }
 
 
