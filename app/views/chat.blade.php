@@ -24,8 +24,6 @@
 	<!-- Chat Div -->
 	<div class="chat-div">
 
-		<legend>Messages</legend>
-
 		<div class="chat-messages-div"></div>
 
 		<div class="chat-input">

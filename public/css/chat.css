@@ -19,10 +19,6 @@ html, body {
 	height: 100%;
 }
 
-.chat-div legend {
-	display: none;
-}
-
 .chat-messages-div {
 	position: absolute;
 	overflow-y: auto;
