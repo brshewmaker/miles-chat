@@ -53,7 +53,6 @@ class ChatController extends BaseController
 	public function post_chat_message() {
 		$message = $this->process_chat_commands(Input::get('chatmsg'));
 		$message = $this->run_htmlpurifier($message);
-		$message = $this->sanitize_user_input($message);
 		ChatController::insert_chat_message($message);
 		$response = array('message' => $message);
 		return Response::json($response);
@@ -170,20 +169,6 @@ class ChatController extends BaseController
 	 */
 	public function run_htmlpurifier($message) {
 		return Purifier::clean($message, 'titles');
-	}
-
-
-	/**
-	 * Sanitize the user input
-	 *
-	 * For now, this only uses mysql_real_escape_string, but adding the
-	 * function here in case I want to do something more elaborate later
-	 * 
-	 * @param  string $message 
-	 * @return string
-	 */
-	public function sanitize_user_input($message) {
-		return mysql_real_escape_string($message);
 	}
 
 }

@@ -5,7 +5,7 @@
 			<span class='text-muted'>{{$user->username}}</span> | {{$message->created_at}}
 		</div>
 		<div class="chat-message-body" data-messageid="{{$message->id}}">
-			<p>{{stripslashes($message->message)}}</p>
+			<p>{{$message->message}}</p>
 		</div>
 	</div>
 @endforeach
