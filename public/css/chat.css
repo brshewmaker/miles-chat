@@ -4,7 +4,8 @@ html, body {
 
 .main-content {
 	position: relative;
-	height: 90%;
+	height: 90%; /* fallback if calc not supported */
+	height: calc(100% - 70px);
 }
 
 .users_div {
@@ -43,9 +44,9 @@ html, body {
 .chat-input {
 	position: absolute;
 	margin-right: 187px;
+	padding-bottom: 9px;
 	bottom: 0;
-	padding-bottom: 20px;
-	width: 100%;
+	width: 98%;
 }
 
 /*
