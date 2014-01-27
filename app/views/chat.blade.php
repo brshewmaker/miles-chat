@@ -32,8 +32,7 @@
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
 				<div class="form-group col-md-11 col-sm-10">
 					<div class="controls">
-						<!-- <input type="text" class="form-control" name="chatmsg" id="chatmsg"> -->
-				<textarea name="chatmsg" id="chatmsg"></textarea>
+						<textarea name="chatmsg" id="chatmsg"></textarea>
 					</div>
 				</div>
 

@@ -33,7 +33,7 @@ $(document).ready(function() {
 	| 
 	*/
 
-	$('#chat_box').ajaxForm({
+	var ajaxFormOptions = {
 		dataType: 'json',
 		beforeSubmit: function() {
 			$('#chat_box').resetForm();
@@ -41,6 +41,16 @@ $(document).ready(function() {
 		clearForm: true,
 		success: function() {
 			scroll_chat_messages_div();
+		}
+	};
+
+	// Prepare the form for the submit button
+	$('#chat_box').ajaxForm(ajaxFormOptions);
+
+	// Submit the chat input form on enter
+	$('#chatmsg').on('keyup', function(e) {
+		if (e.which == 13 && ! e.shiftKey) {
+			$('#chat_box').ajaxSubmit(ajaxFormOptions);
 		}
 	});
 
