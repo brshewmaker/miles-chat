@@ -28,7 +28,7 @@ html, body {
 	position: absolute;
 	overflow-y: auto;
 	top: 0;
-	bottom: 50px;
+	bottom: 60px;
 	width: 98%;
 }
 
@@ -47,6 +47,10 @@ html, body {
 	padding-bottom: 9px;
 	bottom: 0;
 	width: 98%;
+}
+
+.chat-input textarea {
+	width: 100%;
 }
 
 /*
