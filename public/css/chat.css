@@ -9,14 +9,14 @@ html, body {
 }
 
 .users_div {
-	width: 200px;
+	width: 150px;
 	position: absolute;
 	right: 0;
 }
 
 .chat-div {
 	position: relative;
-	margin-right: 187px;
+	margin-right: 130px;
 	height: 100%;
 }
 
@@ -43,7 +43,7 @@ html, body {
 
 .chat-input {
 	position: absolute;
-	margin-right: 187px;
+	margin-right: 130px;
 	padding-bottom: 9px;
 	bottom: 0;
 	width: 98%;
