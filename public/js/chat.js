@@ -48,8 +48,9 @@ $(document).ready(function() {
 	$('#chat_box').ajaxForm(ajaxFormOptions);
 
 	// Submit the chat input form on enter
-	$('#chatmsg').on('keyup', function(e) {
+	$('#chatmsg').on('keydown', function(e) {
 		if (e.which == 13 && ! e.shiftKey) {
+			e.preventDefault();
 			$('#chat_box').ajaxSubmit(ajaxFormOptions);
 		}
 	});
