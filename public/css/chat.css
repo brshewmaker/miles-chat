@@ -51,6 +51,7 @@ html, body {
 
 .chat-input textarea {
 	width: 100%;
+	max-height: 55px;
 }
 
 /*
