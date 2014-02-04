@@ -69,8 +69,7 @@ $(document).ready(function() {
 	| Get chat messages
 	|--------------------------------------------------------------------------
 	| 
-	| Do a GET request to /get-chat-messages every 2 seconds to get
-	| the latest chat messages
+	| Do a long polling GET request for new messages
 	| 
 	*/
 	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
