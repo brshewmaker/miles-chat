@@ -90,8 +90,8 @@ $(document).ready(function() {
 					if (data !== '') {
 						$('.chat-messages-div').append(data);
 						remove_old_chat_messages();
-						update_chat_messages();
 					}
+					update_chat_messages();
 				},
 				error: function() {
 					update_chat_messages();

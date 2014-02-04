@@ -45,7 +45,7 @@ class ChatController extends BaseController
 			$start_time = time();
 			$messages = array();
 			while (1) {
-				if (time() - $start_time > 30) {
+				if (time() - $start_time > 25) {
 					break;
 				}
 				else {
