@@ -54,6 +54,10 @@ html, body {
 	max-height: 55px;
 }
 
+#chat_commands {
+	display: none;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Responsive code
@@ -63,9 +67,6 @@ html, body {
 | 
 */
 @media (max-width: 768px) {
-	#send_button {
-		display: none;
-	}
 
 	.chat-div {
 		margin-right: 0;
@@ -92,6 +93,11 @@ html, body {
 	.chat-input {
 		position: relative;
 		width: 100%;
+	}
+
+	.chat-textarea {
+		float: left;
+		width: 88%;
 	}
 }
 

@@ -30,19 +30,30 @@
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
-				<div class="form-group col-md-11 col-sm-10">
+				<div class="form-group chat-textarea col-md-11 col-sm-10">
 					<div class="controls">
 						<textarea name="chatmsg" id="chatmsg"></textarea>
 					</div>
 				</div>
 
-				<div class="form-group">
-				    <div class="controls">
-						<input id="send_button" type="submit" class="btn btn-primary" value="Send">
+				<div class="form-group chat-help">
+					<div class="controls">
+				    	<button type="button" id="popover_btn" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
 				    </div>
-				</div>
+			    </div>
+
 			{{Form::close()}}
 		</div>
 	<div> <!-- end chat div -->
+
+	<!-- Chat commands popover html -->
+	<div id="chat_commands">
+		<P>Use these at the beginning of a message.</P>
+		<p><strong>/code:</strong> wrap in code and pre</p>
+		<p><strong>/quote:</strong> wrap in blockquote</p>
+		<p><strong>/h1 thru /h4:</strong> title tags</p>
+		<p><strong>/b:</strong> wrap in strong</p>
+		<p><strong>/i:</strong> wrap in em</p>
+	</div>
 
 @stop
