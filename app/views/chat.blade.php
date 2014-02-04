@@ -48,8 +48,8 @@
 
 	<!-- Chat commands popover html -->
 	<div id="chat_commands">
-		<P>Use these at the beginning of a message for special formatting.</P>
-		<p><strong>/code:</strong> code snippets</p>
+		<P>Use these at the beginning of a message.</P>
+		<p><strong>/code:</strong> wrap in code and pre</p>
 		<p><strong>/quote:</strong> wrap in blockquote</p>
 		<p><strong>/h1 thru /h4:</strong> title tags</p>
 		<p><strong>/b:</strong> wrap in strong</p>
