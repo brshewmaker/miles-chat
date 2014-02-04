@@ -38,12 +38,22 @@
 
 				<div class="form-group chat-help">
 					<div class="controls">
-				    	<button type="button" class="btn btn-default">?</button>
+				    	<button type="button" id="popover_btn" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
 				    </div>
 			    </div>
 
 			{{Form::close()}}
 		</div>
 	<div> <!-- end chat div -->
+
+	<!-- Chat commands popover html -->
+	<div id="chat_commands">
+		<P>Use these at the beginning of a message for special formatting.</P>
+		<p><strong>/code:</strong> code snippets</p>
+		<p><strong>/quote:</strong> wrap in blockquote</p>
+		<p><strong>/h1 thru /h4:</strong> title tags</p>
+		<p><strong>/b:</strong> wrap in strong</p>
+		<p><strong>/i:</strong> wrap in em</p>
+	</div>
 
 @stop

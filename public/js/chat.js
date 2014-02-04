@@ -24,6 +24,14 @@ function scroll_chat_messages_div() {
 
 
 $(document).ready(function() {
+
+	// Chat commands popover
+	$('#popover_btn').popover({
+		title: 'Chat Commands',
+		html: true,
+		content: $('#chat_commands').html(),
+	});
+
 	/*
 	|--------------------------------------------------------------------------
 	| Send a chat 
@@ -97,6 +105,5 @@ $(document).ready(function() {
 	setInterval(function() {
 		$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	}, 30000);
-
 
 });

@@ -54,6 +54,10 @@ html, body {
 	max-height: 55px;
 }
 
+#chat_commands {
+	display: none;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Responsive code
