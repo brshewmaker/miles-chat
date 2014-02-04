@@ -80,17 +80,29 @@ $(document).ready(function() {
 	function update_chat_messages() {
 		var message_id = $('.chat-message-body:last').data('messageid');
 		if (typeof message_id !== 'undefined') {
-			$.get(BASE + '/get-chat-messages/newest/' + message_id, function(data) {
-				$('.chat-messages-div').append(data);
-				remove_old_chat_messages();
+			$.ajax({
+				type: 'GET',
+				url: BASE + '/get-chat-messages/newest/' + message_id,
+				async: true,
+				cache: false,
+				timeout: 30000,
+				success: function(data) {
+					if (data !== '') {
+						$('.chat-messages-div').append(data);
+						remove_old_chat_messages();
+						update_chat_messages();
+					}
+				},
+				error: function() {
+					update_chat_messages();
+				}
 			});
-			setTimeout(update_chat_messages, 3000);
 		}
 		else { setTimeout(update_chat_messages, 2000); }
 	}
 
 	// Start the loop to check for chat messages
-	setTimeout(update_chat_messages, 2000);
+	update_chat_messages();
 
 	/*
 	|--------------------------------------------------------------------------

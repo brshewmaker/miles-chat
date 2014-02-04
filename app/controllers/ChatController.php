@@ -27,21 +27,36 @@ class ChatController extends BaseController
 	/**
 	 * Handle GET request for /get-chat-messages
 	 *
-	 * Calls helper functions to get messages based on the type
-	 * of request.  
-	 * 		
-	 * @param  string $type
+	 * Gets chat messages depending on the type requested.  If it is after the 
+	 * newest messages, it starts a long polling process wherein it will keep
+	 * looking for new chat messages every n seconds until for 30 seconds, then
+	 * return that response so that the chat js can use long polling
+	 * 
+	 * @param  string $type            
 	 * @param  int $last_message_id 
-	 * @return View
+	 * @return View                  
 	 */
 	public function action_get_chat_messages($type, $last_message_id = NULL) {
 		if ($type == 'initial') {
 			$messages = $this->get_initial_chat_messages();
 		}
+		// Start long polling process if looking for new messages
 		else if ($type == 'newest' && $last_message_id !== NULL) {
-			$messages = $this->get_new_chat_messages($last_message_id);
+			$start_time = time();
+			$messages = array();
+			while (1) {
+				if (time() - $start_time > 30) {
+					break;
+				}
+				else {
+					$messages = $this->get_new_chat_messages($last_message_id);
+					if (!empty($messages)) {
+						break;
+					}
+					sleep(2);
+				}
+			}
 		}
-		else { return Redirect::to('/');}
 		return View::make('messages')->with('messages', $messages);
 	}
 
