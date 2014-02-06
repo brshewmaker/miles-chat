@@ -54,6 +54,10 @@ html, body {
 	max-height: 55px;
 }
 
+.server-error {
+	display: none;
+}
+
 #chat_commands {
 	display: none;
 }

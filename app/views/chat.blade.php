@@ -46,6 +46,13 @@
 		</div>
 	<div> <!-- end chat div -->
 
+	<!-- Server Error Alert div -->
+	<div class="server-error">
+		<div class="alert alert-danger chat-message">
+			<p><strong>Error!</strong> cannot connect to chat server.</p>
+		</div>
+	</div>
+
 	<!-- Chat commands popover html -->
 	<div id="chat_commands">
 		<P>Use these at the beginning of a message.</P>
