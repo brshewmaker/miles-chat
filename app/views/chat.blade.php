@@ -32,7 +32,7 @@
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
 				<div class="form-group chat-textarea col-md-11 col-sm-10">
 					<div class="controls">
-						<textarea name="chatmsg" id="chatmsg"></textarea>
+						<textarea class="form-control" name="chatmsg" id="chatmsg"></textarea>
 					</div>
 				</div>
 
@@ -45,6 +45,13 @@
 			{{Form::close()}}
 		</div>
 	<div> <!-- end chat div -->
+
+	<!-- Server Error Alert div -->
+	<div class="server-error">
+		<div class="alert alert-danger chat-message">
+			<p><strong>Error!</strong> cannot connect to chat server.</p>
+		</div>
+	</div>
 
 	<!-- Chat commands popover html -->
 	<div id="chat_commands">

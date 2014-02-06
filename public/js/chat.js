@@ -22,6 +22,23 @@ function scroll_chat_messages_div() {
 	$('html, body').scrollTop($(document).height());
 }
 
+/**
+ * Add or remove the server-error message div
+ * 
+ * @param  {string} toggle on or off
+ * @return {void}        
+ */
+function toggle_server_error_message(toggle) {
+	if (toggle == 'on' && !$('.chat-messages-div .alert-danger').length) {
+		$('.chat-messages-div').append($('.server-error').html());
+		$('.chat-textarea').addClass('has-error');
+	}
+	if (toggle == 'off') {
+		$('.chat-messages-div .alert-danger').remove();
+		$('.chat-textarea').removeClass('has-error');
+	}
+}
+
 
 $(document).ready(function() {
 
@@ -90,10 +107,13 @@ $(document).ready(function() {
 						$('.chat-messages-div').append(data);
 						remove_old_chat_messages();
 					}
+					toggle_server_error_message('off');
 					update_chat_messages();
 				},
 				error: function() {
-					update_chat_messages();
+					toggle_server_error_message('on');
+					scroll_chat_messages_div();
+					setTimeout(update_chat_messages, 20000);
 				}
 			});
 		}
