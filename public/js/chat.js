@@ -113,7 +113,7 @@ $(document).ready(function() {
 				error: function() {
 					toggle_server_error_message('on');
 					scroll_chat_messages_div();
-					setTimeout(update_chat_messages, 20000);
+					setTimeout(update_chat_messages, 2000);
 				}
 			});
 		}
