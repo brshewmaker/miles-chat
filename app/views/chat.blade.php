@@ -67,7 +67,7 @@
 	<div id="sending_msg_div">
 		<div class="panel panel-default sending-message">
 			<div class="panel-body">
-				<p>. . . sending msg . . . </p>
+				<p><img src="images/loading.gif">  sending</p>
 			</div>
 		</div>
 	</div>
