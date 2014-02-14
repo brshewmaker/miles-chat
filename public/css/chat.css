@@ -32,11 +32,6 @@ html, body {
 	width: 98%;
 }
 
-.chat-message {
-	padding-top: 10px;
-	border-top: 1px solid #E5E5E5;
-}
-
 .chat-message-body {
 	padding-top: 5px;
 }
