@@ -69,8 +69,7 @@ class ChatController extends BaseController
 		$message = $this->process_chat_commands(Input::get('chatmsg'));
 		$message = $this->run_htmlpurifier($message);
 		ChatController::insert_chat_message($message);
-		$response = array('message' => $message);
-		return Response::json($response);
+		return Response::json(array('success' => 'Added chat message'));
 	}
 
 	/**
