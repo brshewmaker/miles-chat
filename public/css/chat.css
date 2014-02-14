@@ -32,10 +32,6 @@ html, body {
 	width: 98%;
 }
 
-.chat-message-body {
-	padding-top: 5px;
-}
-
 .chat-input {
 	position: absolute;
 	margin-right: 130px;
