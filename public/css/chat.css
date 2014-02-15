@@ -45,13 +45,10 @@ html, body {
 	max-height: 55px;
 }
 
-.server-error {
+.server-error, #chat_commands, #sending_msg_div {
 	display: none;
 }
 
-#chat_commands {
-	display: none;
-}
 
 /*
 |--------------------------------------------------------------------------

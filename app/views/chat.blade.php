@@ -63,4 +63,13 @@
 		<p><strong>/i:</strong> wrap in em</p>
 	</div>
 
+	<!-- Sending msg div -->
+	<div id="sending_msg_div">
+		<div class="panel panel-default sending-message">
+			<div class="panel-body">
+				<p><img src="images/loading.gif">  sending</p>
+			</div>
+		</div>
+	</div>
+
 @stop
