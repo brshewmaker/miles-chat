@@ -39,6 +39,21 @@ function toggle_server_error_message(toggle) {
 	}
 }
 
+/**
+ * Determine if the user is at the bottom of the chat_message_div
+ * 
+ * @return {BOOL} 
+ */
+function user_at_bottom_of_messages_div() {
+	var chat_messages = $('.chat-messages-div');
+	if (chat_messages[0].scrollHeight - chat_messages.scrollTop() == chat_messages.outerHeight()) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 
 $(document).ready(function() {
 
@@ -106,6 +121,7 @@ $(document).ready(function() {
 					if (data !== '') {
 						$('.chat-messages-div').append(data);
 						remove_old_chat_messages();
+						if (user_at_bottom_of_messages_div()) { scroll_chat_messages_div(); }
 					}
 					toggle_server_error_message('off');
 					update_chat_messages();
