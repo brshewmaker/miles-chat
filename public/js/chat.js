@@ -54,6 +54,24 @@ function user_at_bottom_of_messages_div() {
 	}
 }
 
+/**
+ * Add a 'sending' div on a chat submit
+ *
+ * @return {void}
+ */
+function add_sending_div() {
+	$('.chat-messages-div').append($('#sending_msg_div').html());
+}
+
+/**
+ * Remove any 'sending' messages that were previously added
+ * 
+ * @return {void} 
+ */
+function remove_sending_div() {
+	$('.chat-messages-div').find('.sending-message').remove();
+}
+
 
 $(document).ready(function() {
 
@@ -77,11 +95,10 @@ $(document).ready(function() {
 		dataType: 'json',
 		beforeSubmit: function() {
 			$('#chat_box').resetForm();
+			add_sending_div();
+			scroll_chat_messages_div();
 		},
 		clearForm: true,
-		success: function() {
-			scroll_chat_messages_div();
-		}
 	};
 
 	// Prepare the form for the submit button
@@ -121,6 +138,7 @@ $(document).ready(function() {
 					if (data !== '') {
 						$('.chat-messages-div').append(data);
 						remove_old_chat_messages();
+						remove_sending_div();
 						if (user_at_bottom_of_messages_div()) { scroll_chat_messages_div(); }
 					}
 					toggle_server_error_message('off');
