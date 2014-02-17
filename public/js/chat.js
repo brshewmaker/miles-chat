@@ -65,6 +65,51 @@ function remove_sending_div() {
 	$('.chat-messages-div').find('.sending-message').remove();
 }
 
+/**
+ * Start an .ajax request for new chat messages.
+ *
+ * Uses long polling on the server, so this waits 30 seconds for timeout
+ * then calls itself again to continuously poll for new chat message
+ */
+function update_chat_messages() {
+	var message_id = $('.chat-message-body:last').data('messageid');
+	if (typeof message_id !== 'undefined') {
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-chat-messages/newest/' + message_id,
+			async: true,
+			cache: false,
+			timeout: 30000,
+			success: insert_new_chat_messages,
+			error: function() {
+				toggle_server_error_message('on');
+				scroll_chat_messages_div();
+				setTimeout(update_chat_messages, 2000);
+			}
+		});
+	}
+	else { setTimeout(update_chat_messages, 2000); }
+}
+
+/**
+ * Success callack function for update_chat_messages
+ *
+ * Append the HTML to .chat-messages-div, remove old chat messages and 
+ * turn off any error messages
+
+ * @param  {HTML} data Data returned from the server
+ */
+function insert_new_chat_messages(data) {
+	if (data !== '') {
+		$('.chat-messages-div').append(data);
+		remove_old_chat_messages();
+		remove_sending_div();
+		if (user_at_bottom_of_messages_div()) { scroll_chat_messages_div(); }
+	}
+	toggle_server_error_message('off');
+	update_chat_messages();
+}
+
 
 $(document).ready(function() {
 
@@ -118,34 +163,6 @@ $(document).ready(function() {
 		scroll_chat_messages_div();
 	});
 
-	function update_chat_messages() {
-		var message_id = $('.chat-message-body:last').data('messageid');
-		if (typeof message_id !== 'undefined') {
-			$.ajax({
-				type: 'GET',
-				url: BASE + '/get-chat-messages/newest/' + message_id,
-				async: true,
-				cache: false,
-				timeout: 30000,
-				success: function(data) {
-					if (data !== '') {
-						$('.chat-messages-div').append(data);
-						remove_old_chat_messages();
-						remove_sending_div();
-						if (user_at_bottom_of_messages_div()) { scroll_chat_messages_div(); }
-					}
-					toggle_server_error_message('off');
-					update_chat_messages();
-				},
-				error: function() {
-					toggle_server_error_message('on');
-					scroll_chat_messages_div();
-					setTimeout(update_chat_messages, 2000);
-				}
-			});
-		}
-		else { setTimeout(update_chat_messages, 2000); }
-	}
 
 	// Start the loop to check for chat messages
 	update_chat_messages();
