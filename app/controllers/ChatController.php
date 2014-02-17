@@ -53,7 +53,7 @@ class ChatController extends BaseController
 					if (!empty($messages)) {
 						break;
 					}
-					sleep(2);
+					sleep(1);
 				}
 			}
 		}
