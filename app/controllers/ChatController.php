@@ -99,8 +99,8 @@ class ChatController extends BaseController
 
 	/**
 	 * Updates the logged in user's last_seen column in the DB
-	 * 
-	 * @return null
+	 *
+	 * @return void
 	 */
 	public static function record_user_activity() {
 		$user = Auth::user();
@@ -138,7 +138,7 @@ class ChatController extends BaseController
 	 * Insert the given chat message for the logged in user and update user last_seen time
 	 * 
 	 * @param  string $message 
-	 * @return null
+	 * @return void
 	 */
 	public static function insert_chat_message($message) {
 		ChatController::record_user_activity();
