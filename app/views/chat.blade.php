@@ -17,7 +17,7 @@
 
 	<!-- Logged in Users Div -->
 	<div class="users_div">
-		<legend>Users</legend>
+		<legend>Online</legend>
 		<div id="logged_in_users"></div>
 	</div> <!-- end users div -->
 
