@@ -114,7 +114,7 @@ class ChatController extends BaseController
 	 * @return array
 	 */
 	public function get_initial_chat_messages() {
-		$this->record_user_activity();
+		ChatController::record_user_activity();
 		$messages = DB::select(DB::raw('SELECT * FROM (
 				SELECT * FROM messages ORDER BY id DESC LIMIT 20
 			) sub 
@@ -129,7 +129,7 @@ class ChatController extends BaseController
 	 * @return array
 	 */
 	public function get_new_chat_messages($id) {
-		$this->record_user_activity();
+		ChatController::record_user_activity();
 		$messages = DB::select(DB::raw('SELECT * FROM messages WHERE id > ' . $id));
 		return $messages;
 	}
