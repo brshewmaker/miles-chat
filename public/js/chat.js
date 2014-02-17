@@ -1,7 +1,6 @@
 /**
  * Removes the first n table rows where n = total number of table rows - 20
  * 
- * @return {null} 
  */
 function remove_old_chat_messages() {
 	var num_messages_to_remove = $('.chat-message').length - 20;
@@ -15,7 +14,6 @@ function remove_old_chat_messages() {
  * Scroll the chat messages div to the bottom and/or scroll the entire window to the bottom
  * for the mobile users
  * 
- * @return {void} 
  */
 function scroll_chat_messages_div() {
 	$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
@@ -26,7 +24,6 @@ function scroll_chat_messages_div() {
  * Add or remove the server-error message div
  * 
  * @param  {string} toggle on or off
- * @return {void}        
  */
 function toggle_server_error_message(toggle) {
 	if (toggle == 'on' && !$('.chat-messages-div .alert-danger').length) {
@@ -56,8 +53,6 @@ function user_at_bottom_of_messages_div() {
 
 /**
  * Add a 'sending' div on a chat submit
- *
- * @return {void}
  */
 function add_sending_div() {
 	$('.chat-messages-div').append($('#sending_msg_div').html());
@@ -65,8 +60,6 @@ function add_sending_div() {
 
 /**
  * Remove any 'sending' messages that were previously added
- * 
- * @return {void} 
  */
 function remove_sending_div() {
 	$('.chat-messages-div').find('.sending-message').remove();
