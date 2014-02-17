@@ -1,3 +1,12 @@
+/*
+|--------------------------------------------------------------------------
+| Helper functions
+|--------------------------------------------------------------------------
+| 
+| Main functionality of the chat program below
+| 
+*/
+
 /**
  * Removes the first n table rows where n = total number of table rows - 20
  * 
@@ -111,24 +120,27 @@ function insert_new_chat_messages(data) {
 }
 
 
+/*
+|--------------------------------------------------------------------------
+| Document ready funciontality
+|--------------------------------------------------------------------------
+| 
+| Basically init calls to get the ball rolling
+| 
+*/
 $(document).ready(function() {
 
-	// Chat commands popover
+	/* = Chat commands popover
+	-------------------------------------------------------------- */
 	$('#popover_btn').popover({
 		title: 'Chat Commands',
 		html: true,
 		content: $('#chat_commands').html(),
 	});
 
-	/*
-	|--------------------------------------------------------------------------
-	| Send a chat 
-	|--------------------------------------------------------------------------
-	| 
-	| Use jqueryForm to to submit the chat message form
-	| 
-	*/
 
+	/* = Send a chat message
+	-------------------------------------------------------------- */
 	var ajaxFormOptions = {
 		dataType: 'json',
 		beforeSubmit: function() {
@@ -139,7 +151,6 @@ $(document).ready(function() {
 		clearForm: true,
 	};
 
-	// Prepare the form for the submit button
 	$('#chat_box').ajaxForm(ajaxFormOptions);
 
 	// Submit the chat input form on enter
@@ -151,31 +162,16 @@ $(document).ready(function() {
 	});
 
 
-	/*
-	|--------------------------------------------------------------------------
-	| Get chat messages
-	|--------------------------------------------------------------------------
-	| 
-	| Do a long polling GET request for new messages
-	| 
-	*/
+	/* = Get Chat messages
+	-------------------------------------------------------------- */
 	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
 		scroll_chat_messages_div();
 	});
 
-
-	// Start the loop to check for chat messages
 	update_chat_messages();
 
-	/*
-	|--------------------------------------------------------------------------
-	| Get logged in users
-	|--------------------------------------------------------------------------
-	| 
-	| Do a GET request to /get-logged-in-users to get the currently logged
-	| in users
-	| 
-	*/
+	/* = Get logged in users
+	-------------------------------------------------------------- */
 	$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	setInterval(function() {
 		$('#logged_in_users').load(BASE + '/get-logged-in-users');
