@@ -5,5 +5,12 @@
 @stop
 
 @section('content')
-<h2>Chat Archive</h2>
+<h2>Archive page {{$messages->getCurrentPage()}} of {{$messages->getLastPage()}}</h2>
+
+<br />
+
+<?php echo View::make('messages')->with('messages', $messages); ?>
+
+<?php echo $messages->links(); ?>
+
 @stop
