@@ -41,14 +41,17 @@ Route::group(array('before' => 'auth'), function() {
 	Route::get('archive', 'ArchiveController@index');
 
 	// Chat messages
-	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');
 	Route::post('send_chat', 'ChatController@post_chat_message');
 
 	// Chat check online users
 	Route::get('check-in', 'ChatController@check_in_user');
-	Route::get('get-logged-in-users', 'ChatController@get_logged_in_users');
 });
 
+// Using my custom route filter so that chat.js knows if the user is authenticated
+Route::group(array('before' => 'js_auth_check'), function() {
+	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');
+	Route::get('get-logged-in-users', 'ChatController@get_logged_in_users');
+});
 
 /*
 |--------------------------------------------------------------------------

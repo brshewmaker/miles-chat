@@ -44,6 +44,11 @@ Route::filter('auth.basic', function()
 	return Auth::basic();
 });
 
+// Custom filter for use in chat.js
+Route::filter('js_auth_check', function() {
+	if (Auth::guest()) return Response::json('not_authenticated');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Guest Filter
