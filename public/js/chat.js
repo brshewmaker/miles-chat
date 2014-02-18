@@ -81,6 +81,7 @@ function remove_sending_div() {
  * then calls itself again to continuously poll for new chat message
  */
 function update_chat_messages() {
+	toggle_server_error_message('off');
 	var message_id = $('.chat-message-body:last').data('messageid');
 	if (typeof message_id !== 'undefined') {
 		$.ajax({
@@ -93,7 +94,7 @@ function update_chat_messages() {
 			error: function() {
 				toggle_server_error_message('on');
 				scroll_chat_messages_div();
-				setTimeout(update_chat_messages, 2000);
+				setTimeout(try_to_reconnect_on_error, 2000);
 			}
 		});
 	}
@@ -118,8 +119,26 @@ function insert_new_chat_messages(data, status, xhr) {
 		remove_sending_div();
 		if (user_at_bottom_of_messages_div()) { scroll_chat_messages_div(); }
 	}
-	toggle_server_error_message('off');
 	update_chat_messages();
+}
+
+/**
+ * If update_chat_messages returned an error, try to get a response from the 
+ * server every 2 seconds, and call update_chat_messages again if we get one
+ */
+function try_to_reconnect_on_error() {
+	remove_sending_div();
+	$.ajax({
+		type: 'GET',
+		url: BASE + '/get-logged-in-users', //url doesn't really matter here, just need to try to get a response
+		async: true,
+		cache: false,
+		timeout: 2000,
+		success: update_chat_messages,
+		error: function() {
+			setTimeout(try_to_reconnect_on_error, 2000);
+		}
+	});
 }
 
 /**
