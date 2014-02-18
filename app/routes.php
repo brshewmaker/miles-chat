@@ -25,8 +25,10 @@ Route::get('/', function()
 */
 
 Route::group(array('before' => 'auth'), function() {
+	// Account
 	Route::get('account', 'AccountController@action_account');
 
+	// Chat
 	Route::get('chat', 'ChatController@action_index');
 
 	// Files
@@ -34,6 +36,9 @@ Route::group(array('before' => 'auth'), function() {
 	Route::get('get-file/{id}', 'FileController@download_file');
 	Route::get('delete-file/{id}', 'FileController@delete_file');
 	Route::post('upload-file', 'FileController@upload_file');
+
+	// Archive
+	Route::get('archive', 'ArchiveController@index');
 
 	// Chat messages
 	Route::get('get-chat-messages/{type}/{id?}', 'ChatController@action_get_chat_messages');
