@@ -107,9 +107,12 @@ function update_chat_messages() {
  * turn off any error messages
 
  * @param  {HTML} data Data returned from the server
+ * @param  {string} Response text
+ * @param  {object} xhr response object
  */
-function insert_new_chat_messages(data) {
+function insert_new_chat_messages(data, status, xhr) {
 	if (data !== '') {
+		redirect_if_not_authenticated(xhr.getResponseHeader('content-type'));
 		$('.chat-messages-div').append(data);
 		remove_old_chat_messages();
 		remove_sending_div();
@@ -117,6 +120,17 @@ function insert_new_chat_messages(data) {
 	}
 	toggle_server_error_message('off');
 	update_chat_messages();
+}
+
+/**
+ * If the server responds with json, that means the user is no longer authenticated.
+ * 
+ * @param  {string} content_type Content type of response from the server
+ */
+function redirect_if_not_authenticated(content_type) {
+	if (content_type == 'application/json') {
+		window.location.href = BASE;
+	}
 }
 
 
@@ -174,7 +188,9 @@ $(document).ready(function() {
 	-------------------------------------------------------------- */
 	$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	setInterval(function() {
-		$('#logged_in_users').load(BASE + '/get-logged-in-users');
-	}, 30000);
+		$('#logged_in_users').load(BASE + '/get-logged-in-users', function(data, status, xhr) {
+			redirect_if_not_authenticated(xhr.getResponseHeader('content-type'));
+		});
+	}, 10000);
 
 });
