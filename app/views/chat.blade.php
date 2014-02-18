@@ -17,7 +17,7 @@
 
 	<!-- Logged in Users Div -->
 	<div class="users_div">
-		<legend>Users</legend>
+		<legend>Online</legend>
 		<div id="logged_in_users"></div>
 	</div> <!-- end users div -->
 
@@ -30,20 +30,46 @@
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
-				<div class="form-group col-md-11 col-sm-10">
+				<div class="form-group chat-textarea col-md-11 col-sm-10">
 					<div class="controls">
-						<input type="text" class="form-control" name="chatmsg" id="chatmsg">
+						<textarea class="form-control" name="chatmsg" id="chatmsg"></textarea>
 					</div>
 				</div>
-				<!-- <button type="submit" class="btn btn-primary">Send</button> -->
 
-				<div class="form-group">
-				    <div class="controls">
-						<input id="send_button" type="submit" class="btn btn-primary" value="Send">
+				<div class="form-group chat-help">
+					<div class="controls">
+				    	<button type="button" id="popover_btn" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
 				    </div>
-				</div>
+			    </div>
+
 			{{Form::close()}}
 		</div>
 	<div> <!-- end chat div -->
+
+	<!-- Server Error Alert div -->
+	<div class="server-error">
+		<div class="alert alert-danger chat-message">
+			<p><strong>Error!</strong> cannot connect to chat server.</p>
+		</div>
+	</div>
+
+	<!-- Chat commands popover html -->
+	<div id="chat_commands">
+		<P>Use these at the beginning of a message.</P>
+		<p><strong>/code:</strong> wrap in code and pre</p>
+		<p><strong>/quote:</strong> wrap in blockquote</p>
+		<p><strong>/h1 thru /h4:</strong> title tags</p>
+		<p><strong>/b:</strong> wrap in strong</p>
+		<p><strong>/i:</strong> wrap in em</p>
+	</div>
+
+	<!-- Sending msg div -->
+	<div id="sending_msg_div">
+		<div class="panel panel-default sending-message">
+			<div class="panel-body">
+				<p><img src="images/loading.gif">  sending</p>
+			</div>
+		</div>
+	</div>
 
 @stop

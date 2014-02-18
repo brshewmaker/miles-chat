@@ -4,18 +4,19 @@ html, body {
 
 .main-content {
 	position: relative;
-	height: 90%;
+	height: 90%; /* fallback if calc not supported */
+	height: calc(100% - 70px);
 }
 
 .users_div {
-	width: 200px;
+	width: 150px;
 	position: absolute;
 	right: 0;
 }
 
 .chat-div {
 	position: relative;
-	margin-right: 187px;
+	margin-right: 130px;
 	height: 100%;
 }
 
@@ -27,26 +28,27 @@ html, body {
 	position: absolute;
 	overflow-y: auto;
 	top: 0;
-	bottom: 50px;
+	bottom: 70px;
 	width: 98%;
-}
-
-.chat-message {
-	padding-top: 10px;
-	border-top: 1px solid #E5E5E5;
-}
-
-.chat-message-body {
-	padding-top: 5px;
 }
 
 .chat-input {
 	position: absolute;
-	margin-right: 187px;
+	margin-right: 130px;
+	padding-bottom: 9px;
 	bottom: 0;
-	padding-bottom: 20px;
-	width: 100%;
+	width: 98%;
 }
+
+.chat-input textarea {
+	width: 100%;
+	max-height: 55px;
+}
+
+.server-error, #chat_commands, #sending_msg_div {
+	display: none;
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -57,9 +59,6 @@ html, body {
 | 
 */
 @media (max-width: 768px) {
-	#send_button {
-		display: none;
-	}
 
 	.chat-div {
 		margin-right: 0;
@@ -86,6 +85,11 @@ html, body {
 	.chat-input {
 		position: relative;
 		width: 100%;
+	}
+
+	.chat-textarea {
+		float: left;
+		width: 88%;
 	}
 }
 

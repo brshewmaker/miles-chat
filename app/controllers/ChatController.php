@@ -27,21 +27,36 @@ class ChatController extends BaseController
 	/**
 	 * Handle GET request for /get-chat-messages
 	 *
-	 * Calls helper functions to get messages based on the type
-	 * of request.  
-	 * 		
-	 * @param  string $type
+	 * Gets chat messages depending on the type requested.  If it is after the 
+	 * newest messages, it starts a long polling process wherein it will keep
+	 * looking for new chat messages every n seconds until for 30 seconds, then
+	 * return that response so that the chat js can use long polling
+	 * 
+	 * @param  string $type            
 	 * @param  int $last_message_id 
-	 * @return View
+	 * @return View                  
 	 */
 	public function action_get_chat_messages($type, $last_message_id = NULL) {
 		if ($type == 'initial') {
 			$messages = $this->get_initial_chat_messages();
 		}
+		// Start long polling process if looking for new messages
 		else if ($type == 'newest' && $last_message_id !== NULL) {
-			$messages = $this->get_new_chat_messages($last_message_id);
+			$start_time = time();
+			$messages = array();
+			while (1) {
+				if (time() - $start_time > 25) {
+					break;
+				}
+				else {
+					$messages = $this->get_new_chat_messages($last_message_id);
+					if (!empty($messages)) {
+						break;
+					}
+					sleep(1);
+				}
+			}
 		}
-		else { return Redirect::to('/');}
 		return View::make('messages')->with('messages', $messages);
 	}
 
@@ -53,10 +68,8 @@ class ChatController extends BaseController
 	public function post_chat_message() {
 		$message = $this->process_chat_commands(Input::get('chatmsg'));
 		$message = $this->run_htmlpurifier($message);
-		$message = $this->sanitize_user_input($message);
 		ChatController::insert_chat_message($message);
-		$response = array('message' => $message);
-		return Response::json($response);
+		return Response::json(array('success' => 'Added chat message'));
 	}
 
 	/**
@@ -86,8 +99,8 @@ class ChatController extends BaseController
 
 	/**
 	 * Updates the logged in user's last_seen column in the DB
-	 * 
-	 * @return null
+	 *
+	 * @return void
 	 */
 	public static function record_user_activity() {
 		$user = Auth::user();
@@ -101,7 +114,7 @@ class ChatController extends BaseController
 	 * @return array
 	 */
 	public function get_initial_chat_messages() {
-		$this->record_user_activity();
+		ChatController::record_user_activity();
 		$messages = DB::select(DB::raw('SELECT * FROM (
 				SELECT * FROM messages ORDER BY id DESC LIMIT 20
 			) sub 
@@ -116,7 +129,7 @@ class ChatController extends BaseController
 	 * @return array
 	 */
 	public function get_new_chat_messages($id) {
-		$this->record_user_activity();
+		ChatController::record_user_activity();
 		$messages = DB::select(DB::raw('SELECT * FROM messages WHERE id > ' . $id));
 		return $messages;
 	}
@@ -125,7 +138,7 @@ class ChatController extends BaseController
 	 * Insert the given chat message for the logged in user and update user last_seen time
 	 * 
 	 * @param  string $message 
-	 * @return null
+	 * @return void
 	 */
 	public static function insert_chat_message($message) {
 		ChatController::record_user_activity();
@@ -170,20 +183,6 @@ class ChatController extends BaseController
 	 */
 	public function run_htmlpurifier($message) {
 		return Purifier::clean($message, 'titles');
-	}
-
-
-	/**
-	 * Sanitize the user input
-	 *
-	 * For now, this only uses mysql_real_escape_string, but adding the
-	 * function here in case I want to do something more elaborate later
-	 * 
-	 * @param  string $message 
-	 * @return string
-	 */
-	public function sanitize_user_input($message) {
-		return mysql_real_escape_string($message);
 	}
 
 }
