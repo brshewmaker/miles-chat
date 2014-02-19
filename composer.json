@@ -5,7 +5,6 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-        "ezyang/htmlpurifier": "dev-master",
         "mews/purifier": "dev-master"
 	},
 	"require-dev": {
@@ -17,8 +16,7 @@
 			"app/controllers",
 			"app/models",
 			"app/database/migrations",
-			"app/database/seeds",
-			"app/tests/TestCase.php"
+			"app/database/seeds"
 		]
 	},
 	"scripts": {
