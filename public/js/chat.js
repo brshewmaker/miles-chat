@@ -83,22 +83,20 @@ function remove_sending_div() {
 function update_chat_messages() {
 	toggle_server_error_message('off');
 	var message_id = $('.chat-message-body:last').data('messageid');
-	if (typeof message_id !== 'undefined') {
-		$.ajax({
-			type: 'GET',
-			url: BASE + '/get-chat-messages/newest/' + message_id,
-			async: true,
-			cache: false,
-			timeout: 30000,
-			success: insert_new_chat_messages,
-			error: function() {
-				toggle_server_error_message('on');
-				scroll_chat_messages_div();
-				setTimeout(try_to_reconnect_on_error, 2000);
-			}
-		});
-	}
-	else { setTimeout(update_chat_messages, 2000); }
+	if (typeof message_id == 'undefined') message_id = 0; //if we don't find messageid, we assume its because there are no posts yet
+	$.ajax({
+		type: 'GET',
+		url: BASE + '/get-chat-messages/newest/' + message_id,
+		async: true,
+		cache: false,
+		timeout: 30000,
+		success: insert_new_chat_messages,
+		error: function() {
+			toggle_server_error_message('on');
+			scroll_chat_messages_div();
+			setTimeout(try_to_reconnect_on_error, 2000);
+		}
+	});
 }
 
 /**
