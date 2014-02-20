@@ -83,7 +83,7 @@ function remove_sending_div() {
 function update_chat_messages() {
 	toggle_server_error_message('off');
 	var message_id = $('.chat-message-body:last').data('messageid');
-	if (typeof message_id == 'undefined') {
+	if (typeof message_id !== 'undefined') {
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/get-chat-messages/newest/' + message_id,
@@ -98,6 +98,7 @@ function update_chat_messages() {
 			}
 		});
 	}
+	else { setTimeout(update_chat_messages, 2000); }
 }
 
 /**
@@ -198,9 +199,9 @@ $(document).ready(function() {
 	-------------------------------------------------------------- */
 	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
 		scroll_chat_messages_div();
-		update_chat_messages();
 	});
 
+	update_chat_messages();
 
 	/* = Get logged in users
 	-------------------------------------------------------------- */
