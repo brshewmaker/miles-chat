@@ -13,7 +13,7 @@ Requirements:
 2. MCrypt PHP Extension
 3. [Composer](https://getcomposer.org/)
 
-If you have the basic requirements met, follow these basic steps:
+If you have the requirements met, follow these basic steps:
 1. `git clone INSERT THE REPO HERE BENJAMIN`
 2. Create mysql DB 
 3. In app/config/app.php, change 'debug' => true to false if this isn't a dev environment.
