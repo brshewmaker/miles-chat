@@ -19,6 +19,14 @@ class CreateMessagesTable extends Migration {
 			$table->integer('user_id')->unsigned();
 			$table->text('message');
 		});
+
+		// Insert a default welcome message that will be assigned to the first user created
+		DB::table('messages')->insert(array(
+			array(
+				'user_id' => 1,
+				'message' => 'Welcome to Miles-Chat!  Hit enter to submit a new message, and click the ? to see formatting help',
+			),
+		));
 	}
 
 	/**
