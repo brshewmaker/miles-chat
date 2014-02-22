@@ -150,6 +150,18 @@ class ChatController extends BaseController
 	}
 
 	/**
+	 * Given a time string from the DB, return a formatted version 
+	 * 
+	 * @param  string $date_string timestamps() formatted
+	 * @return string              Formatted time string
+	 */
+	public static function format_chat_timestamp($date_string) {
+		$timestamp = strtotime($date_string);
+		$message_date_string = date('g:ia D, M j, Y', $timestamp);
+		return $message_date_string;
+	}
+
+	/**
 	 * If a valid chat command is found at the beginning of $message, create a new message with the 
 	 * appropriate value from the chatcommands array
 	 * 
