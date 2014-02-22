@@ -25,7 +25,9 @@ If you are new to Laravel and/or have not installed a Laravel application before
 9. Run the database migrations:
 	`php artisan migrate:install`
 	`php artisan migrate`
-10. Create a new virtual host for the application or you can also create a symbolic link to the /public folder of miles-chat.  For example, on a typical Ubuntu LAMP stack you could do `sudo ln -s /path/to/miles-chat/public /var/www/miles-chat` which would allow you to go to http://localhost/miles-chat.
+10. Create a new virtual host for the application or you can also create a symbolic link to the /public folder of miles-chat.  For example, on a typical Ubuntu LAMP stack you could do 
+`sudo ln -s /path/to/miles-chat/public /var/www/miles-chat`
+which would allow you to go to http://localhost/miles-chat.
 
 ## Why does this even exist?
 
