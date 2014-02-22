@@ -195,7 +195,7 @@ $(document).ready(function() {
 	});
 
 
-	/* = Get Chat messages
+	/* = Get Chat messages: Start the update_chat_messages() loop
 	-------------------------------------------------------------- */
 	$('.chat-messages-div').load(BASE+'/get-chat-messages/initial', function() {
 		scroll_chat_messages_div();
