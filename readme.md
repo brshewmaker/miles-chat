@@ -27,21 +27,23 @@ If you are new to Laravel and/or have not installed a Laravel application before
 
 4. In app/config/app.php, change 'key' => 'YourSecretKey!!!' to a random 32 bit string
 
-5. In app/config/database.php, change the mysql DB connection options to your database and username/password
+5. In app.config/app.php, change the timezone to the timezone of your server
 
-6. Optionally, you can change the path for file uploads in app/config/uploads.php
+6. In app/config/database.php, change the mysql DB connection options to your database and username/password
 
-7. In the miles-chat path, run `composer install --prefer-dist --no-dev`  You can leave off the --no-dev if you also want to install the dev packages from composer.json
+7. Optionally, you can change the path for file uploads in app/config/uploads.php
 
-8. Run `composer dump-autoload`
+8. In the miles-chat path, run `composer install --prefer-dist --no-dev`  You can leave off the --no-dev if you also want to install the dev packages from composer.json
 
-9. Run the database migrations:
+9. Run `composer dump-autoload`
+
+10. Run the database migrations:
 
 	`php artisan migrate:install`
 
 	`php artisan migrate`
 
-10. Create a new virtual host for the application or you can also create a symbolic link to the /public folder of miles-chat.  For example, on a typical Ubuntu LAMP stack you could do 
+11. Create a new virtual host for the application or you can also create a symbolic link to the /public folder of miles-chat.  For example, on a typical Ubuntu LAMP stack you could do 
 
 `sudo ln -s /path/to/miles-chat/public /var/www/miles-chat`
 
