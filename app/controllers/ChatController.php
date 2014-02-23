@@ -109,28 +109,24 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Returns the 20 most recent chat messages for the initial loading of messages
+	 * Record user activity and get 20 most recent chat messages
 	 *
 	 * @return array
 	 */
 	public function get_initial_chat_messages() {
 		ChatController::record_user_activity();
-		$messages = DB::select(DB::raw('SELECT * FROM (
-				SELECT * FROM messages ORDER BY id DESC LIMIT 20
-			) sub 
-			ORDER BY id ASC'));
-		return $messages;
+		return Message::get_newest_messages(20);
 	}
 
 	/**
-	 * Get all messages later than the given message_id and update user last_seen time
+	 * Get all messages later than the given message_id and update user last_seen time and record user activity
 	 * 
 	 * @param  int $id DB id of a message
 	 * @return array
 	 */
 	public function get_new_chat_messages($id) {
 		ChatController::record_user_activity();
-		$messages = DB::select(DB::raw('SELECT * FROM messages WHERE id > ' . $id));
+		$messages = Message::get_messages_since_id($id);
 		return $messages;
 	}
 
