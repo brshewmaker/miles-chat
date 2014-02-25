@@ -9,5 +9,5 @@
 | 
 */
 return array(
-	'stylesheets' => array('bootstrap', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united', 'yeti'),
+	'stylesheets' => array('bootstrap', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'lumen', 'readable', 'simplex', 'slate', 'spacelab', 'united', 'yeti'),
 );
