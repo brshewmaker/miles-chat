@@ -5,8 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.1.*",
-        "mews/purifier": "dev-master",
-        "fojuth/plupload": "dev-master"
+        "mews/purifier": "dev-master"
 	},
 	"require-dev": {
 		"raveren/kint": "dev-master"
