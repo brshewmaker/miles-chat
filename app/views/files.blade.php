@@ -10,9 +10,20 @@
 
 @section('scripts')
 	{{HTML::script('js/bootstrap-sortable.js')}}
+	{{HTML::script('js/plupload.full.min.js')}}
+	{{HTML::script('js/files.js')}}
 @stop
 
 @section('content')
+	<h3>Test plupload</h3>
+	<ul id="filelist"></ul>
+<br />
+ 
+<div id="container">
+    <a id="browse" href="javascript:;">[Browse...]</a>
+    <a id="start-upload" href="javascript:;">[Start Upload]</a>
+</div>
+
 	<h3>Files</h3>
 
 	{{Form::open(array('url' => 'upload-file', 'class' => 'form-inline', 'enctype' => 'multipart/form-data'))}}
