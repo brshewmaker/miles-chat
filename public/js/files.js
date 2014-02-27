@@ -10,7 +10,7 @@ uploader.bind('FilesAdded', function(up, files) {
 	console.log('FilesAdded called');
 	var html = '';
 	plupload.each(files, function(file) {
-		html += '<tr><td data-fileid="' + file.id + '">' + file.name + '</td><td colspan="4">'
+		html += '<tr><td>' + file.name + '</td><td colspan="4">'
 			+ '<div class="progress">'
 			+ '    <div data-fileid="' + file.id + '" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">'
 			+ '	   </div>'
@@ -25,8 +25,7 @@ uploader.bind('FilesAdded', function(up, files) {
 
 
 uploader.bind('UploadProgress', function(up, file) {
-	var td_id = $('tr:last td').data('fileid');
-	var divvy = $('div').find('[data-fileid="' + td_id + '"]');
+	var divvy = $('div').find('[data-fileid="' + file.id + '"]');
 	divvy.attr('style', 'width: ' + file.percent + '%');
 
 
