@@ -19,21 +19,15 @@
 	<ul id="filelist"></ul>
 <br />
  
-<div id="container">
-    <a id="browse" href="javascript:;">[Browse...]</a>
-    <a id="start-upload" href="javascript:;">[Start Upload]</a>
-</div>
-
 	<h3>Files</h3>
+	<p>Select files or drag to upload</p>
 
-	{{Form::open(array('url' => 'upload-file', 'class' => 'form-inline', 'enctype' => 'multipart/form-data'))}}
-		<div class="form-group">
-			<input type="file" name="fileupload">
-		</div>
-		<button type="submit" class="btn btn-primary btn-sm">Upload</button>
-	{{Form::close()}}
+	<button class="btn btn-default" id="browse" href="javascript:;">Select Files</button>
+	<button class="btn btn-primary" id="start-upload" href="javascript:;">Start Upload</button>
 
-	<table class="table table-striped sortable">
+	<br />
+
+	<table class="table table-striped sortable" id="files_table">
 		<thead>
 			<th>Filename</th>
 			<th>Type</th>
