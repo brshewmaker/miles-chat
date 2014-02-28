@@ -26,6 +26,11 @@ uploader.bind('UploadProgress', function(up, file) {
 	progress_div.attr('style', 'width: ' + file.percent + '%');
 });
 
+// Remove all (remove) links from uploader files when the uploading starts
+uploader.bind('UploadFile', function(uploader_object, file) {
+	$('.remove-upload').remove();
+});
+
 
 uploader.bind('Error', function(up, err) {
 	document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
