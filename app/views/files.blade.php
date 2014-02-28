@@ -6,6 +6,7 @@
 
 @section('stylesheets')
 	{{HTML::style('css/bootstrap-sortable.css')}}
+	{{HTML::style('css/files.css')}}
 @stop
 
 @section('scripts')
@@ -15,17 +16,20 @@
 @stop
 
 @section('content')
-	<h3>Test plupload</h3>
-	<ul id="filelist"></ul>
-<br />
- 
-	<h3>Files</h3>
-	<p>Select files or drag to upload</p>
+
+	<h3>Upload</h3>
 
 	<button class="btn btn-default" id="browse" href="javascript:;">Select Files</button>
 	<button class="btn btn-primary" id="start-upload" href="javascript:;">Start Upload</button>
 
-	<br />
+	<br /><br />
+
+	<div class="well">
+		<p id="upload_message">Click 'select files' above, or you can drag files here to upload</p>
+		<ul id="filelist"></ul>
+	</div>
+
+	<h3>Files</h3>
 
 	<table class="table table-striped sortable" id="files_table">
 		<thead>
