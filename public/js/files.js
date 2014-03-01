@@ -46,8 +46,10 @@ uploader.bind('UploadComplete', function() {
 	window.location.replace(BASE + '/files');
 });
 
+// Error handling
 uploader.bind('Error', function(up, err) {
-	document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
+	$('#error_console').show();
+	document.getElementById('error_console').innerHTML += "\nError #" + err.code + ": " + err.message;
 });
 
 document.getElementById('start-upload').onclick = function() {

@@ -29,6 +29,8 @@
 		<ul id="filelist"></ul>
 	</div>
 
+	<pre id="error_console"></pre>
+
 	<h3>Files</h3>
 
 	<table class="table table-striped sortable" id="files_table">
