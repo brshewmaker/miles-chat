@@ -56,7 +56,7 @@ class FileController extends BaseController
 	 * it's DB entry
 	 * 
 	 * @param  int $id ID of file in the DB
-	 * @return Redirect     
+	 * @return JSON
 	 */
 	public function delete_file($id) {
 		$file_info = $this->get_file_info($id);
@@ -64,8 +64,9 @@ class FileController extends BaseController
 		if ($file_info !== FALSE && $upload_db_entry !== NULL) {
 			unlink($file_info['full_filename']);
 			$upload_db_entry->delete();
-		}		
-		return Redirect::to('files');
+			return Response::json(array('OK' => 1));
+		}
+		return Response::json(array('ERROR' => 0));
 	}
 
 	/**

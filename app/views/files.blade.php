@@ -51,7 +51,7 @@
 					<td>{{$upload->created_at}}</td>
 					<td>{{$upload->filesize}}</td>
 					<td>{{$user->username}}</td>
-					<td>{{HTML::link('delete-file/' . $upload->id, 'Delete')}}</td>
+					<td><a href="#" data-id="{{$upload->id}}" class="delete-file-confirm">Delete</a></td>
 				</tr>
 			@endforeach
 		</tbody>
