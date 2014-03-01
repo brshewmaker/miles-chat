@@ -1,3 +1,9 @@
+$('.delete-file').on('click', function(e) {
+	e.preventDefault();
+	var original_html = $(this).parent().parent().html();
+	$(this).parent().html('<div class="btn-group"><button class="btn btn-danger btn-sm">Yes</button><button class="btn btn-default btn-sm">No</button></div>');
+});
+
 /*
 |--------------------------------------------------------------------------
 | pluploader 
