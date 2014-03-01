@@ -8,7 +8,8 @@ function remove_file_from_queue() {
 
 var uploader = new plupload.Uploader({
 	browse_button: 'browse',
-	url: BASE + '/upload-file'
+	url: BASE + '/upload-file',
+	drop_element: 'file_upload_div',
 });
 
 uploader.init();
@@ -39,6 +40,10 @@ uploader.bind('UploadProgress', function(up, file) {
 // Remove all (remove) links from uploader files when the uploading starts
 uploader.bind('UploadFile', function(uploader_object, file) {
 	$('.remove-upload').remove();
+});
+
+uploader.bind('UploadComplete', function() {
+	window.location.replace(BASE + '/files');
 });
 
 uploader.bind('Error', function(up, err) {

@@ -24,7 +24,7 @@
 
 	<br /><br />
 
-	<div class="well">
+	<div class="well" id="file_upload_div">
 		<p id="upload_message">Click 'select files' above, or you can drag files here to upload</p>
 		<ul id="filelist"></ul>
 	</div>
