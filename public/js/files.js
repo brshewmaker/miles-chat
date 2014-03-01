@@ -7,37 +7,37 @@
 | 
 */
 
-$('.delete-file-confirm').on('click', function(e) {
+$(document.body).on('click', '.delete-file-confirm', function(e) {
 	e.preventDefault();
 	var file_id = $(this).data('id');
 	$(this).parent().html('<div class="btn-group" data-fileid="' + file_id + '"><button class="btn btn-danger btn-sm delete-file">Yes</button><button class="btn btn-default btn-sm cancel-delete">No</button></div>');
 
-	// Send the delete file .ajax request
-	$('.delete-file').on('click', function(e) {
-		var delete_file_id = $(this).parent().data('fileid');
-		var $td = $(this).parent().parent();
-		$.ajax({
-			type: 'GET',
-			url: BASE + '/delete-file/' + delete_file_id,
-			beforeSend: function() {
-				$td.html('<img src="' + BASE + '/images/loading.gif" />');
-			},
-			success: function(data) {
-				$td.parent().remove();
-			},
-			error: function() {
-				$td.html('ERROR');
-			},
+});
 
-		});
-	});
+// Send the delete file .ajax request
+$(document.body).on('click', '.delete-file', function(e) {
+	var delete_file_id = $(this).parent().data('fileid');
+	var $td = $(this).parent().parent();
+	$.ajax({
+		type: 'GET',
+		url: BASE + '/delete-file/' + delete_file_id,
+		beforeSend: function() {
+			$td.html('<img src="' + BASE + '/images/loading.gif" />');
+		},
+		success: function(data) {
+			$td.parent().remove();
+		},
+		error: function() {
+			$td.html('ERROR');
+		},
 
-	$('.cancel-delete').on('click', function(e) {
-		var cancel_file_id = $(this).parent().data('fileid');
-		$(this).parent().parent().html('<a href="#" data-id="' + cancel_file_id + '">Delete</a>');
 	});
 });
 
+$(document.body).on('click', '.cancel-delete', function(e) {
+	var cancel_file_id = $(this).parent().data('fileid');
+	$(this).parent().parent().html('<a href="#" data-id="' + cancel_file_id + '" class="delete-file-confirm">Delete</a>');
+});
 
 
 /*
