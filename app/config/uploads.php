@@ -11,7 +11,7 @@
 | 
 */
 
-$default_uploads_path = realpath(dirname(__FILE__) . '/../../uploads');
+$default_uploads_path = realpath(dirname(__FILE__) . '/../../public/uploads');
 
 return array(
 	'path' => $default_uploads_path,

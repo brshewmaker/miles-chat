@@ -75,22 +75,24 @@ class FileController extends BaseController
 	 * as the upload, inserts a new DB entry, and sends a new chat message
 	 * with the link to the uploaded file
 	 * 
-	 * @return Redirect
+	 * @return JSON
 	 */
 	public function upload_file() {
 		$uploads_path = realpath(Config::get('uploads.path'));
-		if (Input::hasFile('fileupload')) {
+		if (Input::hasFile('file')) {
 			// Uploaded file info
-			$filename = Input::file('fileupload')->getClientOriginalName();
-			$filetype = Input::file('fileupload')->getMimeType();
-			$size = FileController::get_human_filesize(Input::file('fileupload')->getSize());
+			$filename = Input::file('file')->getClientOriginalName();
+			$filetype = Input::file('file')->getMimeType();
+			$size = FileController::get_human_filesize(Input::file('file')->getSize());
 
 			// Upload the file, create new db entry, and send a chat msg
-			Input::file('fileupload')->move($uploads_path, $filename);
+			Input::file('file')->move($uploads_path, $filename);
 			$upload_id = $this->create_new_db_entry($filename, $filetype, $size);
 			ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload_id) . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
+
+			return Response::json(array('OK' => 1)); //a successful response for files.js
 		}
-		return Redirect::to('files');
+		return Response::json(array('OK' => 0));
 	}
 
 	/*

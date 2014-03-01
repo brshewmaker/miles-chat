@@ -1,0 +1,7 @@
+.well ul {
+	list-style-type: none;
+}
+
+#error_console {
+	display: none;
+}
