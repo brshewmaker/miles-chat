@@ -44,14 +44,18 @@
 		</thead>
 		<tbody>
 			@foreach($uploads as $upload)
-				<?php $user = User::find($upload->user_id); ?>
+				<?php $file_user = User::find($upload->user_id); ?>
 				<tr>
 					<td>{{HTML::link('get-file/' . $upload->id, $upload->filename)}}</td>
 					<td>{{$upload->filetype}}</td>
 					<td>{{$upload->created_at}}</td>
 					<td>{{$upload->filesize}}</td>
-					<td>{{$user->username}}</td>
-					<td><a href="#" data-id="{{$upload->id}}" class="delete-file-confirm">Delete</a></td>
+					<td>{{$file_user->username}}</td>
+					@if ($file_user->id == $user->id)
+						<td><a href="#" data-id="{{$upload->id}}" class="delete-file-confirm">Delete</a></td>
+					@else
+						<td></td>
+					@endif
 				</tr>
 			@endforeach
 		</tbody>

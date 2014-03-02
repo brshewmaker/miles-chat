@@ -28,7 +28,7 @@ class FileController extends BaseController
 		$user = Auth::user();
 		$username = $user->username;
 		return View::make('files')->with('uploads', $uploads)
-			->with('username', $username);
+			->with('user', $user);
 	}
 
 	/**
@@ -54,6 +54,8 @@ class FileController extends BaseController
 	/**
 	 * If the given file ID matches a file that exists, delete that file and remove
 	 * it's DB entry
+	 *
+	 * Only delete the file if the logged in user is the same as the file upload's user
 	 * 
 	 * @param  int $id ID of file in the DB
 	 * @return JSON
@@ -61,7 +63,8 @@ class FileController extends BaseController
 	public function delete_file($id) {
 		$file_info = $this->get_file_info($id);
 		$upload_db_entry = Upload::find($id);
-		if ($file_info !== FALSE && $upload_db_entry !== NULL) {
+		$user = Auth::user();
+		if ($file_info !== FALSE && $upload_db_entry !== NULL && ($user->id == $upload_db_entry->user_id)) {
 			unlink($file_info['full_filename']);
 			$upload_db_entry->delete();
 			return Response::json(array('OK' => 1));
