@@ -25,7 +25,10 @@ $(document.body).on('click', '.delete-file', function(e) {
 			$td.html('<img src="' + BASE + '/images/loading.gif" />');
 		},
 		success: function(data) {
-			$td.parent().remove();
+			if (data.OK) {
+				$td.parent().remove();
+			}
+			else { $td.html('ERROR'); }
 		},
 		error: function() {
 			$td.html('ERROR');
