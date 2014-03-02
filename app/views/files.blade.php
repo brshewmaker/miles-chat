@@ -36,10 +36,10 @@
 	<table class="table table-striped sortable" id="files_table">
 		<thead>
 			<th>Filename</th>
-			<th>Type</th>
-			<th>Date</th>
-			<th>Size</th>
-			<th>User</th>
+			<th class="file-table-type">Type</th>
+			<th class="file-table-date">Date</th>
+			<th class="file-table-filesize">Size</th>
+			<th class="file-table-username">User</th>
 			<th>Delete</th>
 		</thead>
 		<tbody>
@@ -47,10 +47,10 @@
 				<?php $file_user = User::find($upload->user_id); ?>
 				<tr>
 					<td>{{HTML::link('get-file/' . $upload->id, $upload->filename)}}</td>
-					<td>{{$upload->filetype}}</td>
-					<td>{{$upload->created_at}}</td>
-					<td>{{$upload->filesize}}</td>
-					<td>{{$file_user->username}}</td>
+					<td class="file-table-type">{{$upload->filetype}}</td>
+					<td class="file-table-date">{{$upload->created_at}}</td>
+					<td class="file-table-filesize">{{$upload->filesize}}</td>
+					<td class="file-table-username">{{$file_user->username}}</td>
 					@if ($file_user->id == $user->id)
 						<td><a href="#" data-id="{{$upload->id}}" class="delete-file-confirm">Delete</a></td>
 					@else
