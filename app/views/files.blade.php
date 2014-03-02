@@ -46,7 +46,7 @@
 			@foreach($uploads as $upload)
 				<?php $file_user = User::find($upload->user_id); ?>
 				<tr>
-					<td>{{HTML::link('get-file/' . $upload->id, $upload->filename)}}</td>
+					<td>{{HTML::link('get-file/' . $upload->id . '/' . $upload->filename, $upload->filename)}}</td>
 					<td class="file-table-type">{{$upload->filetype}}</td>
 					<td class="file-table-date">{{$upload->created_at}}</td>
 					<td class="file-table-filesize">{{$upload->filesize}}</td>

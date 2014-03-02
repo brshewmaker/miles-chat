@@ -92,7 +92,7 @@ class FileController extends BaseController
 			// Upload the file, create new db entry, and send a chat msg
 			Input::file('file')->move($uploads_path, $filename);
 			$upload_id = $this->create_new_db_entry($filename, $filetype, $size);
-			ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload_id) . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
+			ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload_id) . '/' . $filename . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
 
 			return Response::json(array('OK' => 1)); //a successful response for files.js
 		}
