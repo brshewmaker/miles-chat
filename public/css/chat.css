@@ -45,9 +45,25 @@ html, body {
 	max-height: 55px;
 }
 
+/* = Files CSS
+-------------------------------------------------------------- */
+
 .server-error, #chat_commands, #sending_msg_div {
 	display: none;
 }
+
+.file-upload .hidden, #hidden_button {
+	display: none;
+}
+
+.file-upload .shown {
+	display: block;
+}
+
+#upload_list {
+	list-style-type: none;
+}
+
 
 
 /*

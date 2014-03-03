@@ -1,5 +1,51 @@
 /*
 |--------------------------------------------------------------------------
+| File Uploads
+|--------------------------------------------------------------------------
+| 
+| Code to handle dragging a file to the chat div
+| 
+*/
+
+var uploader = new plupload.Uploader({
+	browse_button: 'hidden_button',
+	url: BASE + '/upload-file',
+	drop_element: 'chat_messages',
+});
+
+uploader.init();
+
+// TODO: Make this DRY!!  It is repeated in files.js!  Bad Ben!!
+uploader.bind('UploadProgress', function(up, file) {
+	var $progress_div = $('div').find('[data-fileid="' + file.id + '"]');
+	$progress_div.attr('style', 'width: ' + file.percent + '%');
+	$progress_div.html(file.percent + '%');
+});
+
+uploader.bind('UploadComplete', function() {
+	$('.file-upload p').remove();
+	$('.file-upload').removeClass('shown').addClass('hidden');
+});
+
+uploader.bind('FilesAdded', function(up, files) {
+	$('.file-upload').removeClass('hidden').addClass('shown');
+	var html = '';
+	plupload.each(files, function(file) {
+		html += ''+
+			'<p><span>' + file.name + '</span>' +
+				'<div class="progress">' +
+					'<div data-fileid="' + file.id + '" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+				'</div>' +
+			'</p>';
+	});
+	$('.file-upload').append(html);
+	uploader.start();
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
 | Helper functions
 |--------------------------------------------------------------------------
 | 
