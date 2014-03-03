@@ -10,6 +10,7 @@
 
 @section('scripts')
 {{HTML::script('js/jquery.form.min.js')}}
+{{HTML::script('js/plupload.full.min.js')}}
 {{HTML::script('js/chat.js')}}
 @stop
 
@@ -19,6 +20,11 @@
 	<div class="users_div">
 		<legend>Online</legend>
 		<div id="logged_in_users"></div>
+		<br />
+		<div class="file-upload hidden">
+			<legend>Uploading</legend>
+			<button id="hidden_button"></button>
+		</div>
 	</div> <!-- end users div -->
 
 	<!-- Chat Div -->
@@ -26,7 +32,7 @@
 
 		<legend>Messages</legend>
 
-		<div class="chat-messages-div"></div>
+		<div class="chat-messages-div" id="chat_messages"></div>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
