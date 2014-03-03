@@ -12,6 +12,9 @@ html, body {
 	width: 150px;
 	position: absolute;
 	right: 0;
+	/* These rules for file uploads */
+	height: 100%;
+	overflow-y: auto;
 }
 
 .chat-div {
