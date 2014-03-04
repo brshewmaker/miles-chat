@@ -65,8 +65,12 @@ class FileController extends BaseController
 		$upload_db_entry = Upload::find($id);
 		$user = Auth::user();
 		if ($file_info !== FALSE && $upload_db_entry !== NULL && ($user->id == $upload_db_entry->user_id)) {
-			unlink($file_info['full_filename']);
-			$upload_db_entry->delete();
+			try {
+				$upload_db_entry->delete();
+				unlink($file_info['full_filename']);
+			}
+			catch (Exception $e) { return Response::json(array('ERROR' => 0)); }
+
 			return Response::json(array('OK' => 1));
 		}
 		return Response::json(array('ERROR' => 0));
@@ -92,11 +96,12 @@ class FileController extends BaseController
 			// Upload the file, create new db entry, and send a chat msg
 			Input::file('file')->move($uploads_path, $filename);
 			$upload_id = $this->create_new_db_entry($filename, $filetype, $size);
+
 			ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload_id) . '/' . $filename . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
 
 			return Response::json(array('OK' => 1)); //a successful response for files.js
 		}
-		return Response::json(array('OK' => 0));
+		return Response::json(array('ERROR' => 0));
 	}
 
 	/*
@@ -107,6 +112,7 @@ class FileController extends BaseController
 	| Extra functionality
 	| 
 	*/
+
 
 	/**
 	 * Create a new DB upload file entry based on params
