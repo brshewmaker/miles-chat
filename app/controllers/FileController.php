@@ -91,7 +91,7 @@ class FileController extends BaseController
 			$upload_info = FileController::get_file_upload_info($upload);
 
 			 if (FileController::move_file_upload($upload, $upload_info['filename'])) {
-			 	if ($upload = FileController::add_db_entry_for_file_upload($upload_info)) {
+			 	if ($upload = FileController::create_new_db_entry($upload_info['filename'], $upload_info['mimetype'], $upload_info['size'])) {
 					ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload->id) . '/' . $upload_info['filename'] . '">' . $upload_info['filename'] . '</a>'); //TODO  ---> FIX ME!!
 					return Response::json(array('OK' => 1)); 
 			 	}
@@ -148,22 +148,6 @@ class FileController extends BaseController
 	}
 
 	/**
-	 * Add a new DB uploads entry for the file upload
-	 * 
-	 * @param array $file_info Needed information for this file
-	 * @return mixed  Either the upload DB entry, or FALSE
-	 */
-	public static function add_db_entry_for_file_upload($upload_info) {
-		try {
-			$upload = FileController::create_new_db_entry($upload_info['filename'], $upload_info['mimetype'], $upload_info['size']);
-		}
-		catch (Exception $e) {
-			return FALSE;
-		}
-		return $upload;
-	}
-
-	/**
 	 * Try to delete the file by the given filename
 	 * 
 	 * @param  string $filename filename
@@ -186,17 +170,22 @@ class FileController extends BaseController
 	 * @param  string $filename 
 	 * @param  string $type     
 	 * @param  string $size     
-	 * @return int DB ID of the new upload entry
+	 * @return mixed The new database object or FALSE
 	 */
 	public static function create_new_db_entry($filename, $type, $size) {
-		$user = Auth::user();
-		$upload = new Upload;
-		$upload->user_id = $user->id;
-		$upload->filename = $filename;
-		$upload->filetype = $type;
-		$upload->filesize = $size;
-		$upload->save();
-		return $upload;
+		try {
+			$user = Auth::user();
+			$upload = new Upload;
+			$upload->user_id = $user->id;
+			$upload->filename = $filename;
+			$upload->filetype = $type;
+			$upload->filesize = $size;
+			$upload->save();
+			return $upload;
+		}
+		catch (Exception $e) {
+			return FALSE;
+		}
 	}
 
 	/**
