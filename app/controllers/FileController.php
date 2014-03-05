@@ -81,25 +81,24 @@ class FileController extends BaseController
 	 *
 	 * Puts the uploaded file in the uploads directory with the same filename
 	 * as the upload, inserts a new DB entry, and sends a new chat message
-	 * with the link to the uploaded file
+	 * with the link to the uploaded file.  
 	 * 
 	 * @return JSON
 	 */
 	public function upload_file() {
-		$uploads_path = realpath(Config::get('uploads.path'));
 		if (Input::hasFile('file')) {
-			// Uploaded file info
-			$filename = Input::file('file')->getClientOriginalName();
-			$filetype = Input::file('file')->getMimeType();
-			$size = FileController::get_human_filesize(Input::file('file')->getSize());
+			$upload = Input::file('file');
+			$upload_info = FileController::get_file_upload_info($upload);
 
-			// Upload the file, create new db entry, and send a chat msg
-			Input::file('file')->move($uploads_path, $filename);
-			$upload_id = $this->create_new_db_entry($filename, $filetype, $size);
-
-			ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload_id) . '/' . $filename . '">' . $filename . '</a>'); //TODO  ---> FIX ME!!
-
-			return Response::json(array('OK' => 1)); //a successful response for files.js
+			 if (FileController::move_file_upload($upload, $upload_info['filename'])) {
+			 	if ($upload = FileController::add_db_entry_for_file_upload($upload_info)) {
+					ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload->id) . '/' . $upload_info['filename'] . '">' . $upload_info['filename'] . '</a>'); //TODO  ---> FIX ME!!
+					return Response::json(array('OK' => 1)); 
+			 	}
+			 	else {
+			 		FileController::try_delete_file($upload_info['filename']);
+			 	}
+			 }
 		}
 		return Response::json(array('ERROR' => 0));
 	}
@@ -113,6 +112,73 @@ class FileController extends BaseController
 	| 
 	*/
 
+	/**
+	 * Create an array of informatio needed for this file upload
+	 * 
+	 * @param Object $upload Uploaded file
+	 * @return array Information about the uploaded file
+	 */
+	public static function get_file_upload_info($upload) {
+		$info = array();
+
+		$info['filename'] = $upload->getClientOriginalName();
+		$info['mimetype'] = $upload->getMimeType();
+		$info['size'] = FileController::get_human_filesize($upload->getSize());
+
+		return $info;
+		
+	}
+
+	/**
+	 * Move the uploaded file to the uploads path set in the uploads config file
+	 *
+	 * @param  Object $upload   uploaded file
+	 * @param  string $filename given filename
+	 * @return bool           Was the move successful?
+	 */
+	public static function move_file_upload($upload, $filename) {
+		try {
+			$upload->move(realpath(Config::get('uploads.path')), $filename); 
+		}
+		catch (Exception $e) {
+			return FALSE;
+		}
+		return TRUE;
+		
+	}
+
+	/**
+	 * Add a new DB uploads entry for the file upload
+	 * 
+	 * @param array $file_info Needed information for this file
+	 * @return mixed  Either the upload DB entry, or FALSE
+	 */
+	public static function add_db_entry_for_file_upload($upload_info) {
+		try {
+			$upload = FileController::create_new_db_entry($upload_info['filename'], $upload_info['mimetype'], $upload_info['size']);
+		}
+		catch (Exception $e) {
+			return FALSE;
+		}
+		return $upload;
+	}
+
+	/**
+	 * Try to delete the file by the given filename
+	 * 
+	 * @param  string $filename filename
+	 * @return bool           Did we delete it?
+	 */
+	public static function try_delete_file($filename) {
+		try {
+			unlink(realpath(Config::get('uploads.path')) . '/' . $filename);
+		}
+		catch (Exception $e) {
+			return FALSE;
+		}
+		return TRUE;
+	}
+
 
 	/**
 	 * Create a new DB upload file entry based on params
@@ -122,7 +188,7 @@ class FileController extends BaseController
 	 * @param  string $size     
 	 * @return int DB ID of the new upload entry
 	 */
-	public function create_new_db_entry($filename, $type, $size) {
+	public static function create_new_db_entry($filename, $type, $size) {
 		$user = Auth::user();
 		$upload = new Upload;
 		$upload->user_id = $user->id;
@@ -130,7 +196,7 @@ class FileController extends BaseController
 		$upload->filetype = $type;
 		$upload->filesize = $size;
 		$upload->save();
-		return $upload->id;
+		return $upload;
 	}
 
 	/**
