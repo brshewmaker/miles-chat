@@ -136,7 +136,11 @@ class FileController extends BaseController
 	}
 
 	/**
-	 * Move the uploaded file to the uploads path set in the uploads config file
+	 * Try to move the uploaded file to the uploads path set in the uploads config file
+	 *
+	 * Laravel's Filesystem::move() function simply calls PHP's rename(), which will
+	 * simply overwrite a file if it already exists.  We don't want that to happen
+	 * so it must first check if it exists.
 	 *
 	 * @param  Object $upload   uploaded file
 	 * @param  string $filename given filename
@@ -144,13 +148,14 @@ class FileController extends BaseController
 	 */
 	public static function move_file_upload($upload, $filename) {
 		try {
-			$upload->move(realpath(Config::get('uploads.path')), $filename); 
+			if (!file_exists(FileController::get_full_filepath($filename))) {
+				return $upload->move(realpath(Config::get('uploads.path')), $filename); 
+			}
+			return FALSE;
 		}
 		catch (Exception $e) {
 			return FALSE;
 		}
-		return TRUE;
-		
 	}
 
 	/**
