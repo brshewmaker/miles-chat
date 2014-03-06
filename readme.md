@@ -51,7 +51,7 @@ which would allow you to go to http://localhost/miles-chat.
 
 ## What's new in 1.2
 
-This latest release focusing on the file uploading side of things.  What's changed:
+This latest release focuses on the file uploading side of things.  What's changed:
 
 1.  Upload multiple files at once
 
