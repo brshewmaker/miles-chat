@@ -84,10 +84,13 @@ $(document).ready(function() {
 	uploader.bind('UploadComplete', function() {
 		$('.file-upload p').remove();
 		$('.file-upload').removeClass('shown').addClass('hidden');
+		$('.sidebar').removeClass('uploading');
 	});
 
 	uploader.bind('FilesAdded', function(up, files) {
 		$('.file-upload').removeClass('hidden').addClass('shown');
+		$('.sidebar').addClass('uploading');
+
 		var html = '';
 		plupload.each(files, function(file) {
 			html += ''+
@@ -98,7 +101,7 @@ $(document).ready(function() {
 				'</p>';
 		});
 		$('.file-upload').append(html);
-		uploader.start();
+		// uploader.start();
 	});
 }); //end document.ready
 

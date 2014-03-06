@@ -12,9 +12,12 @@ html, body {
 	width: 150px;
 	position: absolute;
 	right: 0;
-	/* These rules for file uploads */
+}
+
+.uploading {
 	height: 100%;
 	overflow-y: auto;
+	background: 1px solid red;
 }
 
 .chat-div {
