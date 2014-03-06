@@ -10,23 +10,29 @@
 
 @section('scripts')
 {{HTML::script('js/jquery.form.min.js')}}
+{{HTML::script('js/plupload.full.min.js')}}
 {{HTML::script('js/chat.js')}}
 @stop
 
 @section('content')
 
 	<!-- Logged in Users Div -->
-	<div class="users_div">
+	<div class="sidebar">
 		<legend>Online</legend>
 		<div id="logged_in_users"></div>
-	</div> <!-- end users div -->
+		<br />
+		<div class="file-upload hidden">
+			<legend>Uploading</legend>
+			<button id="hidden_button"></button>
+		</div>
+	</div> <!-- end sidebar -->
 
 	<!-- Chat Div -->
 	<div class="chat-div">
 
 		<legend>Messages</legend>
 
-		<div class="chat-messages-div"></div>
+		<div class="chat-messages-div" id="chat_messages"></div>
 
 		<div class="chat-input">
 			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}

@@ -1,0 +1,19 @@
+.well ul {
+	list-style-type: none;
+}
+
+#error_console {
+	display: none;
+}
+
+@media (max-width: 768px) {
+	.file-table-type, .file-table-date, .file-table-filesize {
+		display: none;
+	}
+}
+
+@media (max-width: 500px) {
+	.file-table-username {
+		display: none;
+	}
+}
