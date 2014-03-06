@@ -101,7 +101,7 @@ $(document).ready(function() {
 				'</p>';
 		});
 		$('.file-upload').append(html);
-		// uploader.start();
+		uploader.start();
 	});
 }); //end document.ready
 
