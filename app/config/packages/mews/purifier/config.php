@@ -15,7 +15,7 @@ return array(
             "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
         ),
         "titles" => array(
-            'AutoFormat.AutoParagraph' => false,
+            'AutoFormat.AutoParagraph' => true,
             'AutoFormat.Linkify' => true,
         )
     ),
