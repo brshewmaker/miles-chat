@@ -38,6 +38,10 @@ html, body {
 	width: 98%;
 }
 
+.chat-message-body {
+	word-wrap: break-word;
+}
+
 .chat-input {
 	position: absolute;
 	margin-right: 130px;
