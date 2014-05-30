@@ -67,6 +67,7 @@
 		<p><strong>/h1 thru /h4:</strong> title tags</p>
 		<p><strong>/b:</strong> wrap in strong</p>
 		<p><strong>/i:</strong> wrap in em</p>
+		<p><strong>/image:</strong> embed an inline image</p>
 	</div>
 
 	<!-- Sending msg div -->
