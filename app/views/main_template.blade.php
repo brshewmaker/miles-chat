@@ -63,6 +63,8 @@
 	{{HTML::script('js/jquery-2.0.3.min.js')}}
 	{{HTML::script('bootstrap/js/bootstrap.min.js')}}
 	{{HTML::script('js/main.js')}}
+	{{HTML::script('js/react.min.js')}}
+	{{HTML::script('js/JSXTransformer.js')}}
 	@yield('scripts')
 </body>
 </html>

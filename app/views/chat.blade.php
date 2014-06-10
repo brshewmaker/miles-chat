@@ -12,6 +12,7 @@
 {{HTML::script('js/jquery.form.min.js')}}
 {{HTML::script('js/plupload.full.min.js')}}
 {{HTML::script('js/chat.js')}}
+{{HTML::script('js/chat-react.js')}}
 @stop
 
 @section('content')
