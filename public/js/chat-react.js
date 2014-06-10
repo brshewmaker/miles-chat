@@ -5,16 +5,37 @@ var ChatDiv = React.createClass({
 	// send message to server
 	// poll for new messages
 	// render the chat div HTML
+	getInitialChatMessages: function() {
+		console.log('getInitialChatMessages');
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-chat-messages/initial',
+			success: function(data) {
+				console.log('worked');
+				this.setState({data: data});
+			}.bind(this)
+		});
+	},
+
+	getInitialState: function() {
+		return {data: []};
+	},
+
+	componentWillMount: function() {
+		console.log('componentWillMount');
+		this.getInitialChatMessages();
+	},
 
 	/**
 	 * Render the chat-div, messages, and submit form
 	 * @return {JSX} 
 	 */
 	render: function() {
+		console.log('time to render');
 		return (
 			<div>
 				<legend>Messages</legend>
-				<ChatMessages />
+				<ChatMessages data={this.state.data}/>
 				<ChatForm />
 			</div>
 		);
@@ -30,11 +51,19 @@ var ChatMessages = React.createClass({
 	 * @return {JSX} 
 	 */
 	render: function() {
-		// Create all chat messages and store as an array called chatMessages
+	    var messagesArray = this.props.data.map(function (message, index) {
+			return <ChatMessage 
+				messageID={message.messageid}
+				username={message.username}
+				timestamp={message.timestamp}
+				message={message.message} >
+				</ChatMessage>;
+	    });
 		return (
-			<div className="chat-messages-div" id="chat_messages"></div>
+			<div className="chat-messages-div" id="chat_messages">{messagesArray}</div>
 		);
-	},
+
+		},
 });
 
 var ChatMessage = React.createClass({
@@ -42,16 +71,19 @@ var ChatMessage = React.createClass({
 
 	/**
 	 * Render the individual chat message
+	 *
+	 * Cureently expects raw HTML to be send from the server for the message, so, for now, 
+	 * trusting that the server will send back 'safe' HTML and inject that directly into the DOM
 	 * @return {JSX} 
 	 */
 	render: function() {
 		return (
 			<div className="chat-message panel panel-default">
 				<div className="chat-message-info panel-heading">
-					<span className='text-muted'></span> | 
+					<span className='text-muted'>{this.props.username}</span> | {this.props.timestamp}
 				</div>
-				<div className="chat-message-body panel-body" data-messageid="2">
-					<p></p>
+				<div className="chat-message-body panel-body" data-messageid={this.props.messageID}>
+					<p dangerouslySetInnerHTML={{__html: this.props.message}} />
 				</div>
 			</div>
 		);

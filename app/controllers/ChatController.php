@@ -34,7 +34,7 @@ class ChatController extends BaseController
 	 * 
 	 * @param  string $type            
 	 * @param  int $last_message_id 
-	 * @return View                  
+	 * @return JSON                 
 	 */
 	public function action_get_chat_messages($type, $last_message_id = NULL) {
 		if ($type == 'initial') {
@@ -57,7 +57,7 @@ class ChatController extends BaseController
 				}
 			}
 		}
-		return View::make('messages')->with('messages', $messages);
+		return Response::json($this->create_messages_json($messages));
 	}
 
 	/**
@@ -96,6 +96,26 @@ class ChatController extends BaseController
 	| These are used by the above functions
 	| 
 	*/
+
+	/**
+	 * Given an array from the DB of messges, create a new array formatted correctly for the JS
+	 * 
+	 * @param  array $messages Messages from the DB
+	 * @return array           
+	 */
+	public function create_messages_json($messages) {
+		$messages_array = array();
+		foreach ($messages as $message) {
+			$current = array();
+			$user = User::find($message->user_id);
+			$current['username'] = $user->username;
+			$current['timestamp'] = ChatController::format_chat_timestamp($message->created_at);
+			$current['messageid'] = $message->id;
+			$current['message'] = $message->message;
+			$messages_array[] = $current;
+		}
+		return $messages_array;
+	}
 
 	/**
 	 * Updates the logged in user's last_seen column in the DB
