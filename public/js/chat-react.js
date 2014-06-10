@@ -12,7 +12,7 @@ var ChatDiv = React.createClass({
 	 */
 	render: function() {
 		return (
-			<div className="chat-div">
+			<div>
 				<legend>Messages</legend>
 				<ChatMessages />
 				<ChatForm />
@@ -30,9 +30,9 @@ var ChatMessages = React.createClass({
 	 * @return {JSX} 
 	 */
 	render: function() {
+		// Create all chat messages and store as an array called chatMessages
 		return (
-			// Create all chat messages and store as an array called chatMessages
-			<div className="chat-messages-div" id="chat_messages">{chatMessages}</div>
+			<div className="chat-messages-div" id="chat_messages"></div>
 		);
 	},
 });
@@ -48,10 +48,10 @@ var ChatMessage = React.createClass({
 		return (
 			<div className="chat-message panel panel-default">
 				<div className="chat-message-info panel-heading">
-					<span className='text-muted'>{username}</span> | {createdAt}
+					<span className='text-muted'></span> | 
 				</div>
-				<div className="chat-message-body panel-body" data-messageid={messageId}>
-					<p>{message}</p>
+				<div className="chat-message-body panel-body" data-messageid="2">
+					<p></p>
 				</div>
 			</div>
 		);
@@ -83,4 +83,4 @@ var ChatForm = React.createClass({
 	}
 });
 
-React.renderComponent(<ChatDiv />, document.getElementById('react_chat'));
+React.renderComponent(<ChatDiv />, document.getElementById('chat-div'));

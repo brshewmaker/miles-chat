@@ -11,8 +11,8 @@
 @section('scripts')
 {{HTML::script('js/jquery.form.min.js')}}
 {{HTML::script('js/plupload.full.min.js')}}
-{{HTML::script('js/chat.js')}}
 <script type="text/jsx" src="js/chat-react.js"></script>
+{{HTML::script('js/chat.js')}}
 @stop
 
 @section('content')
@@ -29,7 +29,7 @@
 	</div> <!-- end sidebar -->
 
 	<!-- Chat Div -->
-	<div id="react_chat"></div>
+	<div id="chat-div"></div>
 
 	<!-- Server Error Alert div -->
 	<div class="server-error">

@@ -20,7 +20,7 @@ html, body {
 	background: 1px solid red;
 }
 
-.chat-div {
+#chat-div {
 	position: relative;
 	margin-right: 130px;
 	height: 100%;
