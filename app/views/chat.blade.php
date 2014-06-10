@@ -12,7 +12,7 @@
 {{HTML::script('js/jquery.form.min.js')}}
 {{HTML::script('js/plupload.full.min.js')}}
 {{HTML::script('js/chat.js')}}
-{{HTML::script('js/chat-react.js')}}
+<script type="text/jsx" src="js/chat-react.js"></script>
 @stop
 
 @section('content')
@@ -29,29 +29,7 @@
 	</div> <!-- end sidebar -->
 
 	<!-- Chat Div -->
-	<div class="chat-div">
-
-		<legend>Messages</legend>
-
-		<div class="chat-messages-div" id="chat_messages"></div>
-
-		<div class="chat-input">
-			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
-				<div class="form-group chat-textarea col-md-11 col-sm-10">
-					<div class="controls">
-						<textarea class="form-control" name="chatmsg" id="chatmsg"></textarea>
-					</div>
-				</div>
-
-				<div class="form-group chat-help">
-					<div class="controls">
-				    	<button type="button" id="popover_btn" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
-				    </div>
-			    </div>
-
-			{{Form::close()}}
-		</div>
-	<div> <!-- end chat div -->
+	<div id="react_chat"></div>
 
 	<!-- Server Error Alert div -->
 	<div class="server-error">

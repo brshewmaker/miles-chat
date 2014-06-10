@@ -83,4 +83,4 @@ var ChatForm = React.createClass({
 	}
 });
 
-React.renderComponent();
+React.renderComponent(<ChatDiv />, document.getElementById('react_chat'));
