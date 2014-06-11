@@ -68,7 +68,8 @@ var ChatDiv = React.createClass({
 	},
 
 	/**
-	 * Get the last 20 chat messages from the server on page load
+	 * Get the last 20 chat messages from the server on page load, 
+	 * then start the loop to get new messages
 	 */
 	getInitialChatMessages: function() {
 		$.ajax({
@@ -82,6 +83,9 @@ var ChatDiv = React.createClass({
 		});
 	},
 
+	/**
+	 * Uses long-polling to request any new messages from the server
+	 */
 	getNewChatMessages: function() {
 		CHAT.HELPERS.toggleServerErrorMessage('off');
 		var message_id = this.state.data[this.state.data.length-1].messageid;
@@ -103,7 +107,11 @@ var ChatDiv = React.createClass({
 		else { setTimeout(this.getNewChatMessages, 2000); }
 	},
 
-	addNewMessages: function(data, status, xhr) {
+	/**
+	 * Edit this.state.data array so that it has the 20 newest messages
+	 * @param {array} data  Data received from the server
+	 */
+	addNewMessages: function(data) {
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 			var newState = this.state.data;
@@ -120,8 +128,10 @@ var ChatDiv = React.createClass({
 		this.getNewChatMessages();
 	},
 
+	/**
+	 * Ping the server every 2 seconds until we can reconnect
+	 */
 	tryToReconnectOnError: function() {
-		// remove_sending_div();
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/get-logged-in-users', //url doesn't really matter here, just need to try to get a response
