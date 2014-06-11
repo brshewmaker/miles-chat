@@ -105,6 +105,7 @@ var ChatDiv = React.createClass({
 
 	addNewMessages: function(data, status, xhr) {
 		if (typeof data !== undefined && data.length > 0) {
+			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 			var newState = this.state.data;
 			var numToRemove = 0;
 			for (var message in data) {
@@ -265,7 +266,7 @@ $(document).ready(function() {
 	$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	setInterval(function() {
 		$('#logged_in_users').load(BASE + '/get-logged-in-users', function(data, status, xhr) {
-			redirect_if_not_authenticated(xhr.getResponseHeader('content-type'));
+			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 		});
 	}, 10000);
 
@@ -316,44 +317,3 @@ $(document).ready(function() {
 		uploader.start();
 	});
 }); //end document.ready
-
-
-/*
-|--------------------------------------------------------------------------
-| Helper functions
-|--------------------------------------------------------------------------
-| 
-| These are all used for the chat functionality
-| 
-*/
-
-/**
- * If update_chat_messages returned an error, try to get a response from the 
- * server every 2 seconds, and call update_chat_messages again if we get one
- */
-function try_to_reconnect_on_error() {
-	remove_sending_div();
-	$.ajax({
-		type: 'GET',
-		url: BASE + '/get-logged-in-users', //url doesn't really matter here, just need to try to get a response
-		async: true,
-		cache: false,
-		timeout: 2000,
-		success: update_chat_messages,
-		error: function() {
-			setTimeout(try_to_reconnect_on_error, 2000);
-		}
-	});
-}
-
-/**
- * If the server responds with json, that means the user is no longer authenticated.
- * 
- * @param  {string} content_type Content type of response from the server
- */
-function redirect_if_not_authenticated(content_type) {
-	if (content_type == 'application/json') {
-		window.location.href = BASE;
-	}
-}
-
