@@ -28,29 +28,7 @@
 	</div> <!-- end sidebar -->
 
 	<!-- Chat Div -->
-	<div class="chat-div">
-
-		<legend>Messages</legend>
-
-		<div class="chat-messages-div" id="chat_messages"></div>
-
-		<div class="chat-input">
-			{{Form::open(array('url' => 'send_chat', 'class' => 'form-inline', 'id' => 'chat_box'))}}
-				<div class="form-group chat-textarea col-md-11 col-sm-10">
-					<div class="controls">
-						<textarea class="form-control" name="chatmsg" id="chatmsg"></textarea>
-					</div>
-				</div>
-
-				<div class="form-group chat-help">
-					<div class="controls">
-				    	<button type="button" id="popover_btn" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
-				    </div>
-			    </div>
-
-			{{Form::close()}}
-		</div>
-	<div> <!-- end chat div -->
+	<div id="chat-div"></div>
 
 	<!-- Server Error Alert div -->
 	<div class="server-error">
@@ -67,6 +45,7 @@
 		<p><strong>/h1 thru /h4:</strong> title tags</p>
 		<p><strong>/b:</strong> wrap in strong</p>
 		<p><strong>/i:</strong> wrap in em</p>
+		<p><strong>/image:</strong> embed an inline image</p>
 	</div>
 
 	<!-- Sending msg div -->

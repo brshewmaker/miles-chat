@@ -20,7 +20,7 @@ html, body {
 	background: 1px solid red;
 }
 
-.chat-div {
+#chat-div {
 	position: relative;
 	margin-right: 130px;
 	height: 100%;
@@ -36,6 +36,10 @@ html, body {
 	top: 0;
 	bottom: 70px;
 	width: 98%;
+}
+
+.chat-message-body {
+	word-wrap: break-word;
 }
 
 .chat-input {

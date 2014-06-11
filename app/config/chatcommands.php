@@ -20,4 +20,5 @@ return array(
 	'/h4' => '<h4>%s</h4>',
 	'/b' => '<strong>%s</strong>',
 	'/i' => '<em>%s</em>',
+	'/image' => '<img class="img-responsive" src="%s">',
 );
