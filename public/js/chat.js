@@ -89,22 +89,19 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	getNewChatMessages: function() {
 		CHAT.HELPERS.toggleServerErrorMessage('off');
 		var message_id = this.state.data[this.state.data.length-1].messageid;
-		if (typeof message_id !== 'undefined') {
-			$.ajax({
-				type: 'GET',
-				url: BASE + '/get-chat-messages/newest/' + message_id,
-				async: true,
-				cache: false,
-				timeout: 30000,
-				success: this.addNewMessages,
-				error: function() {
-					CHAT.HELPERS.toggleServerErrorMessage('on');
-					CHAT.HELPERS.scrollChatDiv();
-					setTimeout(this.tryToReconnectOnError, 2000);
-				}.bind(this)
-			});
-		}
-		else { setTimeout(this.getNewChatMessages, 2000); }
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-chat-messages/newest/' + message_id,
+			async: true,
+			cache: false,
+			timeout: 30000,
+			success: this.addNewMessages,
+			error: function() {
+				CHAT.HELPERS.toggleServerErrorMessage('on');
+				CHAT.HELPERS.scrollChatDiv();
+				setTimeout(this.tryToReconnectOnError, 2000);
+			}.bind(this)
+		});
 	},
 
 	/**
@@ -120,7 +117,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 				newState.push(data[message]);
 				numToRemove++;
 			}
-			newState.splice(0, numToRemove);
+			if (this.state.data.length > 19) { newState.splice(0, numToRemove); }
 			this.setState({data: newState});
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
 			CHAT.HELPERS.removeSendingDiv();
