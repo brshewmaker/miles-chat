@@ -231,7 +231,7 @@ var ChatForm = React.createClass({
 | Document Ready
 |--------------------------------------------------------------------------
 | 
-| Star the React chain and handle file uploads
+| Start the React chain and handle file uploads
 | 
 */
 
