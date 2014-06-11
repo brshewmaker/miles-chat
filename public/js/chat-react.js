@@ -57,7 +57,7 @@ CHAT.HELPERS = {
 };
 
 
-var ChatDiv = React.createClass({displayName: 'ChatDiv',
+var ChatDiv = React.createClass({
 
 	getInitialState: function() {
 		return {data: []};
@@ -151,37 +151,37 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	 */
 	render: function() {
 		return (
-			React.DOM.div(null, 
-				React.DOM.legend(null, "Messages"),
-				ChatMessages( {data:this.state.data}),
-				ChatForm(null )
-			)
+			<div>
+				<legend>Messages</legend>
+				<ChatMessages data={this.state.data}/>
+				<ChatForm />
+			</div>
 		);
 	},
 });
 
-var ChatMessages = React.createClass({displayName: 'ChatMessages',
+var ChatMessages = React.createClass({
 	/**
 	 * Render all chat messages and plop them into their correct div
 	 * @return {JSX} 
 	 */
 	render: function() {
 	    var messagesArray = this.props.data.map(function (message, index) {
-			return ChatMessage( 
-				{key:message.messageid,
-				username:message.username,
-				timestamp:message.timestamp,
-				message:message.message} 
-				);
+			return <ChatMessage 
+				key={message.messageid}
+				username={message.username}
+				timestamp={message.timestamp}
+				message={message.message} >
+				</ChatMessage>;
 	    });
 		return (
-			React.DOM.div( {className:"chat-messages-div", id:"chat_messages"}, messagesArray)
+			<div className="chat-messages-div" id="chat_messages">{messagesArray}</div>
 		);
 
 		},
 });
 
-var ChatMessage = React.createClass({displayName: 'ChatMessage',
+var ChatMessage = React.createClass({
 	/**
 	 * Render the individual chat message
 	 *
@@ -191,37 +191,37 @@ var ChatMessage = React.createClass({displayName: 'ChatMessage',
 	 */
 	render: function() {
 		return (
-			React.DOM.div( {className:"chat-message panel panel-default"}, 
-				React.DOM.div( {className:"chat-message-info panel-heading"}, 
-					React.DOM.span( {className:"text-muted"}, this.props.username), " | ", this.props.timestamp
-				),
-				React.DOM.div( {className:"chat-message-body panel-body"}, 
-					React.DOM.p( {dangerouslySetInnerHTML:{__html: this.props.message}} )
-				)
-			)
+			<div className="chat-message panel panel-default">
+				<div className="chat-message-info panel-heading">
+					<span className='text-muted'>{this.props.username}</span> | {this.props.timestamp}
+				</div>
+				<div className="chat-message-body panel-body">
+					<p dangerouslySetInnerHTML={{__html: this.props.message}} />
+				</div>
+			</div>
 		);
 	}
 });
 
-var ChatForm = React.createClass({displayName: 'ChatForm',
+var ChatForm = React.createClass({
 
 	render: function() {
 		return (
-			React.DOM.div( {className:"chat-input"}, 
-				React.DOM.form( {className:"form-inline", id:"chat_box", action:"send_chat", method:"post"}, 
-					React.DOM.div( {className:"form-group chat-textarea col-md-11 col-sm-10"}, 
-						React.DOM.div( {className:"controls"}, 
-							React.DOM.textarea( {className:"form-control", name:"chatmsg", id:"chatmsg"})
-						)
-					),
+			<div className="chat-input">
+				<form className="form-inline" id="chat_box" action="send_chat" method="post">
+					<div className="form-group chat-textarea col-md-11 col-sm-10">
+						<div className="controls">
+							<textarea className="form-control" name="chatmsg" id="chatmsg"></textarea>
+						</div>
+					</div>
 
-					React.DOM.div( {className:"form-group chat-help"}, 
-						React.DOM.div( {className:"controls"}, 
-					    	React.DOM.button( {type:"button", id:"popover_btn", className:"btn btn-default", 'data-container':"body", 'data-toggle':"popover", 'data-placement':"top"}, "?")
-					    )
-				    )
-				)
-			)
+					<div className="form-group chat-help">
+						<div className="controls">
+					    	<button type="button" id="popover_btn" className="btn btn-default" data-container="body" data-toggle="popover" data-placement="top">?</button>
+					    </div>
+				    </div>
+				</form>
+			</div>
 		);
 	}
 });
@@ -237,7 +237,7 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 
 $(document).ready(function() {
 
-	React.renderComponent(ChatDiv(null ), document.getElementById('chat-div'));
+	React.renderComponent(<ChatDiv />, document.getElementById('chat-div'));
 
 	/* = Chat commands popover
 	-------------------------------------------------------------- */
