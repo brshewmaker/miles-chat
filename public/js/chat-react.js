@@ -1,29 +1,123 @@
 /** @jsx React.DOM */
 
-var ChatDiv = React.createClass({
-	// get messages from server
-	// send message to server
-	// poll for new messages
-	// render the chat div HTML
-	getInitialChatMessages: function() {
-		console.log('getInitialChatMessages');
-		$.ajax({
-			type: 'GET',
-			url: BASE + '/get-chat-messages/initial',
-			success: function(data) {
-				console.log('worked');
-				this.setState({data: data});
-			}.bind(this)
-		});
+var CHAT = CHAT || {};
+CHAT.HELPERS = {
+
+	/**
+	 * Scroll the chat messages div to the bottom and/or scroll the entire window to the bottom
+	 * for the mobile users
+	 */
+	scrollChatDiv: function() {
+		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+		$('html, body').scrollTop($(document).height());
 	},
+
+	/**
+	 * Add or remove the server-error message div
+	 * 
+	 * @param  {string} toggle on or off
+	 */
+	toggleServerErrorMessage: function(toggle) {
+		if (toggle == 'on' && !$('.chat-messages-div .alert-danger').length) {
+			$('.chat-messages-div').append($('.server-error').html());
+			$('.chat-textarea').addClass('has-error');
+		}
+		if (toggle == 'off') {
+			$('.chat-messages-div .alert-danger').remove();
+			$('.chat-textarea').removeClass('has-error');
+		}
+	},
+
+	/**
+	 * Determine if the user is at the bottom of the chat_message_div
+	 * 
+	 * @return {BOOL} 
+	 */
+	userAtBottomOfMessagesDiv: function() {
+		var chat_messages = $('.chat-messages-div');
+		if (chat_messages[0].scrollHeight - chat_messages.scrollTop() == chat_messages.outerHeight()) {
+			return true;
+		}
+		return false;
+	},
+};
+
+
+var ChatDiv = React.createClass({
 
 	getInitialState: function() {
 		return {data: []};
 	},
 
 	componentWillMount: function() {
-		console.log('componentWillMount');
 		this.getInitialChatMessages();
+	},
+
+	/**
+	 * Get the last 20 chat messages from the server on page load
+	 */
+	getInitialChatMessages: function() {
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-chat-messages/initial',
+			success: function(data) {
+				this.setState({data: data});
+				CHAT.HELPERS.scrollChatDiv();
+				this.getNewChatMessages();
+			}.bind(this)
+		});
+	},
+
+	getNewChatMessages: function() {
+		CHAT.HELPERS.toggleServerErrorMessage('off');
+		var message_id = this.state.data[this.state.data.length-1].messageid;
+		console.log('latest message is: ' + message_id);
+		if (typeof message_id !== 'undefined') {
+			$.ajax({
+				type: 'GET',
+				url: BASE + '/get-chat-messages/newest/' + message_id,
+				async: true,
+				cache: false,
+				timeout: 30000,
+				success: this.addNewMessages,
+				error: function() {
+					CHAT.HELPERS.toggleServerErrorMessage('on');
+					CHAT.HELPERS.scrollChatDiv();
+					setTimeout(this.tryToReconnectOnError, 2000);
+				}.bind(this)
+			});
+		}
+		else { setTimeout(this.getNewChatMessages, 2000); }
+	},
+
+	addNewMessages: function(data, status, xhr) {
+		if (typeof data !== undefined && data.length > 0) {
+			var newState = this.state.data;
+			var numToRemove = 0;
+			for (var message in data) {
+				newState.push(data[message]);
+				numToRemove++;
+			}
+			newState.splice(0, numToRemove);
+			this.setState({data: newState});
+			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
+		}
+		this.getNewChatMessages();
+	},
+
+	tryToReconnectOnError: function() {
+		// remove_sending_div();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-logged-in-users', //url doesn't really matter here, just need to try to get a response
+			async: true,
+			cache: false,
+			timeout: 2000,
+			success: this.getNewChatMessages,
+			error: function() {
+				setTimeout(this.tryToReconnectOnError, 2000);
+			}.bind(this)
+		});
 	},
 
 	/**
@@ -31,7 +125,6 @@ var ChatDiv = React.createClass({
 	 * @return {JSX} 
 	 */
 	render: function() {
-		console.log('time to render');
 		return (
 			<div>
 				<legend>Messages</legend>
@@ -43,9 +136,6 @@ var ChatDiv = React.createClass({
 });
 
 var ChatMessages = React.createClass({
-	// When 'called', either grab the HTML or build it and return it in render
-	// calls ChatMessage to get the HTML for an individual message
-
 	/**
 	 * Render all chat messages and plop them into their correct div
 	 * @return {JSX} 
@@ -53,7 +143,6 @@ var ChatMessages = React.createClass({
 	render: function() {
 	    var messagesArray = this.props.data.map(function (message, index) {
 			return <ChatMessage 
-				messageID={message.messageid}
 				username={message.username}
 				timestamp={message.timestamp}
 				message={message.message} >
@@ -67,8 +156,6 @@ var ChatMessages = React.createClass({
 });
 
 var ChatMessage = React.createClass({
-	// builds the HMTL for a single message
-
 	/**
 	 * Render the individual chat message
 	 *
@@ -82,7 +169,7 @@ var ChatMessage = React.createClass({
 				<div className="chat-message-info panel-heading">
 					<span className='text-muted'>{this.props.username}</span> | {this.props.timestamp}
 				</div>
-				<div className="chat-message-body panel-body" data-messageid={this.props.messageID}>
+				<div className="chat-message-body panel-body">
 					<p dangerouslySetInnerHTML={{__html: this.props.message}} />
 				</div>
 			</div>
@@ -91,8 +178,6 @@ var ChatMessage = React.createClass({
 });
 
 var ChatForm = React.createClass({
-	// Handle submitting the form
-	// render the form HTML
 
 	render: function() {
 		return (
