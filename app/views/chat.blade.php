@@ -11,7 +11,7 @@
 @section('scripts')
 {{HTML::script('js/jquery.form.min.js')}}
 {{HTML::script('js/plupload.full.min.js')}}
-<script type="text/jsx" src="js/chat-react.js"></script>
+<script type="text/jsx" src="js/chat.js"></script>
 
 @stop
 
