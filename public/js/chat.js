@@ -40,6 +40,20 @@ CHAT.HELPERS = {
 		}
 		return false;
 	},
+
+	/**
+	 * Add a 'sending' div on a chat submit
+	 */
+	addSendingDiv: function() {
+		$('.chat-messages-div').append($('#sending_msg_div').html());
+	},
+
+	/**
+	 * Remove any 'sending' messages that were previously added
+	 */
+	removeSendingDiv: function() {
+		$('.chat-messages-div').find('.sending-message').remove();
+	},
 };
 
 
@@ -100,6 +114,7 @@ var ChatDiv = React.createClass({
 			newState.splice(0, numToRemove);
 			this.setState({data: newState});
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
+			CHAT.HELPERS.removeSendingDiv();
 		}
 		this.getNewChatMessages();
 	},
@@ -227,6 +242,7 @@ $(document).ready(function() {
 		dataType: 'json',
 		beforeSubmit: function() {
 			$('#chat_box').resetForm();
+			CHAT.HELPERS.addSendingDiv();
 		},
 		clearForm: true,
 	};
