@@ -157,6 +157,7 @@ var ChatMessages = React.createClass({
 	render: function() {
 	    var messagesArray = this.props.data.map(function (message, index) {
 			return <ChatMessage 
+				key={message.messageid}
 				username={message.username}
 				timestamp={message.timestamp}
 				message={message.message} >
@@ -243,6 +244,7 @@ $(document).ready(function() {
 		beforeSubmit: function() {
 			$('#chat_box').resetForm();
 			CHAT.HELPERS.addSendingDiv();
+			CHAT.HELPERS.scrollChatDiv();
 		},
 		clearForm: true,
 	};
