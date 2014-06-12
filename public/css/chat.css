@@ -86,7 +86,7 @@ html, body {
 */
 @media (max-width: 768px) {
 
-	.chat-div {
+	#chat-div {
 		margin-right: 0;
 	}
 
