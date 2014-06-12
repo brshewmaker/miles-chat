@@ -56,6 +56,29 @@ CHAT.HELPERS = {
 	},
 
 	/**
+	 * Given a username, flash the title until the user goes back to that window/tab,
+	 * unless the user is already on that tab, then don't flash anything
+	 * @param {string} username 
+	 */
+	addTitleAlert: function(username) {
+		if (!document.hasFocus()) {
+			var isNonAlert = true;
+			var nonAlert = 'Chat';
+			var alertTitle = 'Chat @' + username;
+			var interval = null;
+			interval = setInterval(function() {
+			    document.title = isNonAlert ? nonAlert : alertTitle;
+			    isNonAlert = !isNonAlert;
+			}, 700);
+
+			$(window).focus(function () {
+			    clearInterval(interval);
+			    $("title").text(nonAlert);
+			});
+		}
+	},
+
+	/**
 	 * Add new chat messages to array, removing any older messages
 	 * if the total is > 19
 	 * 
@@ -70,7 +93,7 @@ CHAT.HELPERS = {
 			numToRemove++;
 		}
 		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
-		return currentState
+		return currentState;
 	}
 };
 
@@ -131,9 +154,11 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 
 			this.setState({data: CHAT.HELPERS.adjustChatMessagesArray(this.state.data, data)});
-			
+
+			// DOM Manipulations after a new message comes in
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
 			CHAT.HELPERS.removeSendingDiv();
+			CHAT.HELPERS.addTitleAlert(this.state.data[this.state.data.length-1].username);
 		}
 		this.getNewChatMessages();
 	},
@@ -279,7 +304,6 @@ $(document).ready(function() {
 			$('#chat_box').ajaxSubmit(ajaxFormOptions);
 		}
 	});
-
 
 	/* = Get logged in users
 	-------------------------------------------------------------- */
