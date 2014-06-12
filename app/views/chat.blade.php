@@ -1,7 +1,7 @@
 @extends('main_template')
 
 @section('title')
-<title>Miles Chat --> Chat</title>
+<title>Miles Chat: Chat</title>
 @stop
 
 @section('stylesheets')
