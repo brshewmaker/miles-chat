@@ -46,7 +46,7 @@ Route::filter('auth.basic', function()
 
 // Custom filter for use in chat.js
 Route::filter('js_auth_check', function() {
-	if (Auth::guest()) return Response::json('not_authenticated');
+	if (Auth::guest()) return Response::json(array('error' => 'not_authenticated'));
 });
 
 /*
