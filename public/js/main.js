@@ -21,13 +21,23 @@ $(document).ready(function() {
 		$('#main_stylesheet').attr('href', BASE + '/bootstrap/css/' + stylesheet_name);
 	}
 
+	/**
+	 * Remove previous highlights and add a new highlight on the given them
+	 * @param  {string} stylehseet 
+	 */
+	function highlight_current_theme(stylesheet) {
+		$('li .active').removeClass('active');
+		var $current = $("a[data-stylesheet*='" + stylesheet + "']").parent();
+		$current.addClass('active');
+	}
+
 
 	// Change the stylehseet on page load
-	// if (typeof $.cookie('miles_chat_stylesheet') !== 'undefined') {
 	if (CHAT.STORAGE.is_enabled()) {
 		var new_stylesheet = CHAT.STORAGE.get('stylesheet');
 		if (new_stylesheet) {
 			change_stylesheet(new_stylesheet);
+			highlight_current_theme(new_stylesheet);
 		}
 	}
 	// }
@@ -40,6 +50,7 @@ $(document).ready(function() {
 			CHAT.STORAGE.set('stylesheet', stylesheet_name);
 		}
 		change_stylesheet(stylesheet_name);
+		highlight_current_theme(stylesheet_name);
 	});
 });
 
