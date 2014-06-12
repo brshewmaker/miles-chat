@@ -88,7 +88,7 @@ class FileController extends BaseController
 
 			 if (FileController::move_file_upload($upload, $upload_info['filename'])) {
 			 	if ($upload = FileController::create_new_db_entry($upload_info['filename'], $upload_info['mimetype'], $upload_info['size'])) {
-					ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload->id) . '/' . $upload_info['filename'] . '">' . $upload_info['filename'] . '</a>'); //TODO  ---> FIX ME!!
+					ChatController::insert_chat_message('<b>File Upload: </b><a target="_blank" href="' . url('get-file/' . $upload->id) . '/' . $upload_info['filename'] . '">' . $upload_info['filename'] . '</a>'); 
 					return Response::json(array('OK' => 1)); 
 			 	}
 			 	else {
