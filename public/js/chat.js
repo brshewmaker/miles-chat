@@ -54,6 +54,24 @@ CHAT.HELPERS = {
 	removeSendingDiv: function() {
 		$('.chat-messages-div').find('.sending-message').remove();
 	},
+
+	/**
+	 * Add new chat messages to array, removing any older messages
+	 * if the total is > 19
+	 * 
+	 * @param  {array} currentState this.state.data
+	 * @param  {array} newData     data from the server
+	 * @return {array}             updated state 
+	 */
+	adjustChatMessagesArray: function(currentState, newData) {
+		var numToRemove = 0;
+		for (var message in newData) {
+			currentState.push(newData[message]);
+			numToRemove++;
+		}
+		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
+		return currentState
+	}
 };
 
 
@@ -105,20 +123,15 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	},
 
 	/**
-	 * Edit this.state.data array so that it has the 20 newest messages
+	 * Handle what happens when the server returns data from an AJAX request
 	 * @param {array} data  Data received from the server
 	 */
 	addNewMessages: function(data) {
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
-			var newState = this.state.data;
-			var numToRemove = 0;
-			for (var message in data) {
-				newState.push(data[message]);
-				numToRemove++;
-			}
-			if (this.state.data.length > 19) { newState.splice(0, numToRemove); }
-			this.setState({data: newState});
+
+			this.setState({data: CHAT.HELPERS.adjustChatMessagesArray(this.state.data, data)});
+			
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
 			CHAT.HELPERS.removeSendingDiv();
 		}
