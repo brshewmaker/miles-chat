@@ -63,8 +63,8 @@ CHAT.HELPERS = {
 	addTitleAlert: function(username) {
 		if (!document.hasFocus()) {
 			var isNonAlert = true;
-			var nonAlert = 'Chat';
-			var alertTitle = 'Chat @' + username;
+			var nonAlert = 'Miles Chat: Chat';
+			var alertTitle = 'Miles Chat: @' + username;
 			var interval = null;
 			interval = setInterval(function() {
 			    document.title = isNonAlert ? nonAlert : alertTitle;
