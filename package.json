@@ -13,6 +13,7 @@
   "author": "Ben Shewmaker",
   "license": "ISC",
   "devDependencies": {
-    "grunt": "^0.4.5"
+    "grunt": "^0.4.5",
+    "grunt-contrib-concat": "^0.4.0"
   }
 }
