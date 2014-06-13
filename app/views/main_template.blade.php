@@ -64,6 +64,7 @@
 	{{HTML::script('bootstrap/js/bootstrap.min.js')}}
 	{{HTML::script('js/main.js')}}
 	{{HTML::script('js/react.js')}}
+	{{HTML::script('js/react-components.js')}}
 	@yield('scripts')
 </body>
 </html>
