@@ -1,5 +1,3 @@
-/** @jsx React.DOM */
-
 var ChatDiv = React.createClass({
 
 	getInitialState: function() {
