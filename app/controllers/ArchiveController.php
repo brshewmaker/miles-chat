@@ -39,8 +39,8 @@ class ArchiveController extends BaseController
 		$end_id = $page_num == 1 ? ($first_message_id + $per_page) - 1 : ($start_id + $per_page) - 1;
 
 		return Response::json(array(
-			'total-messages' => $total_num,
-			'num-pages' => $num_pages,
+			'totalMessages' => $total_num,
+			'numPages' => $num_pages,
 			'messages' => ChatController::create_messages_json(Message::get_messages_between($start_id, $end_id)),
 		));
 	}
