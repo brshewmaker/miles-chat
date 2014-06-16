@@ -57,7 +57,7 @@ class ChatController extends BaseController
 				}
 			}
 		}
-		return Response::json($this->create_messages_json($messages));
+		return Response::json(ChatController::create_messages_json($messages));
 	}
 
 	/**
@@ -103,7 +103,7 @@ class ChatController extends BaseController
 	 * @param  array $messages Messages from the DB
 	 * @return array           
 	 */
-	public function create_messages_json($messages) {
+	public static function create_messages_json($messages) {
 		$messages_array = array();
 		foreach ($messages as $message) {
 			$current = array();
