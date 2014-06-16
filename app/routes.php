@@ -39,6 +39,7 @@ Route::group(array('before' => 'auth'), function() {
 
 	// Archive
 	Route::get('archive', 'ArchiveController@index');
+	Route::get('archive/all/{perpage}/{page}', 'ArchiveController@get_paginated_archives');
 
 	// Chat messages
 	Route::post('send_chat', 'ChatController@post_chat_message');
