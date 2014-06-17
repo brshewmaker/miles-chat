@@ -1,25 +1,53 @@
 /** @jsx React.DOM */
 
-// var ArchiveDiv = React.createClass({
-// 	render: function() {
-// 		return (
-// 			<div>
-// 				<ChatMessages data={this.state.data} />
-// 				<ArchivePagination />
-// 			</div>
-// 		);
-// 	},
-// }),
+var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
+	getInitialState: function() {
+		return {
+			messages: [],
+			pagination: []
+		};
+	},
 
-// var ArchivePaginationLinks = React.createClass({
-// 	render: function() {
-// 		return (
-// 			<div className="pagination">
-// 				<ul>{paginationLinks}</ul>
-// 			</div>
-// 		);
-// 	}
-// }),
+	componentWillMount: function() {
+		this.getMessages(20, 1);
+	},
+
+	getMessages: function(perPage, pageNum) {
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/archive/all/' + perPage + '/' + pageNum,
+			success: function(data) {
+				this.setState({
+					messages: data.messages,
+					pagination: {
+						totalMessages: data.totalMessages,
+						numPages: data.numPages,
+						pageNum: pageNum
+					}
+				});
+			}.bind(this)
+		});
+	},
+
+	render: function() {
+		return (
+			React.DOM.div(null, 
+				ChatMessages( {data:this.state.messages} ),
+				ArchivePagination(null )
+			)
+		);
+	},
+});
+
+var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
+	render: function() {
+		return (
+			React.DOM.div( {className:"pagination"}, 
+				React.DOM.ul(null, "pagination")
+			)
+		);
+	}
+});
 var ChatDiv = React.createClass({displayName: 'ChatDiv',
 
 	getInitialState: function() {
