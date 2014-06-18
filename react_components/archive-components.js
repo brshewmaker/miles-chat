@@ -63,7 +63,7 @@ var ArchivePagination = React.createClass({
 				currentLinks.push(i);
 			};
 		}
-		else if ( x - 2 > 0 && x + 2 < y) {
+		else if ( x - 2 > 0 && x + 2 <= y) {
 			for (var i = x - 2; i <= x + 2; i++) {
 				currentLinks.push[i];
 			}
