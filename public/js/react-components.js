@@ -12,6 +12,13 @@ var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 		this.getMessages(20, 1);
 	},
 
+	/**
+	 * Do a GET request to get messages and pagination info based on number of results per page
+	 * and the current page Number
+
+	 * @param  {int} perPage How many restults per page
+	 * @param  {int} pageNum What Page are we on?
+	 */
 	getMessages: function(perPage, pageNum) {
 		$.ajax({
 			type: 'GET',
@@ -20,7 +27,6 @@ var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 				this.setState({
 					messages: data.messages,
 					pagination: {
-						totalMessages: data.totalMessages,
 						numPages: data.numPages,
 						pageNum: pageNum
 					}
@@ -33,21 +39,80 @@ var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 		return (
 			React.DOM.div(null, 
 				ChatMessages( {data:this.state.messages} ),
-				ArchivePagination(null )
+				ArchivePagination( {pagination:this.state.pagination})
 			)
 		);
 	},
 });
 
 var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
+
+	/**
+	 * Build an array of the nearest page numbers given the current page
+	 * and the total number of pages
+	 * 
+	 * @return {array} 
+	 */
+	processPaginationLinks: function() {
+		var currentLinks = [];
+		var x = this.props.pagination.pageNum;
+		var y = this.props.pagination.numPages
+
+		if (x - 2 < 0 && y < 5) {
+			for (var i = 1; i <= y; i++) {
+				currentLinks.push(i);
+			};
+		}
+		else if ( x - 2 > 0 && x + 2 < y) {
+			for (var i = x - 2; i <= x + 2; i++) {
+				currentLinks.push[i];
+			}
+		}
+		else if (x - 2 > 0 && x + 2 > y) {
+			for (var i = x - 2; i <= y; i++) {
+				currentLinks.push[i];
+			}		
+		}
+
+		return currentLinks;
+	},
+
 	render: function() {
+		var linksArray = this.processPaginationLinks();
+		console.log(linksArray);
+		var paginationLinks = linksArray.map(function(link, index) {
+			return  ArchivePaginationLi(
+						{key:index,
+						currentLink:link,
+						currentPage:this.props.pagination.pageNum}
+					);
+		}.bind(this));
 		return (
-			React.DOM.div( {className:"pagination"}, 
-				React.DOM.ul(null, "pagination")
+			React.DOM.div( {className:"archive-pagination"}, 
+				React.DOM.ul( {className:"pagination"}, 
+					React.DOM.li(null, React.DOM.a( {href:"#"}, "«")),
+					paginationLinks,
+					React.DOM.li(null, React.DOM.a( {href:"#"}, "»"))
+				)
 			)
 		);
 	}
 });
+
+var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
+	render: function() {
+		return (
+			React.DOM.li( {className:this.props.currentLink == this.props.currentPage ? 'active' : ''}, 
+				React.DOM.a( {href:"#"}, this.props.currentLink)
+			)
+		);
+	}
+});
+
+
+
+
+
 var ChatDiv = React.createClass({displayName: 'ChatDiv',
 
 	getInitialState: function() {
