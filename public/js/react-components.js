@@ -1,6 +1,4 @@
-/** @jsx React.DOM */
-
-var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
+/** @jsx React.DOM */var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 	getInitialState: function() {
 		return {
 			messages: [],
@@ -8,6 +6,10 @@ var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 		};
 	},
 
+	/**
+	 * Start the archive page by grabbing the first 20 messages.  Hard-coding in
+	 * the number per page for now.
+	 */
 	componentWillMount: function() {
 		this.getMessages(20, 1);
 	},
@@ -83,16 +85,13 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 						{key:index,
 						currentLink:link,
 						currentPage:this.props.pagination.pageNum,
+						numPages:this.props.pagination.numPages,
 						handleClick:this.props.handleClick}
 					);
 		}.bind(this));
 		return (
 			React.DOM.div( {className:"archive-pagination"}, 
-				React.DOM.ul( {className:"pagination"}, 
-					React.DOM.li(null, React.DOM.a( {href:"#"}, "«")),
-					paginationLinks,
-					React.DOM.li(null, React.DOM.a( {href:"#"}, "»"))
-				)
+				React.DOM.ul( {className:"pagination"}, paginationLinks)
 			)
 		);
 	}
@@ -108,7 +107,13 @@ var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
 	render: function() {
 		return (
 			React.DOM.li( {className:this.props.currentLink == this.props.currentPage ? 'active' : ''}, 
-				React.DOM.a( {onClick:this.onClick, href:"#"}, this.props.currentLink)
+				this.props.currentLink == 1 ? 
+					React.DOM.a( {onClick:this.onClick, href:"#"}, "«")
+				: null,
+				React.DOM.a( {onClick:this.onClick, href:"#"}, this.props.currentLink),
+				this.props.currentLink == this.props.numPages ? 
+					React.DOM.a( {onClick:this.onClick, href:"#"}, "»")
+				: null
 			)
 		);
 	}

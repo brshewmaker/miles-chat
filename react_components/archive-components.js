@@ -1,5 +1,3 @@
-
-
 var ArchiveDiv = React.createClass({
 	getInitialState: function() {
 		return {
@@ -8,6 +6,10 @@ var ArchiveDiv = React.createClass({
 		};
 	},
 
+	/**
+	 * Start the archive page by grabbing the first 20 messages.  Hard-coding in
+	 * the number per page for now.
+	 */
 	componentWillMount: function() {
 		this.getMessages(20, 1);
 	},
@@ -83,16 +85,13 @@ var ArchivePagination = React.createClass({
 						key={index}
 						currentLink={link}
 						currentPage={this.props.pagination.pageNum}
+						numPages={this.props.pagination.numPages}
 						handleClick={this.props.handleClick}>
 					</ArchivePaginationLi>;
 		}.bind(this));
 		return (
 			<div className="archive-pagination">
-				<ul className="pagination">
-					<li><a href="#">«</a></li>
-					{paginationLinks}
-					<li><a href="#">»</a></li>
-				</ul>
+				<ul className="pagination">{paginationLinks}</ul>
 			</div>
 		);
 	}
@@ -108,7 +107,13 @@ var ArchivePaginationLi = React.createClass({
 	render: function() {
 		return (
 			<li className={this.props.currentLink == this.props.currentPage ? 'active' : ''}>
+				{this.props.currentLink == 1 ? 
+					<a onClick={this.onClick} href="#">«</a>
+				: null}
 				<a onClick={this.onClick} href="#">{this.props.currentLink}</a>
+				{this.props.currentLink == this.props.numPages ? 
+					<a onClick={this.onClick} href="#">»</a>
+				: null}
 			</li>
 		);
 	}
