@@ -29,7 +29,7 @@ var ArchiveDiv = React.createClass({
 					pagination: {
 						numPages: data.numPages,
 						pageNum: pageNum
-					}
+					},
 				});
 			}.bind(this)
 		});
@@ -39,7 +39,7 @@ var ArchiveDiv = React.createClass({
 		return (
 			<div>
 				<ChatMessages data={this.state.messages} />
-				<ArchivePagination pagination={this.state.pagination}/>
+				<ArchivePagination handleClick={this.getMessages} pagination={this.state.pagination}/>
 			</div>
 		);
 	},
@@ -58,33 +58,32 @@ var ArchivePagination = React.createClass({
 		var x = this.props.pagination.pageNum;
 		var y = this.props.pagination.numPages
 
-		if (x - 2 < 0 && y < 5) {
+		if (x - 2 <= 0 && y < 5) {
 			for (var i = 1; i <= y; i++) {
 				currentLinks.push(i);
 			};
 		}
 		else if ( x - 2 > 0 && x + 2 <= y) {
 			for (var i = x - 2; i <= x + 2; i++) {
-				currentLinks.push[i];
+				currentLinks.push(i);
 			}
 		}
 		else if (x - 2 > 0 && x + 2 > y) {
 			for (var i = x - 2; i <= y; i++) {
-				currentLinks.push[i];
+				currentLinks.push(i);
 			}		
 		}
-
 		return currentLinks;
 	},
 
 	render: function() {
 		var linksArray = this.processPaginationLinks();
-		console.log(linksArray);
 		var paginationLinks = linksArray.map(function(link, index) {
 			return  <ArchivePaginationLi
 						key={index}
 						currentLink={link}
-						currentPage={this.props.pagination.pageNum}>
+						currentPage={this.props.pagination.pageNum}
+						handleClick={this.props.handleClick}>
 					</ArchivePaginationLi>;
 		}.bind(this));
 		return (
@@ -100,10 +99,16 @@ var ArchivePagination = React.createClass({
 });
 
 var ArchivePaginationLi = React.createClass({
+
+	onClick: function(event) {
+		event.preventDefault();
+		this.props.handleClick(20, this.props.currentLink);
+	},
+
 	render: function() {
 		return (
 			<li className={this.props.currentLink == this.props.currentPage ? 'active' : ''}>
-				<a href="#">{this.props.currentLink}</a>
+				<a onClick={this.onClick} href="#">{this.props.currentLink}</a>
 			</li>
 		);
 	}
