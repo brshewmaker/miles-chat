@@ -26,6 +26,11 @@
 	getMessages: function(perPage, pageNum) {
 		$.blockUI({ 
 			message: '<h3>Loading...</h3>',
+		    overlayCSS:  { 
+		        backgroundColor: '#000', 
+		        opacity:         0, 
+		        cursor:          'wait' 
+		    }, 
 			css: { 
 				border: 'none', 
 				padding: '15px', 
