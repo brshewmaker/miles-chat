@@ -50,6 +50,16 @@ var ArchiveDiv = React.createClass({
 var ArchivePagination = React.createClass({
 
 	/**
+	 * Handle the click for the first and last links
+	 * @param  {Object} event 
+	 */
+	onClick: function(event) {
+		event.preventDefault();
+		var pageNum = event.currentTarget.getAttribute('data-page');
+		this.props.handleClick(20, pageNum);		
+	},
+
+	/**
 	 * Build an array of the nearest page numbers given the current page
 	 * and the total number of pages
 	 * 
@@ -60,7 +70,8 @@ var ArchivePagination = React.createClass({
 		var x = this.props.pagination.pageNum;
 		var y = this.props.pagination.numPages
 
-		if (x - 2 <= 0 && y < 5) {
+		if (x - 2 <= 0) {
+			if (y > 5) y = 5; 
 			for (var i = 1; i <= y; i++) {
 				currentLinks.push(i);
 			};
@@ -71,13 +82,18 @@ var ArchivePagination = React.createClass({
 			}
 		}
 		else if (x - 2 > 0 && x + 2 > y) {
-			for (var i = x - 2; i <= y; i++) {
+			for (var i = (y - 4 < 1 ? 1 : y - 4); i <= y; i++) {
 				currentLinks.push(i);
 			}		
 		}
 		return currentLinks;
 	},
 
+	/**
+	 * Builds an array of <li> elements for the nearest pagination pages as well as 
+	 * appending/prepending first/last links as well.
+	 * @return {JSX} 
+	 */
 	render: function() {
 		var linksArray = this.processPaginationLinks();
 		var paginationLinks = linksArray.map(function(link, index) {
@@ -91,7 +107,11 @@ var ArchivePagination = React.createClass({
 		}.bind(this));
 		return (
 			<div className="archive-pagination">
-				<ul className="pagination">{paginationLinks}</ul>
+				<ul className="pagination">
+					<li><a onClick={this.onClick} data-page="1" href="#">«</a></li>
+					{paginationLinks}
+					<li><a onClick={this.onClick} data-page={this.props.pagination.numPages} href="#">»</a></li>
+				</ul>
 			</div>
 		);
 	}
@@ -99,6 +119,10 @@ var ArchivePagination = React.createClass({
 
 var ArchivePaginationLi = React.createClass({
 
+	/**
+	 * Handle click event for a pagination link
+	 * @param  {Object} event 
+	 */
 	onClick: function(event) {
 		event.preventDefault();
 		this.props.handleClick(20, this.props.currentLink);
@@ -107,13 +131,7 @@ var ArchivePaginationLi = React.createClass({
 	render: function() {
 		return (
 			<li className={this.props.currentLink == this.props.currentPage ? 'active' : ''}>
-				{this.props.currentLink == 1 ? 
-					<a onClick={this.onClick} href="#">«</a>
-				: null}
 				<a onClick={this.onClick} href="#">{this.props.currentLink}</a>
-				{this.props.currentLink == this.props.numPages ? 
-					<a onClick={this.onClick} href="#">»</a>
-				: null}
 			</li>
 		);
 	}
