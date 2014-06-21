@@ -16,16 +16,32 @@ var ArchiveDiv = React.createClass({
 
 	/**
 	 * Do a GET request to get messages and pagination info based on number of results per page
-	 * and the current page Number
+	 * and the current page Number.  
+	 *
+	 * Also uses the blockUI plugin to let the user know something is happening.
 
 	 * @param  {int} perPage How many restults per page
 	 * @param  {int} pageNum What Page are we on?
 	 */
 	getMessages: function(perPage, pageNum) {
+		$.blockUI({ 
+			message: '<h3>Loading...</h3>',
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				backgroundColor: '#000', 
+				'-webkit-border-radius': '10px', 
+				'-moz-border-radius': '10px', 
+				opacity: .5, 
+				color: '#fff' 
+			} 
+		}); 
+
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/archive/all/' + perPage + '/' + pageNum,
 			success: function(data) {
+				$.unblockUI();
 				this.setState({
 					messages: data.messages,
 					pagination: {
