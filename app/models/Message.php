@@ -41,4 +41,17 @@ class Message extends Eloquent
 		return DB::select(DB::raw('SELECT * FROM messages WHERE id > ' . $id));
 	}
 
+	/**
+	 * Return all messages with IDs between $start and $end
+	 * 
+	 * @param  int $start Start ID
+	 * @param  int $end   End ID
+	 * @return Eloquen        
+	 */
+	public static function get_messages_between($start, $end) {
+		return Message::whereBetween('id', array($start, $end))->get();
+	}
+
+	
+
 }

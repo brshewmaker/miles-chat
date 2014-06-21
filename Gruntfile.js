@@ -9,6 +9,10 @@ module.exports = function(grunt) {
 		},
 
 		concat: {
+			options: {
+				banner: '/** @jsx React.DOM */'
+			},
+			
 			dist: {
 				src: ['react_components/*.js'],
 				dest: 'public/js/react-components.js',
