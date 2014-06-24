@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	{{HTML::style('bootstrap/css/yeti.min.css', array('id' => 'main_stylesheet'))}}
+	{{HTML::style('css/main.css')}}
 	@yield('stylesheets')
 </head>
 
