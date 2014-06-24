@@ -84,7 +84,7 @@ var ArchiveForm = React.createClass({displayName: 'ArchiveForm',
 		return (
 			React.DOM.form( {onChange:this.onChange, className:"form-inline padding-bottom-20", role:"form"}, 
 				React.DOM.div( {className:"form-group"}, 
-					React.DOM.label( {className:"col-lg-2"}, "Number of results per page: " ),
+					React.DOM.label( {for:"select", className:"padding-right-10"}, "Number of results per page: " ),
 					React.DOM.select( {className:"form-control"}, 
 						React.DOM.option( {value:"10"}, "10"),
 						React.DOM.option( {value:"25"}, "25"),

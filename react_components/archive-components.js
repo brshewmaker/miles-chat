@@ -84,7 +84,7 @@ var ArchiveForm = React.createClass({
 		return (
 			<form onChange={this.onChange} className="form-inline padding-bottom-20" role="form">
 				<div className="form-group">
-					<label className="col-lg-2">Number of results per page: </label>
+					<label for="select" className="padding-right-10">Number of results per page: </label>
 					<select className="form-control">
 						<option value="10">10</option>
 						<option value="25">25</option>
