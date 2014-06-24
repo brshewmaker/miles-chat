@@ -252,7 +252,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			// DOM Manipulations after a new message comes in
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
 			CHAT.HELPERS.removeSendingDiv();
-			CHAT.HELPERS.addTitleAlert(this.state.data[this.state.data.length-1].username);
+			CHAT.HELPERS.addTitleAlert();
 		}
 		this.getNewChatMessages();
 	},

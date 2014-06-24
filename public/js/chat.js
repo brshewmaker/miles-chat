@@ -54,24 +54,23 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Given a username, flash the title until the user goes back to that window/tab,
-	 * unless the user is already on that tab, then don't flash anything
-	 * @param {string} username 
+	 * Appends (n) to the end of the title, where n is the number of messages received
+	 * since the last focus.
 	 */
-	addTitleAlert: function(username) {
+	addTitleAlert: function() {
 		if (!document.hasFocus()) {
-			var isNonAlert = true;
-			var nonAlert = 'Miles Chat: Chat';
-			var alertTitle = 'Miles Chat: @' + username;
-			var interval = null;
-			interval = setInterval(function() {
-			    document.title = isNonAlert ? nonAlert : alertTitle;
-			    isNonAlert = !isNonAlert;
-			}, 700);
+			var titleRegex = document.title.match(/\d+/);
+			var numAlerts = titleRegex ? parseInt(titleRegex) : 0;
+			if (numAlerts === 0) {
+				document.title = 'Miles Chat: Chat (1)';
+			}
+			else {
+				numAlerts++;
+				document.title = 'Miles Chat: Chat (' + numAlerts + ')';
+			}
 
 			$(window).focus(function () {
-			    clearInterval(interval);
-			    $("title").text(nonAlert);
+				document.title = 'Miles Chat: Chat';
 			});
 		}
 	},
