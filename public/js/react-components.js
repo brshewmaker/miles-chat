@@ -156,9 +156,9 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 		return (
 			React.DOM.div( {className:"archive-pagination"}, 
 				React.DOM.ul( {className:"pagination"}, 
-					React.DOM.li(null, React.DOM.a( {onClick:this.onClick, 'data-page':"1", href:"#"}, "«")),
+					React.DOM.li(null, React.DOM.a( {onClick:this.onClick, 'data-page':this.props.pagination.pageNum == 1 ? '1' : parseInt(this.props.pagination.pageNum) - 1, href:"#"}, "«")),
 					paginationLinks,
-					React.DOM.li(null, React.DOM.a( {onClick:this.onClick, 'data-page':this.props.pagination.numPages, href:"#"}, "»"))
+					React.DOM.li(null, React.DOM.a( {onClick:this.onClick, 'data-page':this.props.pagination.pageNum == this.props.pagination.numPages ? this.props.pagination.numPages : parseInt(this.props.pagination.pageNum) + 1, href:"#"}, "»"))
 				)
 			)
 		);
