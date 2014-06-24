@@ -116,21 +116,24 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 	 */
 	processPaginationLinks: function() {
 		var currentLinks = [];
-		var x = this.props.pagination.pageNum;
-		var y = this.props.pagination.numPages
+		var x = parseInt(this.props.pagination.pageNum);
+		var y = parseInt(this.props.pagination.numPages);
 
-		if (x - 2 <= 0) {
-			if (y > 5) y = 5; 
-			for (var i = 1; i <= y; i++) {
+		if (x <= 2) {
+			for (var i = 1; i <= (y > 5 ? 5 : y); i++) {
 				currentLinks.push(i);
 			};
+			if (y > 5) currentLinks.push(y);
 		}
-		else if ( x - 2 > 0 && x + 2 <= y) {
+		else if ( x + 2 <= y) {
+			if (x > 3) currentLinks.push(1);
 			for (var i = x - 2; i <= x + 2; i++) {
 				currentLinks.push(i);
 			}
+			if (x + 2 < y) currentLinks.push(y);
 		}
-		else if (x - 2 > 0 && x + 2 > y) {
+		else if (x + 2 > y) {
+			if (x > 3) currentLinks.push(1);
 			for (var i = (y - 4 < 1 ? 1 : y - 4); i <= y; i++) {
 				currentLinks.push(i);
 			}		
