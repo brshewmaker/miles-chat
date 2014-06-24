@@ -11,7 +11,7 @@ var ArchiveDiv = React.createClass({
 	 * the number per page for now.
 	 */
 	componentWillMount: function() {
-		this.getMessages(20, 1);
+		this.getMessages(10, 1);
 	},
 
 	/**
@@ -50,6 +50,7 @@ var ArchiveDiv = React.createClass({
 				this.setState({
 					messages: data.messages,
 					pagination: {
+						perPage: perPage,
 						numPages: data.numPages,
 						pageNum: pageNum
 					},
@@ -61,11 +62,38 @@ var ArchiveDiv = React.createClass({
 	render: function() {
 		return (
 			<div>
+				<ArchiveForm handleClick={this.getMessages} pageNum={this.state.pagination.pageNum} />
 				<ChatMessages data={this.state.messages} />
 				<ArchivePagination handleClick={this.getMessages} pagination={this.state.pagination}/>
 			</div>
 		);
 	},
+});
+
+var ArchiveForm = React.createClass({
+	/**
+	 * Call getMessages again with the given number of results per page, starting on page 1
+	 * @param  {Object} event React.js event object
+	 */
+	onChange: function(event) {
+		var numResults = event.target.value;
+		this.props.handleClick(numResults, 1);
+	},
+
+	render: function() {
+		return (
+			<form onChange={this.onChange} className="form-inline padding-bottom-20" role="form">
+				<div className="form-group">
+					<label className="col-lg-2">Number of results per page: </label>
+					<select className="form-control">
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+			</form>
+		);
+	}
 });
 
 var ArchivePagination = React.createClass({
@@ -77,7 +105,7 @@ var ArchivePagination = React.createClass({
 	onClick: function(event) {
 		event.preventDefault();
 		var pageNum = event.currentTarget.getAttribute('data-page');
-		this.props.handleClick(20, pageNum);		
+		this.props.handleClick(this.props.pagination.perPage, pageNum);		
 	},
 
 	/**
@@ -121,8 +149,7 @@ var ArchivePagination = React.createClass({
 			return  <ArchivePaginationLi
 						key={index}
 						currentLink={link}
-						currentPage={this.props.pagination.pageNum}
-						numPages={this.props.pagination.numPages}
+						pagination={this.props.pagination}
 						handleClick={this.props.handleClick}>
 					</ArchivePaginationLi>;
 		}.bind(this));
@@ -146,12 +173,12 @@ var ArchivePaginationLi = React.createClass({
 	 */
 	onClick: function(event) {
 		event.preventDefault();
-		this.props.handleClick(20, this.props.currentLink);
+		this.props.handleClick(this.props.pagination.perPage, this.props.currentLink);
 	},
 
 	render: function() {
 		return (
-			<li className={this.props.currentLink == this.props.currentPage ? 'active' : ''}>
+			<li className={this.props.currentLink == this.props.pagination.pageNum ? 'active' : ''}>
 				<a onClick={this.onClick} href="#">{this.props.currentLink}</a>
 			</li>
 		);
