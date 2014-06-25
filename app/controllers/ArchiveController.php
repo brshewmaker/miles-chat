@@ -44,4 +44,20 @@ class ArchiveController extends BaseController
 		));
 	}
 
+	/**
+	 * Handle GET request for /archive/date/list
+	 *
+	 * Get a list of all months/years that have entries in the DB, then returns those as JSON
+	 * 
+	 * @return JSON 
+	 */
+	public function list_months_with_messages() {
+		$month_list = Message::get_months_with_messages();
+		$month_list_json = array();
+		foreach ($month_list as $entry => $month) {
+			$month_list_json[$month->year][] = $month->month;
+		}
+		return Response::json($month_list_json);
+	}
+
 }

@@ -57,8 +57,8 @@ class Message extends Eloquent
 	 * 
 	 * @return Object 
 	 */
-	public static function get_months_that_have_messages() {
-		return DB::select(DB::raw('SELECT DISTINCT YEAR(created_at), MONTH(created_at) FROM messages'));
+	public static function get_months_with_messages() {
+		return DB::select(DB::raw('SELECT DISTINCT YEAR(created_at) as year, MONTH(created_at) as month FROM messages'));
 	}
 
 	
