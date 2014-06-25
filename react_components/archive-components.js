@@ -159,9 +159,9 @@ var ArchivePagination = React.createClass({
 		return (
 			<div className="archive-pagination">
 				<ul className="pagination">
-					<li><a onClick={this.onClick} data-page={this.props.pagination.pageNum == 1 ? '1' : parseInt(this.props.pagination.pageNum) - 1} href="#">«</a></li>
+					<li><a onClick={this.onClick} data-page={this.props.pagination.pageNum == 1 ? '1' : parseInt(this.props.pagination.pageNum, 10) - 1} href="#">«</a></li>
 					{paginationLinks}
-					<li><a onClick={this.onClick} data-page={this.props.pagination.pageNum == this.props.pagination.numPages ? this.props.pagination.numPages : parseInt(this.props.pagination.pageNum) + 1} href="#">»</a></li>
+					<li><a onClick={this.onClick} data-page={this.props.pagination.pageNum == this.props.pagination.numPages ? this.props.pagination.numPages : parseInt(this.props.pagination.pageNum, 10) + 1} href="#">»</a></li>
 				</ul>
 			</div>
 		);
