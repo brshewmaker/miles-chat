@@ -10,7 +10,7 @@
 	}
 });
 
-var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
+var ArchiveAll = React.createClass({displayName: 'ArchiveAll',
 	getInitialState: function() {
 		return {
 			messages: [],
@@ -74,8 +74,6 @@ var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
 	render: function() {
 		return (
 			React.DOM.div(null, 
-				React.DOM.h4(null, "All Messages"),
-				React.DOM.a( {href:"#"}, "Back"),
 				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
 				ChatMessages( {data:this.state.messages} ),
 				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})

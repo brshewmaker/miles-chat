@@ -12,7 +12,7 @@ var Router = Backbone.Router.extend({
   all : function() {
 	$('.archive-date').removeClass('active');
 	$('.archive-all').addClass('active');
-	React.renderComponent(ArchiveDiv(null ), document.getElementById('archive'));
+	React.renderComponent(ArchiveAll(null ), document.getElementById('archive'));
   }
 });
  

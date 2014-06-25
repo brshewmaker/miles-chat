@@ -10,7 +10,7 @@ var ArchiveIndex = React.createClass({
 	}
 });
 
-var ArchiveDiv = React.createClass({
+var ArchiveAll = React.createClass({
 	getInitialState: function() {
 		return {
 			messages: [],
@@ -74,8 +74,6 @@ var ArchiveDiv = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<h4>All Messages</h4>
-				<a href="#">Back</a>
 				<ArchiveForm handleClick={this.getMessages} pageNum={this.state.pagination.pageNum} />
 				<ChatMessages data={this.state.messages} />
 				<ArchivePagination handleClick={this.getMessages} pagination={this.state.pagination}/>
