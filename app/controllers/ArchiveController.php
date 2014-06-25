@@ -41,6 +41,8 @@ class ArchiveController extends BaseController
 		return Response::json(array(
 			'totalMessages' => $total_num,
 			'numPages' => $num_pages,
+			'startID' => $start_id,
+			'endID' => $end_id,
 			'messages' => ChatController::create_messages_json(Message::get_messages_between($start_id, $end_id)),
 		));
 	}
