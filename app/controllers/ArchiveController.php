@@ -14,8 +14,7 @@ class ArchiveController extends BaseController
 	 * @return View
 	 */
 	public function index() {
-		$messages = Message::paginate(20);
-		return View::make('archive')->with('messages', $messages);
+		return View::make('archive');
 	}
 
 	/**
