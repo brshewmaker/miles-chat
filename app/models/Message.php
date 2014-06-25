@@ -46,10 +46,19 @@ class Message extends Eloquent
 	 * 
 	 * @param  int $start Start ID
 	 * @param  int $end   End ID
-	 * @return Eloquen        
+	 * @return Eloquent      
 	 */
 	public static function get_messages_between($start, $end) {
 		return Message::whereBetween('id', array($start, $end))->get();
+	}
+
+	/**
+	 * Return a list of all year/months that have messages
+	 * 
+	 * @return Object 
+	 */
+	public static function get_months_that_have_messages() {
+		return DB::select(DB::raw('SELECT DISTINCT YEAR(created_at), MONTH(created_at) FROM messages'));
 	}
 
 	
