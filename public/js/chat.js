@@ -60,7 +60,7 @@ CHAT.HELPERS = {
 	addTitleAlert: function() {
 		if (!document.hasFocus()) {
 			var titleRegex = document.title.match(/\d+/);
-			var numAlerts = titleRegex ? parseInt(titleRegex) : 0;
+			var numAlerts = titleRegex ? parseInt(titleRegex, 10) : 0;
 			if (numAlerts === 0) {
 				document.title = 'Miles Chat: Chat (1)';
 			}
