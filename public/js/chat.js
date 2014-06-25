@@ -58,7 +58,7 @@ CHAT.HELPERS = {
 	 * since the last focus.
 	 */
 	addTitleAlert: function() {
-		// if (!document.hasFocus()) {
+		if (!document.hasFocus()) {
 			var title = document.title;
 			var titleRegex = title.match(/\d+/);
 			var numAlerts = titleRegex ? parseInt(titleRegex, 10) : 0;
@@ -73,7 +73,7 @@ CHAT.HELPERS = {
 			$(window).focus(function () {
 				document.title = title.replace(/\([^\)]*\)/g, '');
 			});
-		// }
+		}
 	},
 
 	/**
