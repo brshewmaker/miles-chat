@@ -1,3 +1,15 @@
+var ArchiveIndex = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<h4>Index</h4>
+				<a href="#date">By date</a><br />
+				<a href="#all">All</a>
+			</div>
+		);
+	}
+});
+
 var ArchiveDiv = React.createClass({
 	getInitialState: function() {
 		return {
@@ -62,6 +74,8 @@ var ArchiveDiv = React.createClass({
 	render: function() {
 		return (
 			<div>
+				<h4>All Messages</h4>
+				<a href="#">Back</a>
 				<ArchiveForm handleClick={this.getMessages} pageNum={this.state.pagination.pageNum} />
 				<ChatMessages data={this.state.messages} />
 				<ArchivePagination handleClick={this.getMessages} pagination={this.state.pagination}/>
