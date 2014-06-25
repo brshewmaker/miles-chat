@@ -58,21 +58,22 @@ CHAT.HELPERS = {
 	 * since the last focus.
 	 */
 	addTitleAlert: function() {
-		if (!document.hasFocus()) {
-			var titleRegex = document.title.match(/\d+/);
+		// if (!document.hasFocus()) {
+			var title = document.title;
+			var titleRegex = title.match(/\d+/);
 			var numAlerts = titleRegex ? parseInt(titleRegex, 10) : 0;
 			if (numAlerts === 0) {
-				document.title = 'Miles Chat: Chat (1)';
+				document.title = title + ' (1)';
 			}
 			else {
 				numAlerts++;
-				document.title = 'Miles Chat: Chat (' + numAlerts + ')';
+				document.title = title.replace(/\([^\)]*\)/g, '(' + numAlerts + ')');
 			}
 
 			$(window).focus(function () {
-				document.title = 'Miles Chat: Chat';
+				document.title = title.replace(/\([^\)]*\)/g, '');
 			});
-		}
+		// }
 	},
 
 	/**
