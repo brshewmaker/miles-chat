@@ -79,6 +79,18 @@ class Message extends Eloquent
 	}
 
 	/**
+	 * Given results per page and current page number return messages for that result set
+	 * 
+	 * @param  int $per_page 
+	 * @param  int $page_num 
+	 * @return Eloquent           
+	 */
+	public static function get_messages_for_pagination($per_page, $page_num) {
+		$skip = ($page_num - 1) * $per_page;
+		return DB::table('messages')->skip($skip)->take($per_page)->get();
+	}
+
+	/**
 	 * Return a list of all year/months that have messages
 	 * 
 	 * @return Object 
