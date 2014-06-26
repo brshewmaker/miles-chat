@@ -45,6 +45,29 @@ class ArchiveController extends BaseController
 	}
 
 	/**
+	 * Handle GET request for /archive/date/perpage/page/year/month
+	 * 
+	 * @param  int $per_page Number of results per page
+	 * @param  int $page_num Current page number of pagination results
+	 * @param  string $year     
+	 * @param  string $month    
+	 * @return JSON
+	 */
+	public function get_paginated_archives_for_date($per_page, $page_num, $year, $month) {
+		$start_datetime = date('Y-m-d G:i:s', strtotime($year . $month));
+		$end_datetime = date('Y-m-d G:i:s', strtotime($year . $month . '+1 month'));
+		$total_num = Message::get_number_messages_in_date_range($start_datetime, $end_datetime);
+		$num_pages = ceil($total_num/$per_page);
+		$page_num = $page_num > $num_pages ? $num_pages : $page_num; //prevent asking for more pages than exist
+
+		return Response::json(array(
+			'totalMessages' => $total_num,
+			'numPages' => $num_pages,
+			'messages' => ChatController::create_messages_json(Message::get_messages_for_date_pagination($start_datetime, $end_datetime, $per_page, $page_num)),
+		));
+	}
+
+	/**
 	 * Handle GET request for /archive/date/list
 	 *
 	 * Get a list of all months/years that have entries in the DB, then returns those as JSON

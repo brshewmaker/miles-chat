@@ -55,12 +55,27 @@ class Message extends Eloquent
 	/**
 	 * Given a start and end date, find the number of messages between those dates
 	 * 
-	 * @param  Datetime $start 
-	 * @param  Datetime $end   
+	 * @param  string $start 
+	 * @param  string $end   
 	 * @return int        
 	 */
 	public static function get_number_messages_in_date_range($start, $end) {
 		return Message::whereBetween('created_at', array($start, $end))->count();
+	}
+
+	/**
+	 * Given a date range, number of results per page and the current page number, return the messages
+	 * for that result set
+	 * 
+	 * @param  string $start    
+	 * @param  string $end      
+	 * @param  int $per_page 
+	 * @param  int $page_num 
+	 * @return Eloquent
+	 */
+	public static function get_messages_for_date_pagination($start, $end, $per_page, $page_num) {
+		$skip = ($page_num - 1) * $per_page;
+		return Message::whereBetween('created_at', array($start, $end))->skip($skip)->take($per_page)->get();
 	}
 
 	/**
