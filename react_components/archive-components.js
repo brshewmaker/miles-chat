@@ -1,3 +1,11 @@
+/*
+|--------------------------------------------------------------------------
+| By Date
+|--------------------------------------------------------------------------
+| 
+| Componenets to handle browsing the archive by date
+| 
+*/
 var ArchiveIndex = React.createClass({
 	getInitialState: function() {
 		return {
@@ -35,12 +43,23 @@ var ArchiveIndex = React.createClass({
 var ArchiveIndexDates = React.createClass({
 	render: function() {
 		var months = this.props.months.map(function(link, index) {
-			return <li><a href="#">{link}</a></li>;
-		});
+			return <li><a href={"#date/" + this.props.year + "/" + link}>{link}</a></li>;
+		}.bind(this));
 		return (
 			<div>
 				<h4>{this.props.year}</h4>
 				<ul>{months}</ul>
+			</div>
+		);
+	}
+});
+
+var ArchiveDate = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<a href="#">back</a>
+				<h4>{this.props.year} : {this.props.month}</h4>
 			</div>
 		);
 	}

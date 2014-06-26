@@ -1,4 +1,12 @@
-/** @jsx React.DOM */var ArchiveIndex = React.createClass({displayName: 'ArchiveIndex',
+/** @jsx React.DOM *//*
+|--------------------------------------------------------------------------
+| By Date
+|--------------------------------------------------------------------------
+| 
+| Componenets to handle browsing the archive by date
+| 
+*/
+var ArchiveIndex = React.createClass({displayName: 'ArchiveIndex',
 	getInitialState: function() {
 		return {
 			dates: []
@@ -35,12 +43,23 @@
 var ArchiveIndexDates = React.createClass({displayName: 'ArchiveIndexDates',
 	render: function() {
 		var months = this.props.months.map(function(link, index) {
-			return React.DOM.li(null, React.DOM.a( {href:"#"}, link));
-		});
+			return React.DOM.li(null, React.DOM.a( {href:"#date/" + this.props.year + "/" + link}, link));
+		}.bind(this));
 		return (
 			React.DOM.div(null, 
 				React.DOM.h4(null, this.props.year),
 				React.DOM.ul(null, months)
+			)
+		);
+	}
+});
+
+var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
+	render: function() {
+		return (
+			React.DOM.div(null, 
+				React.DOM.a( {href:"#"}, "back"),
+				React.DOM.h4(null, this.props.year, " : ", this.props.month)
 			)
 		);
 	}
