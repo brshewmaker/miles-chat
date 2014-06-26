@@ -1,15 +1,59 @@
 var ArchiveIndex = React.createClass({
+	getInitialState: function() {
+		return {
+			dates: []
+		};
+	},
+
+	componentWillMount: function() {
+		this.getDates();
+	},
+
+	getDates: function() {
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/archive/date/list',
+			success: function(data) {
+				this.setState({
+					dates: data
+				})
+			}.bind(this)
+		});
+	},
+
 	render: function() {
+		var indexDates = [];
+		_.each(this.state.dates, function(months, year) {
+			indexDates.push(<ArchiveIndexDates year={year} months={months} />); 
+		});
+		return (
+			<div>{indexDates}</div>
+		);
+	}
+});
+
+var ArchiveIndexDates = React.createClass({
+	render: function() {
+		var months = this.props.months.map(function(link, index) {
+			return <li><a href="#">{link}</a></li>;
+		});
 		return (
 			<div>
-				<h4>Index</h4>
-				<a href="#date">By date</a><br />
-				<a href="#all">All</a>
+				<h4>{this.props.year}</h4>
+				<ul>{months}</ul>
 			</div>
 		);
 	}
 });
 
+/*
+|--------------------------------------------------------------------------
+| All Archives
+|--------------------------------------------------------------------------
+| 
+| Components for the 'All' archives section
+| 
+*/
 var ArchiveAll = React.createClass({
 	getInitialState: function() {
 		return {
