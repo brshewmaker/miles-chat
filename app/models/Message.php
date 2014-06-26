@@ -53,6 +53,17 @@ class Message extends Eloquent
 	}
 
 	/**
+	 * Given a start and end date, find the number of messages between those dates
+	 * 
+	 * @param  Datetime $start 
+	 * @param  Datetime $end   
+	 * @return int        
+	 */
+	public static function get_number_messages_in_date_range($start, $end) {
+		return Message::whereBetween('created_at', array($start, $end))->count();
+	}
+
+	/**
 	 * Return a list of all year/months that have messages
 	 * 
 	 * @return Object 
