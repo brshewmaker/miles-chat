@@ -67,24 +67,7 @@ var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
 	},
 
 	getMessages: function(perPage, pageNum) {
-		$.blockUI({ 
-			message: '<h3>Loading...</h3>',
-		    overlayCSS:  { 
-		        backgroundColor: '#000', 
-		        opacity:         0, 
-		        cursor:          'wait' 
-		    }, 
-			css: { 
-				border: 'none', 
-				padding: '15px', 
-				backgroundColor: '#000', 
-				'-webkit-border-radius': '10px', 
-				'-moz-border-radius': '10px', 
-				opacity: .5, 
-				color: '#fff' 
-			} 
-		}); 
-
+		CHAT.HELPERS.addBlockUI();
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
@@ -150,24 +133,7 @@ var ArchiveAll = React.createClass({displayName: 'ArchiveAll',
 	 * @param  {int} pageNum What Page are we on?
 	 */
 	getMessages: function(perPage, pageNum) {
-		$.blockUI({ 
-			message: '<h3>Loading...</h3>',
-		    overlayCSS:  { 
-		        backgroundColor: '#000', 
-		        opacity:         0, 
-		        cursor:          'wait' 
-		    }, 
-			css: { 
-				border: 'none', 
-				padding: '15px', 
-				backgroundColor: '#000', 
-				'-webkit-border-radius': '10px', 
-				'-moz-border-radius': '10px', 
-				opacity: .5, 
-				color: '#fff' 
-			} 
-		}); 
-
+		CHAT.HELPERS.addBlockUI();
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/archive/all/' + perPage + '/' + pageNum,
