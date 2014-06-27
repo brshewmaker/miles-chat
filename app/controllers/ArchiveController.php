@@ -79,8 +79,7 @@ class ArchiveController extends BaseController
 
 	public function search_messages() {
 		$search_string = Input::get('search');
-		return Response::json(Message::search_messages($search_string));
-		// Kint::dump(Message::search_messages($search_string));
+		return Response::json(ChatController::create_messages_json(Message::search_messages($search_string)));
 	}
 
 }
