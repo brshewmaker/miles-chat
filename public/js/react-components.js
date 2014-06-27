@@ -55,11 +55,62 @@ var ArchiveIndexDates = React.createClass({displayName: 'ArchiveIndexDates',
 });
 
 var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
+	getInitialState: function() {
+		return {
+			messages: [],
+			pagination: [],
+		};
+	},
+
+	componentWillMount: function() {
+		this.getMessages(10, 1);
+	},
+
+	getMessages: function(perPage, pageNum) {
+		$.blockUI({ 
+			message: '<h3>Loading...</h3>',
+		    overlayCSS:  { 
+		        backgroundColor: '#000', 
+		        opacity:         0, 
+		        cursor:          'wait' 
+		    }, 
+			css: { 
+				border: 'none', 
+				padding: '15px', 
+				backgroundColor: '#000', 
+				'-webkit-border-radius': '10px', 
+				'-moz-border-radius': '10px', 
+				opacity: .5, 
+				color: '#fff' 
+			} 
+		}); 
+
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
+			success: function(data) {
+				console.log(data);
+				$.unblockUI();
+				this.setState({
+					messages: data.messages,
+					pagination: {
+						perPage: perPage,
+						numPages: data.numPages,
+						pageNum: pageNum
+					},
+				});
+			}.bind(this)
+		});
+	},
+
 	render: function() {
 		return (
 			React.DOM.div(null, 
 				React.DOM.a( {href:"#"}, "back"),
-				React.DOM.h4(null, this.props.year, " : ", this.props.month)
+				React.DOM.h4(null, this.props.year, " : ", this.props.month),
+				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
+				ChatMessages( {data:this.state.messages} ),
+				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
 			)
 		);
 	}
