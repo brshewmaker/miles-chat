@@ -17,6 +17,9 @@ var ArchiveIndex = React.createClass({
 		this.getDates();
 	},
 
+	/**
+	 * Do a GET request to get the list of year/months that contain chat messages
+	 */
 	getDates: function() {
 		CHAT.HELPERS.addBlockUI();
 		$.ajax({
@@ -68,6 +71,11 @@ var ArchiveDate = React.createClass({
 		this.getMessages(10, 1);
 	},
 
+	/**
+	 * Do a GET request to get all chat messages for the current page based on how much results per page
+	 * @param  {int} perPage 
+	 * @param  {int} pageNum 
+	 */
 	getMessages: function(perPage, pageNum) {
 		CHAT.HELPERS.addBlockUI();
 		$.ajax({
@@ -117,8 +125,7 @@ var ArchiveAll = React.createClass({
 	},
 
 	/**
-	 * Start the archive page by grabbing the first 20 messages.  Hard-coding in
-	 * the number per page for now.
+	 * Start the archive page by grabbing the first 10 messages. 
 	 */
 	componentWillMount: function() {
 		this.getMessages(10, 1);
@@ -202,8 +209,7 @@ var ArchivePagination = React.createClass({
 	},
 
 	/**
-	 * Build an array of the nearest page numbers given the current page
-	 * and the total number of pages
+	 * Build an array links to use in the pagination <ul>
 	 * 
 	 * @return {array} 
 	 */
@@ -236,7 +242,7 @@ var ArchivePagination = React.createClass({
 
 	/**
 	 * Builds an array of <li> elements for the nearest pagination pages as well as 
-	 * appending/prepending first/last links as well.
+	 * appending/prepending first/last links and next/previous.
 	 * @return {JSX} 
 	 */
 	render: function() {
@@ -263,10 +269,6 @@ var ArchivePagination = React.createClass({
 
 var ArchivePaginationLi = React.createClass({
 
-	/**
-	 * Handle click event for a pagination link
-	 * @param  {Object} event 
-	 */
 	onClick: function(event) {
 		event.preventDefault();
 		this.props.handleClick(this.props.pagination.perPage, this.props.currentLink);
