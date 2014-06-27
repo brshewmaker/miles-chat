@@ -230,6 +230,16 @@ CHAT.HELPERS = {
 	},
 
 	/**
+	 * Removes active class on previously active tab and adds active class on given section
+
+	 * @param  {string} current 
+	 */
+	toggleActiveArchiveTab: function(current) {
+		$('.nav').find('.active').removeClass('active');
+		$('.archive-' + current).addClass('active');
+	},
+
+	/**
 	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.
 	 * 
 	 * @param {string} message Optional loading message to display
