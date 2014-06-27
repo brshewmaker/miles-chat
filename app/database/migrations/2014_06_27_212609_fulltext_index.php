@@ -26,6 +26,7 @@ class FulltextIndex extends Migration {
 	 */
 	public function down()
 	{
+		DB::statement('ALTER TABLE messages ENGINE=INNODB');
 		Schema::table('messages', function(Blueprint $table)
 		{
 			$table->dropIndex('search');
