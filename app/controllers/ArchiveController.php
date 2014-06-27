@@ -30,8 +30,7 @@ class ArchiveController extends BaseController
 	 */
 	public function get_paginated_archives($per_page, $page_num) {
 		$total_num = Message::all()->count();
-		$num_pages = floor($total_num/$per_page);
-		$page_num = $page_num > $num_pages ? $num_pages : $page_num; //prevent asking for more pages than exist
+		$num_pages = ceil($total_num/$per_page);
 
 		return Response::json(array(
 			'totalMessages' => $total_num,
@@ -53,8 +52,7 @@ class ArchiveController extends BaseController
 		$start_datetime = date('Y-m-d G:i:s', strtotime($year . $month));
 		$end_datetime = date('Y-m-d G:i:s', strtotime($year . $month . '+1 month'));
 		$total_num = Message::get_number_messages_in_date_range($start_datetime, $end_datetime);
-		$num_pages = floor($total_num/$per_page);
-		$page_num = $page_num > $num_pages ? $num_pages : $page_num; //prevent asking for more pages than exist
+		$num_pages = ceil($total_num/$per_page);
 
 		return Response::json(array(
 			'totalMessages' => $total_num,
