@@ -236,14 +236,19 @@ CHAT.HELPERS = {
 	 */
 	addBlockUI: function(message) {
 		message = typeof message !== 'undefined' ? message : 'Loading...';
-		
-		$.blockUI.defaults = {
+		$.blockUI({
+			message: '<h4>' + message + '</h4>',
 			css: {
+				padding:	'auto',
+				margin:		'auto',
 				width:		'30%',
 				top:		'40%',
 				left:		'35%',
 				textAlign:	'center',
-				cursor: 'wait',
+				color:		'auto',
+				border:		'auto',
+				backgroundColor:'auto',
+				cursor:		'wait'
 			},
 			overlayCSS:  {
 				backgroundColor: '#000',
@@ -251,9 +256,6 @@ CHAT.HELPERS = {
 				cursor:          'wait'
 			},
 			blockMsgClass: 'alert alert-info',
-		};
-		$.blockUI({
-			message: '<h4>' + message + '</h4>',
 		});
 	}
 };
