@@ -9,11 +9,35 @@
 
 var ArchiveSearch = React.createClass({
 
+	getInitialState: function() {
+		return {
+			messages: []
+		};
+	},
+
+
+	search: function(event) {
+		var search_term = event.target.value;
+		$('#chat_messages').block({message: 'Searching'});
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/archive/search',
+			data: {search: search_term},
+			success: function(data) {
+				$('#chat_messages').unblock();
+				this.setState({
+					messages: data
+				})
+			}.bind(this)
+		});
+	},
 
 	render: function() {
 		return (
 			<div>
-				<input type="text" className="form-control" placeholder="Search chat messages" />
+				<input onChange={this.search} type="text" className="form-control" placeholder="Search chat messages" />
+				<br />
+				<ChatMessages data={this.state.messages} />
 			</div>
 		);
 	}

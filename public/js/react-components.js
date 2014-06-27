@@ -9,11 +9,35 @@
 
 var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
 
+	getInitialState: function() {
+		return {
+			messages: []
+		};
+	},
+
+
+	search: function(event) {
+		var search_term = event.target.value;
+		$('#chat_messages').block({message: 'Searching'});
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/archive/search',
+			data: {search: search_term},
+			success: function(data) {
+				$('#chat_messages').unblock();
+				this.setState({
+					messages: data
+				})
+			}.bind(this)
+		});
+	},
 
 	render: function() {
 		return (
 			React.DOM.div(null, 
-				React.DOM.input( {type:"text", className:"form-control", placeholder:"Search chat messages"} )
+				React.DOM.input( {onChange:this.search, type:"text", className:"form-control", placeholder:"Search chat messages"} ),
+				React.DOM.br(null ),
+				ChatMessages( {data:this.state.messages} )
 			)
 		);
 	}
