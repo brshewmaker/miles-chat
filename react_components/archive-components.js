@@ -18,10 +18,12 @@ var ArchiveIndex = React.createClass({
 	},
 
 	getDates: function() {
+		CHAT.HELPERS.addBlockUI();
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/archive/date/list',
 			success: function(data) {
+				$.unblockUI();
 				this.setState({
 					dates: data
 				})
@@ -72,7 +74,6 @@ var ArchiveDate = React.createClass({
 			type: 'GET',
 			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
 			success: function(data) {
-				console.log(data);
 				$.unblockUI();
 				this.setState({
 					messages: data.messages,
