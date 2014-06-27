@@ -1,4 +1,122 @@
-/** @jsx React.DOM */var ArchiveDiv = React.createClass({displayName: 'ArchiveDiv',
+/** @jsx React.DOM *//*
+|--------------------------------------------------------------------------
+| By Date
+|--------------------------------------------------------------------------
+| 
+| Componenets to handle browsing the archive by date
+| 
+*/
+var ArchiveIndex = React.createClass({displayName: 'ArchiveIndex',
+	getInitialState: function() {
+		return {
+			dates: []
+		};
+	},
+
+	componentWillMount: function() {
+		this.getDates();
+	},
+
+	/**
+	 * Do a GET request to get the list of year/months that contain chat messages
+	 */
+	getDates: function() {
+		CHAT.HELPERS.addBlockUI();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/archive/date/list',
+			success: function(data) {
+				$.unblockUI();
+				this.setState({
+					dates: data
+				})
+			}.bind(this)
+		});
+	},
+
+	render: function() {
+		var indexDates = [];
+		_.each(this.state.dates, function(months, year) {
+			indexDates.push(ArchiveIndexDates( {year:year, months:months} )); 
+		});
+		return (
+			React.DOM.div(null, indexDates)
+		);
+	}
+});
+
+var ArchiveIndexDates = React.createClass({displayName: 'ArchiveIndexDates',
+	render: function() {
+		var months = this.props.months.map(function(link, index) {
+			return React.DOM.li(null, React.DOM.a( {href:"#date/" + this.props.year + "/" + link}, link));
+		}.bind(this));
+		return (
+			React.DOM.div(null, 
+				React.DOM.h4(null, this.props.year),
+				React.DOM.ul(null, months)
+			)
+		);
+	}
+});
+
+var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
+	getInitialState: function() {
+		return {
+			messages: [],
+			pagination: [],
+		};
+	},
+
+	componentWillMount: function() {
+		this.getMessages(10, 1);
+	},
+
+	/**
+	 * Do a GET request to get all chat messages for the current page based on how much results per page
+	 * @param  {int} perPage 
+	 * @param  {int} pageNum 
+	 */
+	getMessages: function(perPage, pageNum) {
+		CHAT.HELPERS.addBlockUI();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
+			success: function(data) {
+				$.unblockUI();
+				this.setState({
+					messages: data.messages,
+					pagination: {
+						perPage: perPage,
+						numPages: data.numPages,
+						pageNum: pageNum
+					},
+				});
+			}.bind(this)
+		});
+	},
+
+	render: function() {
+		return (
+			React.DOM.div(null, 
+				React.DOM.a( {href:"#"}, "back"),
+				React.DOM.h4(null, this.props.year, " : ", this.props.month),
+				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
+				ChatMessages( {data:this.state.messages} ),
+				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
+			)
+		);
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
+| All Archives
+|--------------------------------------------------------------------------
+| 
+| Components for the 'All' archives section
+| 
+*/
+var ArchiveAll = React.createClass({displayName: 'ArchiveAll',
 	getInitialState: function() {
 		return {
 			messages: [],
@@ -7,8 +125,7 @@
 	},
 
 	/**
-	 * Start the archive page by grabbing the first 20 messages.  Hard-coding in
-	 * the number per page for now.
+	 * Start the archive page by grabbing the first 10 messages. 
 	 */
 	componentWillMount: function() {
 		this.getMessages(10, 1);
@@ -24,24 +141,7 @@
 	 * @param  {int} pageNum What Page are we on?
 	 */
 	getMessages: function(perPage, pageNum) {
-		$.blockUI({ 
-			message: '<h3>Loading...</h3>',
-		    overlayCSS:  { 
-		        backgroundColor: '#000', 
-		        opacity:         0, 
-		        cursor:          'wait' 
-		    }, 
-			css: { 
-				border: 'none', 
-				padding: '15px', 
-				backgroundColor: '#000', 
-				'-webkit-border-radius': '10px', 
-				'-moz-border-radius': '10px', 
-				opacity: .5, 
-				color: '#fff' 
-			} 
-		}); 
-
+		CHAT.HELPERS.addBlockUI();
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/archive/all/' + perPage + '/' + pageNum,
@@ -109,8 +209,7 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 	},
 
 	/**
-	 * Build an array of the nearest page numbers given the current page
-	 * and the total number of pages
+	 * Build an array links to use in the pagination <ul>
 	 * 
 	 * @return {array} 
 	 */
@@ -143,7 +242,7 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 
 	/**
 	 * Builds an array of <li> elements for the nearest pagination pages as well as 
-	 * appending/prepending first/last links as well.
+	 * appending/prepending first/last links and next/previous.
 	 * @return {JSX} 
 	 */
 	render: function() {
@@ -170,10 +269,6 @@ var ArchivePagination = React.createClass({displayName: 'ArchivePagination',
 
 var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
 
-	/**
-	 * Handle click event for a pagination link
-	 * @param  {Object} event 
-	 */
 	onClick: function(event) {
 		event.preventDefault();
 		this.props.handleClick(this.props.pagination.perPage, this.props.currentLink);

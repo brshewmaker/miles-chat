@@ -125,3 +125,130 @@ CHAT.STORAGE = {
 	},
 
 };
+
+/*
+|--------------------------------------------------------------------------
+| UI Helpers
+|--------------------------------------------------------------------------
+| 
+| Manipulate DOM elements, start plugins, etc
+| 
+*/
+CHAT.HELPERS = {
+
+	/**
+	 * Scroll the chat messages div to the bottom and/or scroll the entire window to the bottom
+	 * for the mobile users
+	 */
+	scrollChatDiv: function() {
+		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+		$('html, body').scrollTop($(document).height());
+	},
+
+	/**
+	 * Add or remove the server-error message div
+	 * 
+	 * @param  {string} toggle on or off
+	 */
+	toggleServerErrorMessage: function(toggle) {
+		if (toggle == 'on' && !$('.chat-messages-div .alert-danger').length) {
+			$('.chat-messages-div').append($('.server-error').html());
+			$('.chat-textarea').addClass('has-error');
+		}
+		if (toggle == 'off') {
+			$('.chat-messages-div .alert-danger').remove();
+			$('.chat-textarea').removeClass('has-error');
+		}
+	},
+
+	/**
+	 * Determine if the user is at the bottom of the chat_message_div
+	 * 
+	 * @return {BOOL} 
+	 */
+	userAtBottomOfMessagesDiv: function() {
+		var chat_messages = $('.chat-messages-div');
+		if (chat_messages[0].scrollHeight - chat_messages.scrollTop() == chat_messages.outerHeight()) {
+			return true;
+		}
+		return false;
+	},
+
+	/**
+	 * Add a 'sending' div on a chat submit
+	 */
+	addSendingDiv: function() {
+		$('.chat-messages-div').append($('#sending_msg_div').html());
+	},
+
+	/**
+	 * Remove any 'sending' messages that were previously added
+	 */
+	removeSendingDiv: function() {
+		$('.chat-messages-div').find('.sending-message').remove();
+	},
+
+	/**
+	 * Appends (n) to the end of the title, where n is the number of messages received
+	 * since the last focus.
+	 */
+	addTitleAlert: function() {
+		if (!document.hasFocus()) {
+			var title = document.title;
+			var titleRegex = title.match(/\d+/);
+			var numAlerts = titleRegex ? parseInt(titleRegex, 10) : 0;
+			if (numAlerts === 0) {
+				document.title = title + ' (1)';
+			}
+			else {
+				numAlerts++;
+				document.title = title.replace(/\([^\)]*\)/g, '(' + numAlerts + ')');
+			}
+
+			$(window).focus(function () {
+				document.title = title.replace(/\([^\)]*\)/g, '');
+			});
+		}
+	},
+
+	/**
+	 * Add new chat messages to array, removing any older messages
+	 * if the total is > 19
+	 * 
+	 * @param  {array} currentState this.state.data
+	 * @param  {array} newData     data from the server
+	 * @return {array}             updated state 
+	 */
+	adjustChatMessagesArray: function(currentState, newData) {
+		var numToRemove = 0;
+		for (var message in newData) {
+			currentState.push(newData[message]);
+			numToRemove++;
+		}
+		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
+		return currentState;
+	},
+
+	/**
+	 * Start the blockUI plugin with custom CSS and loading message
+	 */
+	addBlockUI: function() {
+		$.blockUI({
+			message: '<h3>Loading...</h3>',
+			overlayCSS:  {
+				backgroundColor: '#000',
+				opacity:         0,
+				cursor:          'wait'
+			},
+			css: {
+				border: 'none',
+				padding: '15px',
+				backgroundColor: '#000',
+				'-webkit-border-radius': '10px',
+				'-moz-border-radius': '10px',
+				opacity: .5,
+				color: '#fff'
+			}
+		});
+	}
+};

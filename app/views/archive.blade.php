@@ -10,9 +10,13 @@
 
 @section('content')
 <h2>Archives</h2>
+<ul class="nav nav-tabs">
+	<li class="archive-date active"><a href="#">By Date</a></li>
+	<li class="archive-all"><a href="#all">All</a></li>
+</ul>
 
 <br />
 
-<div id="archive_messages"></div>
+<div id="archive"></div>
 
 @stop
