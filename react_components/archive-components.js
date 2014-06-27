@@ -8,11 +8,13 @@
 */
 
 var ArchiveSearch = React.createClass({
-	
-	
+
+
 	render: function() {
 		return (
-			<div />
+			<div>
+				<input type="text" className="form-control" placeholder="Search chat messages" />
+			</div>
 		);
 	}
 });

@@ -8,11 +8,13 @@
 */
 
 var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
-	
-	
+
+
 	render: function() {
 		return (
-			React.DOM.div(null )
+			React.DOM.div(null, 
+				React.DOM.input( {type:"text", className:"form-control", placeholder:"Search chat messages"} )
+			)
 		);
 	}
 });
