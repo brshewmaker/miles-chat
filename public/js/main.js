@@ -230,25 +230,32 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Start the blockUI plugin with custom CSS and loading message
+	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.
+	 * 
+	 * @param {string} message Optional loading message to display
 	 */
-	addBlockUI: function() {
+	addBlockUI: function(message) {
+		message = typeof message !== 'undefined' ? message : 'Loading...';
 		$.blockUI({
-			message: '<h3>Loading...</h3>',
+			message: '<h4>' + message + '</h4>',
+			css: {
+				padding:	'auto',
+				margin:		'auto',
+				width:		'30%',
+				top:		'40%',
+				left:		'35%',
+				textAlign:	'center',
+				color:		'auto',
+				border:		'auto',
+				backgroundColor:'auto',
+				cursor:		'wait'
+			},
 			overlayCSS:  {
 				backgroundColor: '#000',
 				opacity:         0,
 				cursor:          'wait'
 			},
-			css: {
-				border: 'none',
-				padding: '15px',
-				backgroundColor: '#000',
-				'-webkit-border-radius': '10px',
-				'-moz-border-radius': '10px',
-				opacity: .5,
-				color: '#fff'
-			}
+			blockMsgClass: 'alert alert-info',
 		});
 	}
 };
