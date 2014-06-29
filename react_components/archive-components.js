@@ -17,7 +17,7 @@ var ArchiveSearch = React.createClass({
 
 	search: function(event) {
 		var search_term = this.refs.searchTerm.getDOMNode().value;
-		$('#chat_messages').block({message: 'Searching'});
+		CHAT.HELPERS.addBlockUI('Searching', '#chat_messages');
 		$.ajax({
 			type: 'POST',
 			url: BASE + '/archive/search',
