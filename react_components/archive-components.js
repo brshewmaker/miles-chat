@@ -15,9 +15,8 @@ var ArchiveSearch = React.createClass({
 		};
 	},
 
-
 	search: function(event) {
-		var search_term = event.target.value;
+		var search_term = this.refs.searchTerm.getDOMNode().value;
 		$('#chat_messages').block({message: 'Searching'});
 		$.ajax({
 			type: 'POST',
@@ -35,7 +34,12 @@ var ArchiveSearch = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<input onChange={this.search} type="text" className="form-control" placeholder="Search chat messages" />
+				<form onSubmit={this.search} className="form-inline" role="form">
+					<div className="form-group">
+						<input ref="searchTerm" type="text" className="form-control" placeholder="Search chat messages" />
+					</div>
+					<button className="btn btn-default" type="submit">Search</button>
+				</form>
 				<br />
 				<ChatMessages data={this.state.messages} />
 			</div>
