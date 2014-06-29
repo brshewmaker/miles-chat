@@ -240,11 +240,13 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.
+	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.  If an element is pass in
+	 * call blockUI only on that element instead of the entire page
 	 * 
 	 * @param {string} message Optional loading message to display
+	 * @param {string} element Apply block UI only on this element
 	 */
-	addBlockUI: function(message) {
+	addBlockUI: function(message, element) {
 		message = typeof message !== 'undefined' ? message : 'Loading...';
 		var options = {
 			message: '<h4>' + message + '</h4>',
@@ -267,6 +269,11 @@ CHAT.HELPERS = {
 			},
 			blockMsgClass: 'alert alert-info',
 		};
-		$.blockUI(options);
+		if (typeof element !== 'undefined') {
+			$(element).block(options);
+		}
+		else {
+			$.blockUI(options);
+		}
 	}
 };
