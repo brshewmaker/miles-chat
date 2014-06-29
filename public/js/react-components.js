@@ -34,11 +34,9 @@ var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
 	render: function() {
 		return (
 			React.DOM.div(null, 
-				React.DOM.form( {onSubmit:this.search, className:"form-inline", role:"form"}, 
-					React.DOM.div( {className:"form-group"}, 
-						React.DOM.input( {ref:"searchTerm", type:"text", className:"form-control", placeholder:"Search chat messages"} )
-					),
-					React.DOM.button( {className:"btn btn-default", type:"submit"}, "Search")
+				React.DOM.form( {onSubmit:this.search, className:"row", role:"form"}, 
+					React.DOM.div( {className:"col-xs-9 col-sm-10"}, React.DOM.input( {ref:"searchTerm", type:"text", className:"form-control", placeholder:"Search chat messages"} )),
+					React.DOM.div( {className:"col-xs-3 col-sm-2"}, React.DOM.button( {className:"btn btn-default", type:"submit"}, "Search"))
 				),
 				React.DOM.br(null ),
 				ChatMessages( {data:this.state.messages} )

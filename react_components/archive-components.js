@@ -34,11 +34,9 @@ var ArchiveSearch = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<form onSubmit={this.search} className="form-inline" role="form">
-					<div className="form-group">
-						<input ref="searchTerm" type="text" className="form-control" placeholder="Search chat messages" />
-					</div>
-					<button className="btn btn-default" type="submit">Search</button>
+				<form onSubmit={this.search} className="row" role="form">
+					<div className="col-xs-9 col-sm-10"><input ref="searchTerm" type="text" className="form-control" placeholder="Search chat messages" /></div>
+					<div className="col-xs-3 col-sm-2"><button className="btn btn-default" type="submit">Search</button></div>
 				</form>
 				<br />
 				<ChatMessages data={this.state.messages} />
