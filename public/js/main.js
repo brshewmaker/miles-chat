@@ -246,7 +246,7 @@ CHAT.HELPERS = {
 	 */
 	addBlockUI: function(message) {
 		message = typeof message !== 'undefined' ? message : 'Loading...';
-		$.blockUI({
+		var options = {
 			message: '<h4>' + message + '</h4>',
 			css: {
 				padding:	'auto',
@@ -266,6 +266,7 @@ CHAT.HELPERS = {
 				cursor:          'wait'
 			},
 			blockMsgClass: 'alert alert-info',
-		});
+		};
+		$.blockUI(options);
 	}
 };
