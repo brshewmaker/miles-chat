@@ -17,13 +17,13 @@ var ArchiveSearch = React.createClass({
 
 	search: function(event) {
 		var search_term = this.refs.searchTerm.getDOMNode().value;
-		CHAT.HELPERS.addBlockUI('Searching', '#chat_messages');
+		CHAT.HELPERS.addBlockUI('Searching', '#search_block_ui');
 		$.ajax({
 			type: 'POST',
 			url: BASE + '/archive/search',
 			data: {search: search_term},
 			success: function(data) {
-				$('#chat_messages').unblock();
+				$('#search_block_ui').unblock();
 				this.setState({
 					messages: data
 				})
@@ -39,6 +39,7 @@ var ArchiveSearch = React.createClass({
 					<div className="col-xs-3 col-sm-2"><button className="btn btn-default" type="submit">Search</button></div>
 				</form>
 				<br />
+				<div id="search_block_ui" />
 				<ChatMessages data={this.state.messages} />
 			</div>
 		);
