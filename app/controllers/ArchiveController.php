@@ -21,8 +21,7 @@ class ArchiveController extends BaseController
 	 * Handle GET request for /archive/all/per-page/page-num
 	 *
 	 * Calculates the needed numbers for pagination, then returns the appropriate
-	 * batch of messages from the DB.  If the given page_num is > num_pages, then it
-	 * will return the last batch of messages it can
+	 * batch of messages from the DB.  
 	 * 
 	 * @param  int $per_page Number of results per page
 	 * @param  int $page_num Current page number
