@@ -230,13 +230,25 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.
+	 * Removes active class on previously active tab and adds active class on given section
+
+	 * @param  {string} current 
+	 */
+	toggleActiveArchiveTab: function(current) {
+		$('.nav').find('.active').removeClass('active');
+		$('.archive-' + current).addClass('active');
+	},
+
+	/**
+	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.  If an element is pass in
+	 * call blockUI only on that element instead of the entire page
 	 * 
 	 * @param {string} message Optional loading message to display
+	 * @param {string} element Apply block UI only on this element
 	 */
-	addBlockUI: function(message) {
+	addBlockUI: function(message, element) {
 		message = typeof message !== 'undefined' ? message : 'Loading...';
-		$.blockUI({
+		var options = {
 			message: '<h4>' + message + '</h4>',
 			css: {
 				padding:	'auto',
@@ -256,6 +268,12 @@ CHAT.HELPERS = {
 				cursor:          'wait'
 			},
 			blockMsgClass: 'alert alert-info',
-		});
+		};
+		if (typeof element !== 'undefined') {
+			$(element).block(options);
+		}
+		else {
+			$.blockUI(options);
+		}
 	}
 };

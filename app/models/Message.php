@@ -99,6 +99,15 @@ class Message extends Eloquent
 		return DB::select(DB::raw('SELECT DISTINCT YEAR(created_at) as year, MONTHNAME(created_at) as month FROM messages ORDER BY MONTH(created_at)'));
 	}
 
+	/**
+	 * Does a search against FULLTEXT index 
+	 * @param  string $search_string 
+	 * @return Eloquent
+	 */
+	public static function search_messages($search_string) {
+		return DB::select(DB::raw('SELECT * FROM messages WHERE MATCH(message) AGAINST ("' . $search_string . '" IN NATURAL LANGUAGE MODE) LIMIT 50'));
+	}
+
 	
 
 }

@@ -77,4 +77,9 @@ class ArchiveController extends BaseController
 		return Response::json($month_list_json);
 	}
 
+	public function search_messages() {
+		$search_string = Input::get('search');
+		return Response::json(ChatController::create_messages_json(Message::search_messages($search_string)));
+	}
+
 }

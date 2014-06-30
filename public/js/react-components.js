@@ -1,5 +1,53 @@
 /** @jsx React.DOM *//*
 |--------------------------------------------------------------------------
+| Search
+|--------------------------------------------------------------------------
+| 
+| Components for handling search
+| 
+*/
+
+var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
+
+	getInitialState: function() {
+		return {
+			messages: []
+		};
+	},
+
+	search: function(event) {
+		var search_term = this.refs.searchTerm.getDOMNode().value;
+		CHAT.HELPERS.addBlockUI('Searching', '#search_block_ui');
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/archive/search',
+			data: {search: search_term},
+			success: function(data) {
+				$('#search_block_ui').unblock();
+				this.setState({
+					messages: data
+				})
+			}.bind(this)
+		});
+	},
+
+	render: function() {
+		return (
+			React.DOM.div(null, 
+				React.DOM.form( {onSubmit:this.search, className:"row", role:"form"}, 
+					React.DOM.div( {className:"col-xs-9 col-sm-10"}, React.DOM.input( {ref:"searchTerm", type:"text", className:"form-control", placeholder:"Search chat messages"} )),
+					React.DOM.div( {className:"col-xs-3 col-sm-2"}, React.DOM.button( {className:"btn btn-default", type:"submit"}, "Search"))
+				),
+				React.DOM.br(null ),
+				React.DOM.div( {id:"search_block_ui"} ),
+				ChatMessages( {data:this.state.messages} )
+			)
+		);
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
 | By Date
 |--------------------------------------------------------------------------
 | 
