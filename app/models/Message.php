@@ -105,7 +105,7 @@ class Message extends Eloquent
 	 * @return Eloquent
 	 */
 	public static function search_messages($search_string) {
-		return DB::select(DB::raw('SELECT * FROM messages WHERE MATCH(message) AGAINST ("' . $search_string . '" IN NATURAL LANGUAGE MODE)'));
+		return DB::select(DB::raw('SELECT * FROM messages WHERE MATCH(message) AGAINST ("' . $search_string . '" IN NATURAL LANGUAGE MODE) LIMIT 50'));
 	}
 
 	
