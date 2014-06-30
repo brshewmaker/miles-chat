@@ -102,7 +102,7 @@ CHAT.STORAGE = {
 
 			localStorage.setItem( key, JSON.stringify( val ) );
 
-			jQuery('body').trigger( 'grist_storage_change' );
+			jQuery('body').trigger( 'miles_chat_storage_change' );
 
 			return true;
 
