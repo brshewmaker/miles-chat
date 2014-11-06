@@ -102,7 +102,7 @@ CHAT.STORAGE = {
 
 			localStorage.setItem( key, JSON.stringify( val ) );
 
-			jQuery('body').trigger( 'grist_storage_change' );
+			jQuery('body').trigger( 'miles_chat_storage_change' );
 
 			return true;
 
@@ -124,4 +124,156 @@ CHAT.STORAGE = {
 		}
 	},
 
+};
+
+/*
+|--------------------------------------------------------------------------
+| UI Helpers
+|--------------------------------------------------------------------------
+| 
+| Manipulate DOM elements, start plugins, etc
+| 
+*/
+CHAT.HELPERS = {
+
+	/**
+	 * Scroll the chat messages div to the bottom and/or scroll the entire window to the bottom
+	 * for the mobile users
+	 */
+	scrollChatDiv: function() {
+		$('.chat-messages-div').scrollTop($('.chat-messages-div')[0].scrollHeight);
+		$('html, body').scrollTop($(document).height());
+	},
+
+	/**
+	 * Add or remove the server-error message div
+	 * 
+	 * @param  {string} toggle on or off
+	 */
+	toggleServerErrorMessage: function(toggle) {
+		if (toggle == 'on' && !$('.chat-messages-div .alert-danger').length) {
+			$('.chat-messages-div').append($('.server-error').html());
+			$('.chat-textarea').addClass('has-error');
+		}
+		if (toggle == 'off') {
+			$('.chat-messages-div .alert-danger').remove();
+			$('.chat-textarea').removeClass('has-error');
+		}
+	},
+
+	/**
+	 * Determine if the user is at the bottom of the chat_message_div
+	 * 
+	 * @return {BOOL} 
+	 */
+	userAtBottomOfMessagesDiv: function() {
+		var chat_messages = $('.chat-messages-div');
+		if (chat_messages[0].scrollHeight - chat_messages.scrollTop() == chat_messages.outerHeight()) {
+			return true;
+		}
+		return false;
+	},
+
+	/**
+	 * Add a 'sending' div on a chat submit
+	 */
+	addSendingDiv: function() {
+		$('.chat-messages-div').append($('#sending_msg_div').html());
+	},
+
+	/**
+	 * Remove any 'sending' messages that were previously added
+	 */
+	removeSendingDiv: function() {
+		$('.chat-messages-div').find('.sending-message').remove();
+	},
+
+	/**
+	 * Appends (n) to the end of the title, where n is the number of messages received
+	 * since the last focus.
+	 */
+	addTitleAlert: function() {
+		if (!document.hasFocus()) {
+			var title = document.title;
+			var titleRegex = title.match(/\d+/);
+			var numAlerts = titleRegex ? parseInt(titleRegex, 10) : 0;
+			if (numAlerts === 0) {
+				document.title = title + ' (1)';
+			}
+			else {
+				numAlerts++;
+				document.title = title.replace(/\([^\)]*\)/g, '(' + numAlerts + ')');
+			}
+
+			$(window).focus(function () {
+				document.title = title.replace(/\([^\)]*\)/g, '');
+			});
+		}
+	},
+
+	/**
+	 * Add new chat messages to array, removing any older messages
+	 * if the total is > 19
+	 * 
+	 * @param  {array} currentState this.state.data
+	 * @param  {array} newData     data from the server
+	 * @return {array}             updated state 
+	 */
+	adjustChatMessagesArray: function(currentState, newData) {
+		var numToRemove = 0;
+		for (var message in newData) {
+			currentState.push(newData[message]);
+			numToRemove++;
+		}
+		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
+		return currentState;
+	},
+
+	/**
+	 * Removes active class on previously active tab and adds active class on given section
+
+	 * @param  {string} current 
+	 */
+	toggleActiveArchiveTab: function(current) {
+		$('.nav').find('.active').removeClass('active');
+		$('.archive-' + current).addClass('active');
+	},
+
+	/**
+	 * Start the blockUI plugin with custom defaults to use baked-in Bootstrap styling.  If an element is pass in
+	 * call blockUI only on that element instead of the entire page
+	 * 
+	 * @param {string} message Optional loading message to display
+	 * @param {string} element Apply block UI only on this element
+	 */
+	addBlockUI: function(message, element) {
+		message = typeof message !== 'undefined' ? message : 'Loading...';
+		var options = {
+			message: '<h4>' + message + '</h4>',
+			css: {
+				padding:	'auto',
+				margin:		'auto',
+				width:		'30%',
+				top:		'40%',
+				left:		'35%',
+				textAlign:	'center',
+				color:		'auto',
+				border:		'auto',
+				backgroundColor:'auto',
+				cursor:		'wait'
+			},
+			overlayCSS:  {
+				backgroundColor: '#000',
+				opacity:         0,
+				cursor:          'wait'
+			},
+			blockMsgClass: 'alert alert-info',
+		};
+		if (typeof element !== 'undefined') {
+			$(element).block(options);
+		}
+		else {
+			$.blockUI(options);
+		}
+	}
 };

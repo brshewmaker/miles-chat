@@ -1,6 +1,6 @@
 # Miles Chat
 
-Miles chat is a simple, single room chat application built in PHP using the [Laravel 4 framework](http://laravel.com/).  Acccess to the chat room requires authentication, and features a rudimentary file uploading/sharing capability.  
+Miles chat is a simple, single room chat application built in PHP using the [Laravel 4 framework](http://laravel.com/), and also React.js for front end.  Features include user authentication, rudimentary file upload/sharing, and browsable and searchable chat archives.
 
 There is a live demo of Miles Chat [here](http://www.shewbox.org/miles-chat).  All user accounts, chat messages, and file uploads are reset daily.
 
@@ -15,6 +15,8 @@ If you are new to Laravel and/or have not installed a Laravel application before
 2. MCrypt PHP Extension
 
 3. [Composer](https://getcomposer.org/)
+
+4. MySQL >= 5.6.  Miles-Chat uses an InnoDB FULLTEXT index for search, which was not supported until version 5.6.
 
 
 **Installation Steps:**

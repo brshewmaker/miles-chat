@@ -10,8 +10,8 @@
 @stop
 
 @section('scripts')
-	{{HTML::script('js/bootstrap-sortable.js')}}
-	{{HTML::script('js/plupload.full.min.js')}}
+	{{HTML::script('js/lib/bootstrap-sortable.js')}}
+	{{HTML::script('js/lib/plupload.full.min.js')}}
 	{{HTML::script('js/files.js')}}
 @stop
 
