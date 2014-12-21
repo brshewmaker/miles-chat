@@ -58,4 +58,30 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Message');
 	}
 
+	/*
+	|--------------------------------------------------------------------------
+	| Upgrade bugfix
+	|--------------------------------------------------------------------------
+	| 
+	| See: http://laravel.com/docs/4.2/upgrade#upgrade-4.1.26
+	| These are now required for the point fix for Laravel. I did not 
+	| add these myself.
+	| 
+	*/
+
+	public function getRememberToken()
+	{
+	    return $this->remember_token;
+	}
+
+	public function setRememberToken($value)
+	{
+	    $this->remember_token = $value;
+	}
+
+	public function getRememberTokenName()
+	{
+	    return 'remember_token';
+	}
+
 }

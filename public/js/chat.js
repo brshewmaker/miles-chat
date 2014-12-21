@@ -38,7 +38,10 @@ $(document).ready(function() {
 	$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	setInterval(function() {
 		$('#logged_in_users').load(BASE + '/get-logged-in-users', function(data, status, xhr) {
-			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
+			if (data === 'false') { 
+				window.location.href = BASE;
+			}
+			// if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 		});
 	}, 10000);
 
