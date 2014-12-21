@@ -2,7 +2,7 @@
 
 Miles chat is a simple, single room chat application built in PHP using the [Laravel 4 framework](http://laravel.com/), and also React.js for front end.  Features include user authentication, rudimentary file upload/sharing, and browsable and searchable chat archives.
 
-There is a live demo of Miles Chat [here](http://www.shewbox.org/miles-chat).  All user accounts, chat messages, and file uploads are reset daily.
+There is a live demo of Miles Chat [here](http://chat.sixthree1.com).  All user accounts, chat messages, and file uploads are reset daily.
 
 ## Installation
 
