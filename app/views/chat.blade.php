@@ -9,7 +9,6 @@
 @stop
 
 @section('scripts')
-{{HTML::script('js/lib/jquery.form.min.js')}}
 {{HTML::script('js/lib/plupload.full.min.js')}}
 {{HTML::script('js/chat.js')}}
 @stop
