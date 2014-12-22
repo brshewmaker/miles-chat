@@ -140,6 +140,35 @@ var ChatMessage = React.createClass({
 
 var ChatForm = React.createClass({
 
+	/**
+	 * Add listener for the enter key in the chat message form
+	 */
+	componentDidMount: function() {
+		$('#chatmsg').on('keydown', function(e) {
+			if (e.which == 13 && ! e.shiftKey) {
+				e.preventDefault();
+				this.submitChatMessage();
+			}
+		}.bind(this));
+	},
+
+	/**
+	 * Send a POST request to send_chat, add the sending div and scroll the chat messages div 
+	 */
+	submitChatMessage: function() {
+		var message = $('#chatmsg').val();
+		$('#chatmsg').val('');
+		CHAT.HELPERS.addSendingDiv();
+		CHAT.HELPERS.scrollChatDiv();
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/send_chat',
+			data: {
+				chatmsg: message
+			},
+		})
+	},
+
 	render: function() {
 		return (
 			<div className="chat-input">
