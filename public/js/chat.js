@@ -41,7 +41,6 @@ $(document).ready(function() {
 			if (data === 'false') { 
 				window.location.href = BASE;
 			}
-			// if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 		});
 	}, 10000);
 
