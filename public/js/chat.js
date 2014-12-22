@@ -11,37 +11,14 @@ $(document).ready(function() {
 	});
 
 
-	/* = Send a chat message
-	-------------------------------------------------------------- */
-	var ajaxFormOptions = {
-		dataType: 'json',
-		beforeSubmit: function() {
-			$('#chat_box').resetForm();
-			CHAT.HELPERS.addSendingDiv();
-			CHAT.HELPERS.scrollChatDiv();
-		},
-		clearForm: true,
-	};
-
-	$('#chat_box').ajaxForm(ajaxFormOptions);
-
-	// Submit the chat input form on enter
-	$('#chatmsg').on('keydown', function(e) {
-		if (e.which == 13 && ! e.shiftKey) {
-			e.preventDefault();
-			$('#chat_box').ajaxSubmit(ajaxFormOptions);
-		}
-	});
-
 	/* = Get logged in users
 	-------------------------------------------------------------- */
 	$('#logged_in_users').load(BASE + '/get-logged-in-users');
 	setInterval(function() {
 		$('#logged_in_users').load(BASE + '/get-logged-in-users', function(data, status, xhr) {
-			if (data === 'false') { 
+			if (data === 'false') {
 				window.location.href = BASE;
 			}
-			// if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 		});
 	}, 10000);
 
