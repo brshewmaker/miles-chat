@@ -178,28 +178,6 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * If a valid chat command is found at the beginning of $message, create a new message with the 
-	 * appropriate value from the chatcommands array
-	 * 
-	 * @param  string $message Initial chat message
-	 * @return string          
-	 */
-	public function process_chat_commands($message) {
-		if (substr($message, 0, 1) == '/') {
-			$shortcodes = Config::get('chatcommands');
-
-			preg_match('([^\s]+)', $message, $command);
-			$command = isset($command[0]) ? $command[0] : FALSE;
-			$message = str_replace($command . ' ', '', $message);
-
-			if (array_key_exists($command , $shortcodes)) {
-				return str_replace('%s', $message, $shortcodes[$command]);
-			}
-		}
-		return $message;
-	}
-
-	/**
 	 * Run $message through the htmlpurifier library
 	 *
 	 * Settings for this are set in app/purifier.php.  This library
