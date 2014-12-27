@@ -5,7 +5,7 @@
 */
 class ChatController extends BaseController
 {
-	
+
 	/*
 	|--------------------------------------------------------------------------
 	| Handle HTTP requests
@@ -66,7 +66,7 @@ class ChatController extends BaseController
 	 * @return Response 
 	 */
 	public function post_chat_message() {
-		$message = $this->process_chat_commands(Input::get('chatmsg'));
+		$message = Input::get('chatmsg');
 		$message = $this->run_htmlpurifier($message);
 		ChatController::insert_chat_message($message);
 		return Response::json(true);
