@@ -175,13 +175,6 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Add a 'sending' div on a chat submit
-	 */
-	addSendingDiv: function() {
-		$('.chat-messages-div').append($('#sending_msg_div').html());
-	},
-
-	/**
 	 * Remove any 'sending' messages that were previously added
 	 */
 	removeSendingDiv: function() {
