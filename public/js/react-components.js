@@ -508,6 +508,7 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 	 */
 	submitChatMessage: function() {
 		var message = $('#chatmsg').val();
+		if (message === '') return;
 		$('#chatmsg').val('');
 		var $CurrentSendingDiv = this.insertSendingDiv();
 
