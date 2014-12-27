@@ -67,6 +67,7 @@
 	{{HTML::script('js/lib/underscore-min.js')}}
 	{{HTML::script('js/lib/backbone-min.js')}}
 	{{HTML::script('js/lib/jquery.blockUI.js')}}
+	{{HTML::script('js/lib/commonmark.js')}}
 	{{HTML::script('js/main.js')}}
 	{{HTML::script('js/react-components.js')}}
 	@yield('scripts')
