@@ -41,7 +41,8 @@
 		<p>Miles chat uses the common mark Markdown spec</p>
 		<P>Use these at the anywhere in a message.</P>
 		<p><strong>*</strong>: strong</p>
-		<p><strong>`</strong>: backticks for code</p>
+		<p><strong>`</strong>: backticks for single line of code</p>
+		<p><strong>```</strong>: 3 backticks for multi-line code</p>
 		<p><strong># </strong>: Header text</p>
 		<p><strong>> </strong>: Blockquotes</p>
 		<a href="http://spec.commonmark.org/0.13/">Common Mark Spec</a>
