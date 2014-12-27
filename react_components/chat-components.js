@@ -96,6 +96,20 @@ var ChatDiv = React.createClass({
 });
 
 var ChatMessages = React.createClass({
+
+	/**
+	 * Use the commonMark markdown parser to parse the given message
+	 * 
+	 * @param  {string} message Message from the DB
+	 * @return {string}         Parsed message
+	 */
+	renderCommonMark: function(message) {
+		var reader = new commonmark.DocParser();
+		var writer = new commonmark.HtmlRenderer();
+		var parsed = reader.parse(message);
+		return writer.render(parsed);
+	},
+
 	/**
 	 * Render all chat messages and plop them into their correct div
 	 * @return {JSX} 
@@ -106,9 +120,9 @@ var ChatMessages = React.createClass({
 				key={message.messageid}
 				username={message.username}
 				timestamp={message.timestamp}
-				message={message.message} >
+				message={this.renderCommonMark(message.message)} >
 				</ChatMessage>;
-	    });
+	    }.bind(this));
 		return (
 			<div className="chat-messages-div" id="chat_messages">{messagesArray}</div>
 		);
@@ -131,7 +145,7 @@ var ChatMessage = React.createClass({
 					<span className='text-muted'>{this.props.username}</span> | {this.props.timestamp}
 				</div>
 				<div className="chat-message-body panel-body">
-					<p dangerouslySetInnerHTML={{__html: this.props.message}} />
+					<div dangerouslySetInnerHTML={{__html: this.props.message}} />
 				</div>
 			</div>
 		);
@@ -158,7 +172,8 @@ var ChatForm = React.createClass({
 	submitChatMessage: function() {
 		var message = $('#chatmsg').val();
 		$('#chatmsg').val('');
-		CHAT.HELPERS.addSendingDiv();
+		var $CurrentSendingDiv = this.insertSendingDiv();
+
 		CHAT.HELPERS.scrollChatDiv();
 		$.ajax({
 			type: 'POST',
@@ -167,6 +182,16 @@ var ChatForm = React.createClass({
 				chatmsg: message
 			},
 		})
+	},
+
+	/**
+	 * Add the sending div HTML to the DOM, with a random int between 0-9999
+	 * @return {jQuery Object} Reference to the sending div
+	 */
+	insertSendingDiv: function() {
+		var sendingDivID = _.random(0, 9999);
+		$('.chat-messages-div').append(React.renderToStaticMarkup(<SendingDiv randomID={sendingDivID}/>));
+		return $('#sending_msg_div-' + sendingDivID);
 	},
 
 	render: function() {
@@ -189,3 +214,22 @@ var ChatForm = React.createClass({
 		);
 	}
 });
+
+var SendingDiv = React.createClass({
+
+	render: function() {
+		return (
+		<div id={"sending_msg_div-" + this.props.randomID}>
+			<div className="panel panel-default sending-message">
+				<div className="panel-body">
+					<p><img src="images/loading.gif" />  sending</p>
+				</div>
+			</div>
+		</div>
+		);
+	}
+
+});
+
+
+

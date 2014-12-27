@@ -5,7 +5,7 @@
 */
 class ChatController extends BaseController
 {
-	
+
 	/*
 	|--------------------------------------------------------------------------
 	| Handle HTTP requests
@@ -66,10 +66,10 @@ class ChatController extends BaseController
 	 * @return Response 
 	 */
 	public function post_chat_message() {
-		$message = $this->process_chat_commands(Input::get('chatmsg'));
+		$message = Input::get('chatmsg');
 		$message = $this->run_htmlpurifier($message);
 		ChatController::insert_chat_message($message);
-		return Response::json(array('success' => 'Added chat message'));
+		return Response::json(true);
 	}
 
 	/**
@@ -175,28 +175,6 @@ class ChatController extends BaseController
 		$timestamp = strtotime($date_string);
 		$message_date_string = date('g:ia D, M j, Y', $timestamp);
 		return $message_date_string;
-	}
-
-	/**
-	 * If a valid chat command is found at the beginning of $message, create a new message with the 
-	 * appropriate value from the chatcommands array
-	 * 
-	 * @param  string $message Initial chat message
-	 * @return string          
-	 */
-	public function process_chat_commands($message) {
-		if (substr($message, 0, 1) == '/') {
-			$shortcodes = Config::get('chatcommands');
-
-			preg_match('([^\s]+)', $message, $command);
-			$command = isset($command[0]) ? $command[0] : FALSE;
-			$message = str_replace($command . ' ', '', $message);
-
-			if (array_key_exists($command , $shortcodes)) {
-				return str_replace('%s', $message, $shortcodes[$command]);
-			}
-		}
-		return $message;
 	}
 
 	/**

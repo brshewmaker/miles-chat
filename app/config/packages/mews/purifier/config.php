@@ -12,10 +12,11 @@ return array(
     "settings" => array(
         "default" => array(
             "HTML.SafeIframe" => 'true',
+            'AutoFormat.Linkify' => true,
             "URI.SafeIframeRegexp" => "%^(http://|https://|//)(www.youtube.com/embed/|player.vimeo.com/video/)%",
         ),
         "titles" => array(
-            'AutoFormat.AutoParagraph' => true,
+            'AutoFormat.AutoParagraph' => false,
             'AutoFormat.Linkify' => true,
         )
     ),
