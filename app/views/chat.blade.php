@@ -38,12 +38,12 @@
 
 	<!-- Chat commands popover html -->
 	<div id="chat_commands">
-		<P>Use these at the beginning of a message.</P>
-		<p><strong>/code:</strong> wrap in code and pre</p>
-		<p><strong>/quote:</strong> wrap in blockquote</p>
-		<p><strong>/h1 thru /h4:</strong> title tags</p>
-		<p><strong>/b:</strong> wrap in strong</p>
-		<p><strong>/i:</strong> wrap in em</p>
-		<p><strong>/image:</strong> embed an inline image</p>
+		<p>Miles chat uses the common mark Markdown spec</p>
+		<P>Use these at the anywhere in a message.</P>
+		<p><strong>*</strong>: strong</p>
+		<p><strong>`</strong>: backticks for code</p>
+		<p><strong># </strong>: Header text</p>
+		<p><strong>> </strong>: Blockquotes</p>
+		<a href="http://spec.commonmark.org/0.13/">Common Mark Spec</a>
 	</div>
 @stop
