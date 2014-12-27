@@ -495,7 +495,8 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 	submitChatMessage: function() {
 		var message = $('#chatmsg').val();
 		$('#chatmsg').val('');
-		CHAT.HELPERS.addSendingDiv();
+		var $CurrentSendingDiv = this.insertSendingDiv();
+
 		CHAT.HELPERS.scrollChatDiv();
 		$.ajax({
 			type: 'POST',
@@ -504,6 +505,16 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 				chatmsg: message
 			},
 		})
+	},
+
+	/**
+	 * Add the sending div HTML to the DOM, with a random int between 0-9999
+	 * @return {jQuery Object} Reference to the sending div
+	 */
+	insertSendingDiv: function() {
+		var sendingDivID = _.random(0, 9999);
+		$('.chat-messages-div').append(React.renderToStaticMarkup(SendingDiv( {randomID:sendingDivID})));
+		return $('#sending_msg_div-' + sendingDivID);
 	},
 
 	render: function() {
@@ -526,3 +537,22 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 		);
 	}
 });
+
+var SendingDiv = React.createClass({displayName: 'SendingDiv',
+
+	render: function() {
+		return (
+		React.DOM.div( {id:"sending_msg_div-" + this.props.randomID}, 
+			React.DOM.div( {className:"panel panel-default sending-message"}, 
+				React.DOM.div( {className:"panel-body"}, 
+					React.DOM.p(null, React.DOM.img( {src:"images/loading.gif"} ),  "  sending")
+				)
+			)
+		)
+		);
+	}
+
+});
+
+
+
