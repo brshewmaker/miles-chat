@@ -298,7 +298,6 @@ CHAT.TIME = {
 	 */
 	convertFromUTC: function(timestamp) {
 		var offset = new Date().getTimezoneOffset();
-		console.log(offset);
 		return new Date(timestamp * 1000 + offset);
 	},
 
