@@ -166,18 +166,6 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Given a time string from the DB, return a formatted version 
-	 * 
-	 * @param  string $date_string timestamps() formatted
-	 * @return string              Formatted time string
-	 */
-	public static function format_chat_timestamp($date_string) {
-		$timestamp = strtotime($date_string);
-		$message_date_string = date('g:ia D, M j, Y', $timestamp);
-		return $message_date_string;
-	}
-
-	/**
 	 * Run $message through the htmlpurifier library
 	 *
 	 * Settings for this are set in app/purifier.php.  This library
