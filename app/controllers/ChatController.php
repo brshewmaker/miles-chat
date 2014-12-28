@@ -109,7 +109,7 @@ class ChatController extends BaseController
 			$current = array();
 			$user = User::find($message->user_id);
 			$current['username'] = $user->username;
-			$current['timestamp'] = ChatController::format_chat_timestamp($message->created_at);
+			$current['timestamp'] = strtotime($message->created_at);
 			$current['messageid'] = $message->id;
 			$current['message'] = $message->message;
 			$messages_array[] = $current;
