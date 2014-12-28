@@ -68,8 +68,8 @@ class ChatController extends BaseController
 	public function post_chat_message() {
 		$message = Input::get('chatmsg');
 		$message = $this->run_htmlpurifier($message);
-		ChatController::insert_chat_message($message);
-		return Response::json(true);
+		$db_message = ChatController::insert_chat_message($message);
+		return Response::json($db_message);
 	}
 
 	/**
@@ -164,7 +164,7 @@ class ChatController extends BaseController
 	 * Insert the given chat message for the logged in user and update user last_seen time
 	 * 
 	 * @param  string $message 
-	 * @return void
+	 * @return Message  Message ORM object
 	 */
 	public static function insert_chat_message($message) {
 		ChatController::record_user_activity();
@@ -173,6 +173,7 @@ class ChatController extends BaseController
 		$db_message->user_id = $user->id;
 		$db_message->message = $message;
 		$db_message->save();
+		return $db_message;
 	}
 
 	/**
