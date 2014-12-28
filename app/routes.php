@@ -30,7 +30,7 @@ Route::group(array('before' => 'auth'), function() {
 
 	// Chat
 	Route::get('chat', 'ChatController@action_index');
-	Route::get('get-user-id', 'ChatController@get_user_id');
+	Route::get('get-user-info', 'ChatController@get_user_info');
 
 	// Files
 	Route::get('files', 'FileController@action_index');

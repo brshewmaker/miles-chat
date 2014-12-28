@@ -89,13 +89,17 @@ class ChatController extends BaseController
 	}
 
 	/**
-	 * Handle GET request for /get-user-id
+	 * Handle GET request for /get-user-info
 	 * 
-	 * @return JSON DB ID of the logged in user
+	 * @return JSON DB ID and Username of the logged in user
 	 */
-	public function get_user_id() {
+	public function get_user_info() {
 		$user = Auth::user();
-		return Response::json($user->id);
+		$user_info = array(
+			'username' => $user->username,
+			'userID' => $user->id,
+			);
+		return Response::json($user_info);
 	}
 
 	/*
