@@ -88,6 +88,16 @@ class ChatController extends BaseController
 		return View::make('logged_in_users')->with('users', $usernames);
 	}
 
+	/**
+	 * Handle GET request for /get-user-id
+	 * 
+	 * @return JSON DB ID of the logged in user
+	 */
+	public function get_user_id() {
+		$user = Auth::user();
+		return Response::json($user->id);
+	}
+
 	/*
 	|--------------------------------------------------------------------------
 	| Helper functions
