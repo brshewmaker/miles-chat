@@ -338,11 +338,22 @@ var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
 var ChatDiv = React.createClass({displayName: 'ChatDiv',
 
 	getInitialState: function() {
-		return {data: []};
+		return {
+			messages: [],
+			userID: 0,
+			userName: '',
+		};
 	},
 
 	componentWillMount: function() {
 		this.getInitialChatMessages();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-user-id',
+			success: function(id) {
+				this.setState({userID: id});
+			}.bind(this)
+		});
 	},
 
 	/**
@@ -354,7 +365,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			type: 'GET',
 			url: BASE + '/get-chat-messages/initial',
 			success: function(data) {
-				this.setState({data: data});
+				this.setState({messages: data});
 				CHAT.HELPERS.scrollChatDiv();
 				this.getNewChatMessages();
 			}.bind(this)
@@ -366,7 +377,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	 */
 	getNewChatMessages: function() {
 		CHAT.HELPERS.toggleServerErrorMessage('off');
-		var message_id = this.state.data[this.state.data.length-1].messageid;
+		var message_id = this.state.messages[this.state.messages.length-1].messageid;
 		$.ajax({
 			type: 'GET',
 			url: BASE + '/get-chat-messages/newest/' + message_id,
@@ -390,7 +401,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 
-			this.setState({data: CHAT.HELPERS.adjustChatMessagesArray(this.state.data, data)});
+			this.setState({messages: CHAT.HELPERS.adjustChatMessagesArray(this.state.messages, data)});
 
 			// DOM Manipulations after a new message comes in
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
@@ -425,8 +436,8 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 		return (
 			React.DOM.div(null, 
 				React.DOM.legend(null, "Messages"),
-				ChatMessages( {data:this.state.data}),
-				ChatForm(null )
+				ChatMessages( {messages:this.state.messages}),
+				ChatForm( {onSubmit:this.insertNewMessage} )
 			)
 		);
 	},
@@ -452,11 +463,11 @@ var ChatMessages = React.createClass({displayName: 'ChatMessages',
 	 * @return {JSX} 
 	 */
 	render: function() {
-	    var messagesArray = this.props.data.map(function (message, index) {
+	    var messagesArray = this.props.messages.map(function (message, index) {
 			return ChatMessage( 
 				{key:message.messageid,
 				username:message.username,
-				timestamp:message.timestamp,
+				timestamp:CHAT.TIME.formatTime(message.timestamp),
 				message:this.renderCommonMark(message.message)} 
 				);
 	    }.bind(this));
