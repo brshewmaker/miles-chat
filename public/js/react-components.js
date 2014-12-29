@@ -337,21 +337,27 @@ var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
 
 var ChatDiv = React.createClass({displayName: 'ChatDiv',
 
+	userName: '',
+	userID: 0,
+	lastMessageID: 0,
+
 	getInitialState: function() {
 		return {
-			messages: [],
-			userID: 0,
-			userName: '',
+			messages: []
 		};
 	},
 
+	/**
+	 * Get the first messages from the server, and get the auth username and id
+	 */
 	componentWillMount: function() {
 		this.getInitialChatMessages();
 		$.ajax({
 			type: 'GET',
-			url: BASE + '/get-user-id',
-			success: function(id) {
-				this.setState({userID: id});
+			url: BASE + '/get-user-info',
+			success: function(user_info) {
+				this.userName = user_info.username;
+				this.userID = user_info.id;
 			}.bind(this)
 		});
 	},
@@ -366,6 +372,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			url: BASE + '/get-chat-messages/initial',
 			success: function(data) {
 				this.setState({messages: data});
+				this.lastMessageID = this.state.messages[this.state.messages.length-1].messageid;
 				CHAT.HELPERS.scrollChatDiv();
 				this.getNewChatMessages();
 			}.bind(this)
@@ -377,10 +384,9 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	 */
 	getNewChatMessages: function() {
 		CHAT.HELPERS.toggleServerErrorMessage('off');
-		var message_id = this.state.messages[this.state.messages.length-1].messageid;
 		$.ajax({
 			type: 'GET',
-			url: BASE + '/get-chat-messages/newest/' + message_id,
+			url: BASE + '/get-chat-messages/newest/' + this.lastMessageID,
 			async: true,
 			cache: false,
 			timeout: 30000,
@@ -400,7 +406,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	addNewMessages: function(data) {
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
-
+			this.lastMessageID = data[data.length-1].messageid;
 			this.setState({messages: CHAT.HELPERS.adjustChatMessagesArray(this.state.messages, data)});
 
 			// DOM Manipulations after a new message comes in
@@ -427,6 +433,50 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			}.bind(this)
 		});
 	},
+
+	/**
+	 * Event handler for when the user submits a new chat message
+	 */
+	insertNewMessage: function() {
+		var message = $('#chatmsg').val();
+		if (message === '') return;
+		$('#chatmsg').val('');
+
+		this.setState({messages: this.buildNewMessage(message, this.state.messages)});
+		CHAT.HELPERS.scrollChatDiv();
+
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/send_chat',
+			data: {
+				chatmsg: message
+			},
+			success: function(data) {
+				// 'confirm' insta added messages
+			}
+		});
+	},
+
+	/**
+	 * Build a new message object and push it to the copied state
+	 * 
+	 * @param  {string} message  Submitted chat message
+	 * @param  {Array} messages Array of message objects
+	 * @return {Array}          New State to be set
+	 */
+	buildNewMessage: function(message, messages) {
+		var message_id = messages[messages.length-1].messageid;
+		message_id++; //this only matters that it is different in the state, so that React will render
+		var newMessage = {
+			message: message,
+			messageid: message_id,
+			timestamp: Date.now(),
+			username: this.userName,
+		};
+		messages.push(newMessage);
+		return messages;
+	},
+
 
 	/**
 	 * Render the chat-div, messages, and submit form
