@@ -214,8 +214,8 @@ CHAT.HELPERS = {
 	 */
 	adjustChatMessagesArray: function(currentState, newData) {
 		var numToRemove = 0;
-		for (var message in newData) {
-			currentState.push(newData[message]);
+		for (var messageIndex in newData) {
+			currentState.push(newData[messageIndex]);
 			numToRemove++;
 		}
 		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
