@@ -1,11 +1,24 @@
 var ChatDiv = React.createClass({
 
+	userName: '',
+	userID: 0,
+
 	getInitialState: function() {
-		return {data: []};
+		return {
+			messages: []
+		};
 	},
 
 	componentWillMount: function() {
 		this.getInitialChatMessages();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-user-id',
+			success: function(user_info) {
+				this.userName = user_info.username;
+				this.userID = user_info.id;
+			}.bind(this)
+		});
 	},
 
 	/**
