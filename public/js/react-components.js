@@ -466,18 +466,17 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 		if (message === '') return;
 		$('#chatmsg').val('');
 
+		newMessageID = this.userName + '-' + (this.lastMessageID + 1);
+		this.setState({messages: this.buildNewMessage(message, this.state.messages, newMessageID)});
 		this.messagesPending++;
-		this.setState({messages: this.buildNewMessage(message, this.state.messages)});
 		CHAT.HELPERS.scrollChatDiv();
 
 		$.ajax({
 			type: 'POST',
 			url: BASE + '/send_chat',
-			data: {
-				chatmsg: message
-			},
+			data: {chatmsg: message},
 			success: function(data) {
-				// 
+				this.updatePendingMessage(data, newMessageID);
 			}.bind(this)
 		});
 	},
@@ -489,9 +488,7 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	 * @param  {Array} messages Array of message objects
 	 * @return {Array}          New State to be set
 	 */
-	buildNewMessage: function(message, messages) {
-		// Create a unique 'front-end' messageID
-		message_id = this.userName + '-' + (this.lastMessageID + 1);
+	buildNewMessage: function(message, messages, message_id) {
 		var newMessage = {
 			message: message,
 			messageid: message_id,
@@ -500,6 +497,14 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 		};
 		messages.push(newMessage);
 		return messages;
+	},
+
+
+	updatePendingMessage: function(serverData, pendingID) {
+		var $message = $('#' + pendingID);
+		if (serverData) {
+			$message.find('.chat-message-body-html').html(serverData.message);
+		}
 	},
 
 
@@ -543,7 +548,8 @@ var ChatMessages = React.createClass({displayName: 'ChatMessages',
 				{key:message.messageid,
 				username:message.username,
 				timestamp:CHAT.TIME.formatTime(message.timestamp),
-				message:this.renderCommonMark(message.message)} 
+				message:this.renderCommonMark(message.message), 
+				messageid:message.messageid} 
 				);
 	    }.bind(this));
 		return (
@@ -563,12 +569,12 @@ var ChatMessage = React.createClass({displayName: 'ChatMessage',
 	 */
 	render: function() {
 		return (
-			React.DOM.div( {className:"chat-message panel panel-default"}, 
+			React.DOM.div( {className:"chat-message panel panel-default", id:this.props.messageid}, 
 				React.DOM.div( {className:"chat-message-info panel-heading"}, 
 					React.DOM.span( {className:"text-muted"}, this.props.username), " | ", this.props.timestamp
 				),
 				React.DOM.div( {className:"chat-message-body panel-body"}, 
-					React.DOM.div( {dangerouslySetInnerHTML:{__html: this.props.message}} )
+					React.DOM.div( {className:"chat-message-body-html", dangerouslySetInnerHTML:{__html: this.props.message}} )
 				)
 			)
 		);
