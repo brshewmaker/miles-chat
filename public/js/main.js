@@ -205,24 +205,6 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Add new chat messages to array, removing any older messages
-	 * if the total is > 19
-	 * 
-	 * @param  {array} currentState this.state.data
-	 * @param  {array} newData     data from the server
-	 * @return {array}             updated state 
-	 */
-	adjustChatMessagesArray: function(currentState, newData) {
-		var numToRemove = 0;
-		for (var messageIndex in newData) {
-			currentState.push(newData[messageIndex]);
-			numToRemove++;
-		}
-		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
-		return currentState;
-	},
-
-	/**
 	 * Removes active class on previously active tab and adds active class on given section
 
 	 * @param  {string} current 
