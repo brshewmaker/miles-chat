@@ -177,7 +177,7 @@ var ChatDiv = React.createClass({
 	updatePendingMessage: function(serverData, pendingID) {
 		var $message = $('#' + pendingID);
 		if (serverData) {
-			$message.find('.chat-message-body-html').html(serverData.message);
+			$message.find('.chat-message-body-html').html(ChatMessages.renderCommonMark(serverData.message));
 		}
 		else {
 			$message.addClass('panel-danger');
