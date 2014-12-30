@@ -3,6 +3,7 @@ var ChatDiv = React.createClass({
 	userName: '',
 	userID: 0,
 	lastMessageID: 0,
+	messagesPending: 0,
 
 	getInitialState: function() {
 		return {
@@ -70,7 +71,7 @@ var ChatDiv = React.createClass({
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
 			this.lastMessageID = data[data.length-1].messageid;
-			this.setState({messages: CHAT.HELPERS.adjustChatMessagesArray(this.state.messages, data)});
+			this.setState({messages: this.adjustChatMessagesArray(this.state.messages, data)});
 
 			// DOM Manipulations after a new message comes in
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
@@ -78,6 +79,29 @@ var ChatDiv = React.createClass({
 			CHAT.HELPERS.addTitleAlert();
 		}
 		this.getNewChatMessages();
+	},
+
+	/**
+	 * Add new chat messages to array, removing any older messages
+	 * if the total is > 19
+	 * 
+	 * @param  {array} currentState this.state.data
+	 * @param  {array} newData     data from the server
+	 * @return {array}             updated state 
+	 */
+	adjustChatMessagesArray: function(currentState, newData) {
+		var numToRemove = 0;
+		for (var messageIndex in newData) {
+			if (newData[messageIndex].username === this.userName && this.messagesPending > 0) {
+				this.messagesPending--;
+			}
+			else{
+				currentState.push(newData[messageIndex]);
+				numToRemove++;
+			}
+		}
+		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
+		return currentState;
 	},
 
 	/**
@@ -105,6 +129,7 @@ var ChatDiv = React.createClass({
 		if (message === '') return;
 		$('#chatmsg').val('');
 
+		this.messagesPending++;
 		this.setState({messages: this.buildNewMessage(message, this.state.messages)});
 		CHAT.HELPERS.scrollChatDiv();
 
@@ -115,8 +140,8 @@ var ChatDiv = React.createClass({
 				chatmsg: message
 			},
 			success: function(data) {
-				// 'confirm' insta added messages
-			}
+				// 
+			}.bind(this)
 		});
 	},
 
@@ -128,8 +153,8 @@ var ChatDiv = React.createClass({
 	 * @return {Array}          New State to be set
 	 */
 	buildNewMessage: function(message, messages) {
-		var message_id = messages[messages.length-1].messageid;
-		message_id++; //this only matters that it is different in the state, so that React will render
+		// Create a unique 'front-end' messageID
+		message_id = this.userName + '-' + (this.lastMessageID + 1);
 		var newMessage = {
 			message: message,
 			messageid: message_id,
