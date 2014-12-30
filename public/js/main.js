@@ -205,6 +205,19 @@ CHAT.HELPERS = {
 	},
 
 	/**
+	 * Use the commonMark markdown parser to parse the given message
+	 * 
+	 * @param  {string} message Message from the DB
+	 * @return {string}         Parsed message
+	 */
+	renderCommonMark: function(message) {
+		var reader = new commonmark.DocParser();
+		var writer = new commonmark.HtmlRenderer();
+		var parsed = reader.parse(message);
+		return writer.render(parsed);
+	},
+
+	/**
 	 * Removes active class on previously active tab and adds active class on given section
 
 	 * @param  {string} current 

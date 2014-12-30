@@ -177,7 +177,7 @@ var ChatDiv = React.createClass({
 	updatePendingMessage: function(serverData, pendingID) {
 		var $message = $('#' + pendingID);
 		if (serverData) {
-			$message.find('.chat-message-body-html').html(ChatMessages.renderCommonMark(serverData.message));
+			$message.find('.chat-message-body-html').html(CHAT.HELPERS.renderCommonMark(serverData.message));
 		}
 		else {
 			$message.addClass('panel-danger');
@@ -204,19 +204,6 @@ var ChatDiv = React.createClass({
 var ChatMessages = React.createClass({
 
 	/**
-	 * Use the commonMark markdown parser to parse the given message
-	 * 
-	 * @param  {string} message Message from the DB
-	 * @return {string}         Parsed message
-	 */
-	renderCommonMark: function(message) {
-		var reader = new commonmark.DocParser();
-		var writer = new commonmark.HtmlRenderer();
-		var parsed = reader.parse(message);
-		return writer.render(parsed);
-	},
-
-	/**
 	 * Render all chat messages and plop them into their correct div
 	 * @return {JSX} 
 	 */
@@ -226,7 +213,7 @@ var ChatMessages = React.createClass({
 				key={message.messageid}
 				username={message.username}
 				timestamp={CHAT.TIME.formatTime(message.timestamp)}
-				message={this.renderCommonMark(message.message)} 
+				message={CHAT.HELPERS.renderCommonMark(message.message)} 
 				messageid={message.messageid} >
 				</ChatMessage>;
 	    }.bind(this));
