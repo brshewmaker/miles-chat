@@ -159,7 +159,7 @@ var ChatDiv = React.createClass({
 		var newMessage = {
 			message: message,
 			messageid: message_id,
-			timestamp: Date.now(),
+			timestamp: Math.floor((new Date()).getTime() / 1000),
 			username: this.userName,
 		};
 		messages.push(newMessage);
