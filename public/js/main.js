@@ -205,21 +205,16 @@ CHAT.HELPERS = {
 	},
 
 	/**
-	 * Add new chat messages to array, removing any older messages
-	 * if the total is > 19
+	 * Use the commonMark markdown parser to parse the given message
 	 * 
-	 * @param  {array} currentState this.state.data
-	 * @param  {array} newData     data from the server
-	 * @return {array}             updated state 
+	 * @param  {string} message Message from the DB
+	 * @return {string}         Parsed message
 	 */
-	adjustChatMessagesArray: function(currentState, newData) {
-		var numToRemove = 0;
-		for (var message in newData) {
-			currentState.push(newData[message]);
-			numToRemove++;
-		}
-		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
-		return currentState;
+	renderCommonMark: function(message) {
+		var reader = new commonmark.DocParser();
+		var writer = new commonmark.HtmlRenderer();
+		var parsed = reader.parse(message);
+		return writer.render(parsed);
 	},
 
 	/**
@@ -270,3 +265,75 @@ CHAT.HELPERS = {
 		}
 	}
 };
+
+CHAT.TIME = {
+
+	/**
+	 * Given a unix timestamp, format it for use in Miles Chat.
+	 * 
+	 * @param  {int} timestamp Unix timestamp
+	 * @return {string}           Formatted stirng: 12:10pm Mon, Dec. 27 2014
+	 */
+	formatTime: function(timestamp) {
+		var date = this.convertFromUTC(timestamp);
+		var timeString = this.amOrPM(date.getHours(), date.getMinutes());
+		var dow = this.dayOfWeekAsString(date.getDay());
+		var dom = date.getDate();
+		var month = this.monthOfYearAsString(date.getMonth());
+		var year = date.getFullYear();
+
+		return timeString + ' ' + dow + ', ' + month + ' ' + dom + ' ' + year;
+	},
+
+	/**
+	 * Convert the server timestamp (which is UTC) to the local time for the user
+	 * 
+	 * @param  {int} timestamp Server Timestamp
+	 * @return {Date}           Date object with correct time zone
+	 */
+	convertFromUTC: function(timestamp) {
+		var offset = new Date().getTimezoneOffset();
+		return new Date(timestamp * 1000 + offset);
+	},
+
+	/**
+	 * Given hour and minutes, return a formatted string with AM or PM at the end
+	 * 
+	 * @param  {int} hour    24 hour time
+	 * @param  {int} minutes minutes
+	 * @return {string}         Formatted time string
+	 */
+	amOrPM: function(hour, minutes) {
+		if (minutes < 10) minutes = '0' + minutes;
+		if (hour > 12) {
+			hour = hour - 12;
+			return hour + ':' + minutes + ' PM';
+		}
+		return hour + ':' + minutes + ' AM';
+	},
+
+	/**
+	* Converts a day number to a string.
+	*
+	* @param {number} dayIndex
+	* @return {Number} Returns day as number
+	*/
+	dayOfWeekAsString: function(dayIndex) {
+		return ["Mon","Tues","Wed","Ths","Fri","Sat","Sun"][dayIndex];
+	},
+
+	/**
+	 * Converts a month number to a string 
+	 * 
+	 * @param  {int} monthIndex 0-11
+	 * @return {string}            Month of year abbreviation
+	 */
+	monthOfYearAsString: function(monthIndex) {
+		return ['Jan', 'Feb', 'Mar', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'][monthIndex];
+	},
+
+};
+
+
+
+
