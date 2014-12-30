@@ -477,6 +477,10 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			data: {chatmsg: message},
 			success: function(data) {
 				this.updatePendingMessage(data, newMessageID);
+			}.bind(this),
+			error: function() {
+				this.messagesPending--;
+				this.updatePendingMessage(false, newMessageID);
 			}.bind(this)
 		});
 	},
@@ -500,10 +504,21 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	},
 
 
+	/**
+	 * Update a pending message with either the server response message 
+	 * or change the panel state to error.
+
+	 * @param  {Object} serverData Server response or false
+	 * @param  {string} pendingID  ID of the pending message
+	 */
 	updatePendingMessage: function(serverData, pendingID) {
 		var $message = $('#' + pendingID);
 		if (serverData) {
 			$message.find('.chat-message-body-html').html(serverData.message);
+		}
+		else {
+			$message.addClass('panel-danger');
+			$message.find('.panel-heading').text('Message Failed to Send');
 		}
 	},
 
