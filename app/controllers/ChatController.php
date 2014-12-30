@@ -67,6 +67,7 @@ class ChatController extends BaseController
 	 */
 	public function post_chat_message() {
 		$message = Input::get('chatmsg');
+		$message = $this->process_chat_commands($message);
 		$message = $this->run_htmlpurifier($message);
 		$db_message = ChatController::insert_chat_message($message);
 		return Response::json($db_message);
@@ -179,6 +180,29 @@ class ChatController extends BaseController
 		$db_message->save();
 		return $db_message;
 	}
+
+	/**
+	 * If a valid chat command is found at the beginning of $message, create a new message with the 
+	 * appropriate value from the chatcommands array
+	 * 
+	 * @param  string $message Initial chat message
+	 * @return string          
+	 */
+	public function process_chat_commands($message) {
+		if (substr($message, 0, 1) == '/') {
+			$shortcodes = Config::get('chatcommands');
+
+			preg_match('([^\s]+)', $message, $command);
+			$command = isset($command[0]) ? $command[0] : FALSE;
+			$message = str_replace($command . ' ', '', $message);
+
+			if (array_key_exists($command , $shortcodes)) {
+				return str_replace('%s', $message, $shortcodes[$command]);
+			}
+		}
+		return $message;
+	}
+
 
 	/**
 	 * Run $message through the htmlpurifier library
