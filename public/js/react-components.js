@@ -40,7 +40,7 @@ var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
 				),
 				React.DOM.br(null ),
 				React.DOM.div( {id:"search_block_ui"} ),
-				ChatMessages( {data:this.state.messages} )
+				ChatMessages( {messages:this.state.messages} )
 			)
 		);
 	}
@@ -130,6 +130,7 @@ var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
 			type: 'GET',
 			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
 			success: function(data) {
+				console.log(data);
 				$.unblockUI();
 				this.setState({
 					messages: data.messages,
@@ -149,7 +150,7 @@ var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
 				React.DOM.a( {href:"#"}, "back"),
 				React.DOM.h4(null, this.props.year, " : ", this.props.month),
 				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
-				ChatMessages( {data:this.state.messages} ),
+				ChatMessages( {messages:this.state.messages} ),
 				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
 			)
 		);
@@ -211,7 +212,7 @@ var ArchiveAll = React.createClass({displayName: 'ArchiveAll',
 		return (
 			React.DOM.div(null, 
 				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
-				ChatMessages( {data:this.state.messages} ),
+				ChatMessages( {messages:this.state.messages} ),
 				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
 			)
 		);
