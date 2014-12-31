@@ -40,7 +40,7 @@ var ArchiveSearch = React.createClass({displayName: 'ArchiveSearch',
 				),
 				React.DOM.br(null ),
 				React.DOM.div( {id:"search_block_ui"} ),
-				ChatMessages( {data:this.state.messages} )
+				ChatMessages( {messages:this.state.messages} )
 			)
 		);
 	}
@@ -130,6 +130,7 @@ var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
 			type: 'GET',
 			url: BASE + '/archive/date/' + perPage + '/' + pageNum + '/' + this.props.year + '/'  + this.props.month,
 			success: function(data) {
+				console.log(data);
 				$.unblockUI();
 				this.setState({
 					messages: data.messages,
@@ -149,7 +150,7 @@ var ArchiveDate = React.createClass({displayName: 'ArchiveDate',
 				React.DOM.a( {href:"#"}, "back"),
 				React.DOM.h4(null, this.props.year, " : ", this.props.month),
 				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
-				ChatMessages( {data:this.state.messages} ),
+				ChatMessages( {messages:this.state.messages} ),
 				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
 			)
 		);
@@ -211,7 +212,7 @@ var ArchiveAll = React.createClass({displayName: 'ArchiveAll',
 		return (
 			React.DOM.div(null, 
 				ArchiveForm( {handleClick:this.getMessages, pageNum:this.state.pagination.pageNum} ),
-				ChatMessages( {data:this.state.messages} ),
+				ChatMessages( {messages:this.state.messages} ),
 				ArchivePagination( {handleClick:this.getMessages, pagination:this.state.pagination})
 			)
 		);
@@ -337,12 +338,30 @@ var ArchivePaginationLi = React.createClass({displayName: 'ArchivePaginationLi',
 
 var ChatDiv = React.createClass({displayName: 'ChatDiv',
 
+	userName: '',
+	userID: 0,
+	lastMessageID: 0,
+	messagesPending: 0,
+
 	getInitialState: function() {
-		return {data: []};
+		return {
+			messages: []
+		};
 	},
 
+	/**
+	 * Get the first messages from the server, and get the auth username and id
+	 */
 	componentWillMount: function() {
 		this.getInitialChatMessages();
+		$.ajax({
+			type: 'GET',
+			url: BASE + '/get-user-info',
+			success: function(user_info) {
+				this.userName = user_info.username;
+				this.userID = user_info.id;
+			}.bind(this)
+		});
 	},
 
 	/**
@@ -354,7 +373,8 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			type: 'GET',
 			url: BASE + '/get-chat-messages/initial',
 			success: function(data) {
-				this.setState({data: data});
+				this.setState({messages: data});
+				this.lastMessageID = this.state.messages[this.state.messages.length-1].messageid;
 				CHAT.HELPERS.scrollChatDiv();
 				this.getNewChatMessages();
 			}.bind(this)
@@ -366,10 +386,9 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	 */
 	getNewChatMessages: function() {
 		CHAT.HELPERS.toggleServerErrorMessage('off');
-		var message_id = this.state.data[this.state.data.length-1].messageid;
 		$.ajax({
 			type: 'GET',
-			url: BASE + '/get-chat-messages/newest/' + message_id,
+			url: BASE + '/get-chat-messages/newest/' + this.lastMessageID,
 			async: true,
 			cache: false,
 			timeout: 30000,
@@ -389,8 +408,8 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	addNewMessages: function(data) {
 		if (typeof data !== undefined && data.length > 0) {
 			if (data.error) { window.location.href = BASE; } //if user not authenticated, go home
-
-			this.setState({data: CHAT.HELPERS.adjustChatMessagesArray(this.state.data, data)});
+			this.lastMessageID = data[data.length-1].messageid;
+			this.setState({messages: this.adjustChatMessagesArray(this.state.messages, data)});
 
 			// DOM Manipulations after a new message comes in
 			if (CHAT.HELPERS.userAtBottomOfMessagesDiv()) { CHAT.HELPERS.scrollChatDiv(); }
@@ -398,6 +417,29 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 			CHAT.HELPERS.addTitleAlert();
 		}
 		this.getNewChatMessages();
+	},
+
+	/**
+	 * Add new chat messages to array, removing any older messages
+	 * if the total is > 19
+	 * 
+	 * @param  {array} currentState this.state.data
+	 * @param  {array} newData     data from the server
+	 * @return {array}             updated state 
+	 */
+	adjustChatMessagesArray: function(currentState, newData) {
+		var numToRemove = 0;
+		for (var messageIndex in newData) {
+			if (newData[messageIndex].username === this.userName && this.messagesPending > 0) {
+				this.messagesPending--;
+			}
+			else{
+				currentState.push(newData[messageIndex]);
+				numToRemove++;
+			}
+		}
+		if (currentState.length > 19) { currentState.splice(0, numToRemove); } //only remove items if there are at least 20 already
+		return currentState;
 	},
 
 	/**
@@ -418,6 +460,71 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 	},
 
 	/**
+	 * Event handler for when the user submits a new chat message
+	 */
+	insertNewMessage: function() {
+		var message = $('#chatmsg').val();
+		if (message === '') return;
+		$('#chatmsg').val('');
+
+		newMessageID = this.userName + '-' + (this.lastMessageID + 1);
+		this.setState({messages: this.buildNewMessage(message, this.state.messages, newMessageID)});
+		this.messagesPending++;
+		CHAT.HELPERS.scrollChatDiv();
+
+		$.ajax({
+			type: 'POST',
+			url: BASE + '/send_chat',
+			data: {chatmsg: message},
+			success: function(data) {
+				this.updatePendingMessage(data, newMessageID);
+			}.bind(this),
+			error: function() {
+				this.messagesPending--;
+				this.updatePendingMessage(false, newMessageID);
+			}.bind(this)
+		});
+	},
+
+	/**
+	 * Build a new message object and push it to the copied state
+	 * 
+	 * @param  {string} message  Submitted chat message
+	 * @param  {Array} messages Array of message objects
+	 * @return {Array}          New State to be set
+	 */
+	buildNewMessage: function(message, messages, message_id) {
+		var newMessage = {
+			message: message,
+			messageid: message_id,
+			timestamp: Math.floor((new Date()).getTime() / 1000),
+			username: this.userName,
+		};
+		messages.push(newMessage);
+		return messages;
+	},
+
+
+	/**
+	 * Update a pending message with either the server response message 
+	 * or change the panel state to error.
+
+	 * @param  {Object} serverData Server response or false
+	 * @param  {string} pendingID  ID of the pending message
+	 */
+	updatePendingMessage: function(serverData, pendingID) {
+		var $message = $('#' + pendingID);
+		if (serverData) {
+			$message.find('.chat-message-body-html').html(CHAT.HELPERS.renderCommonMark(serverData.message));
+		}
+		else {
+			$message.addClass('panel-danger');
+			$message.find('.panel-heading').text('Message Failed to Send');
+		}
+	},
+
+
+	/**
 	 * Render the chat-div, messages, and submit form
 	 * @return {JSX} 
 	 */
@@ -425,8 +532,8 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 		return (
 			React.DOM.div(null, 
 				React.DOM.legend(null, "Messages"),
-				ChatMessages( {data:this.state.data}),
-				ChatForm(null )
+				ChatMessages( {messages:this.state.messages}),
+				ChatForm( {onSubmit:this.insertNewMessage} )
 			)
 		);
 	},
@@ -435,29 +542,17 @@ var ChatDiv = React.createClass({displayName: 'ChatDiv',
 var ChatMessages = React.createClass({displayName: 'ChatMessages',
 
 	/**
-	 * Use the commonMark markdown parser to parse the given message
-	 * 
-	 * @param  {string} message Message from the DB
-	 * @return {string}         Parsed message
-	 */
-	renderCommonMark: function(message) {
-		var reader = new commonmark.DocParser();
-		var writer = new commonmark.HtmlRenderer();
-		var parsed = reader.parse(message);
-		return writer.render(parsed);
-	},
-
-	/**
 	 * Render all chat messages and plop them into their correct div
 	 * @return {JSX} 
 	 */
 	render: function() {
-	    var messagesArray = this.props.data.map(function (message, index) {
+	    var messagesArray = this.props.messages.map(function (message, index) {
 			return ChatMessage( 
 				{key:message.messageid,
 				username:message.username,
-				timestamp:message.timestamp,
-				message:this.renderCommonMark(message.message)} 
+				timestamp:CHAT.TIME.formatTime(message.timestamp),
+				message:CHAT.HELPERS.renderCommonMark(message.message), 
+				messageid:message.messageid} 
 				);
 	    }.bind(this));
 		return (
@@ -477,12 +572,12 @@ var ChatMessage = React.createClass({displayName: 'ChatMessage',
 	 */
 	render: function() {
 		return (
-			React.DOM.div( {className:"chat-message panel panel-default"}, 
+			React.DOM.div( {className:"chat-message panel panel-default", id:this.props.messageid}, 
 				React.DOM.div( {className:"chat-message-info panel-heading"}, 
 					React.DOM.span( {className:"text-muted"}, this.props.username), " | ", this.props.timestamp
 				),
 				React.DOM.div( {className:"chat-message-body panel-body"}, 
-					React.DOM.div( {dangerouslySetInnerHTML:{__html: this.props.message}} )
+					React.DOM.div( {className:"chat-message-body-html", dangerouslySetInnerHTML:{__html: this.props.message}} )
 				)
 			)
 		);
@@ -498,38 +593,9 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 		$('#chatmsg').on('keydown', function(e) {
 			if (e.which == 13 && ! e.shiftKey) {
 				e.preventDefault();
-				this.submitChatMessage();
+				this.props.onSubmit();
 			}
 		}.bind(this));
-	},
-
-	/**
-	 * Send a POST request to send_chat, add the sending div and scroll the chat messages div 
-	 */
-	submitChatMessage: function() {
-		var message = $('#chatmsg').val();
-		if (message === '') return;
-		$('#chatmsg').val('');
-		var $CurrentSendingDiv = this.insertSendingDiv();
-
-		CHAT.HELPERS.scrollChatDiv();
-		$.ajax({
-			type: 'POST',
-			url: BASE + '/send_chat',
-			data: {
-				chatmsg: message
-			},
-		})
-	},
-
-	/**
-	 * Add the sending div HTML to the DOM, with a random int between 0-9999
-	 * @return {jQuery Object} Reference to the sending div
-	 */
-	insertSendingDiv: function() {
-		var sendingDivID = _.random(0, 9999);
-		$('.chat-messages-div').append(React.renderToStaticMarkup(SendingDiv( {randomID:sendingDivID})));
-		return $('#sending_msg_div-' + sendingDivID);
 	},
 
 	render: function() {
@@ -552,22 +618,4 @@ var ChatForm = React.createClass({displayName: 'ChatForm',
 		);
 	}
 });
-
-var SendingDiv = React.createClass({displayName: 'SendingDiv',
-
-	render: function() {
-		return (
-		React.DOM.div( {id:"sending_msg_div-" + this.props.randomID}, 
-			React.DOM.div( {className:"panel panel-default sending-message"}, 
-				React.DOM.div( {className:"panel-body"}, 
-					React.DOM.p(null, React.DOM.img( {src:"images/loading.gif"} ),  "  sending")
-				)
-			)
-		)
-		);
-	}
-
-});
-
-
 

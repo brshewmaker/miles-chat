@@ -38,14 +38,12 @@
 
 	<!-- Chat commands popover html -->
 	<div id="chat_commands">
-		<p>Miles chat uses the common mark Markdown spec</p>
 		<P>Use these at the anywhere in a message.</P>
 		<p><strong>*strong*</strong></p>
 		<p><em>_italics_</em></p>
-		<p><code>`single backtick for single line of code`</code></p>
+		<p><code>`single backtick for code`</code></p>
 		<p><pre><code>```triple backticks for block of code</pre></code></p>
 		<p><h4># Header Text</h4></p>
 		<p>> Blockquotes (currently broken)</p>
-		<a href="http://spec.commonmark.org/0.13/">Common Mark Spec</a>
 	</div>
 @stop

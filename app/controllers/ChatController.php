@@ -67,9 +67,10 @@ class ChatController extends BaseController
 	 */
 	public function post_chat_message() {
 		$message = Input::get('chatmsg');
+		$message = $this->process_chat_commands($message);
 		$message = $this->run_htmlpurifier($message);
-		ChatController::insert_chat_message($message);
-		return Response::json(true);
+		$db_message = ChatController::insert_chat_message($message);
+		return Response::json($db_message);
 	}
 
 	/**
@@ -86,6 +87,20 @@ class ChatController extends BaseController
 			$usernames[] = $user->username;
 		}
 		return View::make('logged_in_users')->with('users', $usernames);
+	}
+
+	/**
+	 * Handle GET request for /get-user-info
+	 * 
+	 * @return JSON DB ID and Username of the logged in user
+	 */
+	public function get_user_info() {
+		$user = Auth::user();
+		$user_info = array(
+			'username' => $user->username,
+			'userID' => $user->id,
+			);
+		return Response::json($user_info);
 	}
 
 	/*
@@ -109,7 +124,7 @@ class ChatController extends BaseController
 			$current = array();
 			$user = User::find($message->user_id);
 			$current['username'] = $user->username;
-			$current['timestamp'] = ChatController::format_chat_timestamp($message->created_at);
+			$current['timestamp'] = strtotime($message->created_at);
 			$current['messageid'] = $message->id;
 			$current['message'] = $message->message;
 			$messages_array[] = $current;
@@ -154,7 +169,7 @@ class ChatController extends BaseController
 	 * Insert the given chat message for the logged in user and update user last_seen time
 	 * 
 	 * @param  string $message 
-	 * @return void
+	 * @return Message  Message ORM object
 	 */
 	public static function insert_chat_message($message) {
 		ChatController::record_user_activity();
@@ -163,19 +178,31 @@ class ChatController extends BaseController
 		$db_message->user_id = $user->id;
 		$db_message->message = $message;
 		$db_message->save();
+		return $db_message;
 	}
 
 	/**
-	 * Given a time string from the DB, return a formatted version 
+	 * If a valid chat command is found at the beginning of $message, create a new message with the 
+	 * appropriate value from the chatcommands array
 	 * 
-	 * @param  string $date_string timestamps() formatted
-	 * @return string              Formatted time string
+	 * @param  string $message Initial chat message
+	 * @return string          
 	 */
-	public static function format_chat_timestamp($date_string) {
-		$timestamp = strtotime($date_string);
-		$message_date_string = date('g:ia D, M j, Y', $timestamp);
-		return $message_date_string;
+	public function process_chat_commands($message) {
+		if (substr($message, 0, 1) == '/') {
+			$shortcodes = Config::get('chatcommands');
+
+			preg_match('([^\s]+)', $message, $command);
+			$command = isset($command[0]) ? $command[0] : FALSE;
+			$message = str_replace($command . ' ', '', $message);
+
+			if (array_key_exists($command , $shortcodes)) {
+				return str_replace('%s', $message, $shortcodes[$command]);
+			}
+		}
+		return $message;
 	}
+
 
 	/**
 	 * Run $message through the htmlpurifier library
